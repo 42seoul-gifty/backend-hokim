@@ -4,7 +4,7 @@
   "description": "gifty",
   "main": "App.js",
   "scripts": {
-    "test": "node build.js",
+    "test": "node test.js",
     "start": "nodemon server.js"
   },
   "repository": {
