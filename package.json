@@ -4,9 +4,8 @@
   "description": "gifty",
   "main": "App.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "build": "node build.js"
+    "test": "node build.js",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
