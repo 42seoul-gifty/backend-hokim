@@ -1,5 +1,4 @@
-
-name: Node CI
+name: Node CI/CD
 
 on:
   push:
@@ -8,7 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+
+  test:
 
     runs-on: ubuntu-latest
     
@@ -22,24 +22,16 @@ jobs:
         run: |
           npm install
           npm run test
-  # test:
-
-  #   runs-on: ubuntu-latest
-
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest, windows-2016]
-  #       node-version: [12.x, 14.x]
-
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Use Node.js ${{ matrix.node-version }}
-  #     uses: actions/setup-node@v1
-  #     with:
-  #       node-version: ${{ matrix.node-version }}
-  #   - name: npm install, and test
-  #     run: |
-  #       npm install
-  #       npm test
-  #     env:
-  #       CI: true
+          
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        key: ${{ secrets.KEY }}
+        script: ./deploy.sh
