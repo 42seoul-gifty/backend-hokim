@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         key: ${{ secrets.KEY }}
-        script: echo "i am in"
+        script: echo "i am in" > test.txt
   # test:
 
   #   runs-on: ubuntu-latest
