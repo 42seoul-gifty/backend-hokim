@@ -25,7 +25,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+#    if: github.ref == 'refs/heads/master'
     steps:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: echo "iamin"
+        script: echo "i am in"
   # test:
 
   #   runs-on: ubuntu-latest
