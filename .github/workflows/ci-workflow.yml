@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         key: ${{ secrets.KEY }}
-        script: echo "i am in" > test.txt
+        script: ./deploy.sh
   # test:
 
   #   runs-on: ubuntu-latest
