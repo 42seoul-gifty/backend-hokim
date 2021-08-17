@@ -5,8 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      Kakao.init("dc3f292c57aba867fd4c53fc230d5f79");
+      Kakao.isInitialized();
+    </script>
   </head>
   <body>
     <h1>Hello Gifty</h1>
+    <button onclick="kakao()">login</button>
   </body>
+  <script>
+    function kakao() {
+      location.href = "http://localhost:4000/login/kakao";
+    }
+  </script>
 </html>
