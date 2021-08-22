@@ -12,11 +12,28 @@ jobs:
 
     runs-on: ubuntu-latest
     
+    env:
+      DATABASE: test
+      DB_USER: root
+      DB_PASSWORD: 'root'
+      DB_HOST: localhost
+      DB_DIALECT: 'mysql'
+      
     strategy:
       matrix:
         os: [ubuntu-latest]
         node-version: [14.x, 16.x]
     steps:
+    
+      - run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE test;' -uroot -proot
+          mysql -e 'SHOW DATABASES;' -uroot -proot
+      - name: Cancel previous runs of this workflow
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.token }}
+          
       - uses: actions/checkout@v2
       - name: npm install and test
         run: |
