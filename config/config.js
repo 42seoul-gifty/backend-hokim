@@ -20,4 +20,9 @@ const naver_config = {
   secret: process.env.NAVER_SECRET,
 };
 
-module.exports = { db_config, domain, kakao_config, naver_config };
+const imp_config = {
+  key: process.env.IMP_KEY,
+  secret: process.env.IMP_SECRET,
+};
+
+module.exports = { domain, db_config, kakao_config, naver_config, imp_config };

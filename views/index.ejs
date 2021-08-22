@@ -10,11 +10,22 @@
       Kakao.init("dc3f292c57aba867fd4c53fc230d5f79");
       Kakao.isInitialized();
     </script>
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+    ></script>
+    <!-- iamport.payment.js -->
+    <script
+      type="text/javascript"
+      src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"
+    ></script>
   </head>
   <body>
     <h1>Hello Gifty</h1>
     <button onclick="kakao()">kakao login</button>
     <button onclick="naver()">naver login</button>
+    <button onclick="pay()">결제하기</button>
   </body>
   <script>
     function kakao() {
@@ -22,6 +33,46 @@
     }
     function naver() {
       location.href = "/login/naver";
+    }
+
+    function pay() {
+      var IMP = window.IMP; // 생략 가능
+      IMP.init("imp71394683"); // 예: imp00000000
+      IMP.request_pay(
+        {
+          // param
+          pg: "html5_inicis",
+          pay_method: "card",
+          merchant_uid: "ORD20180131-0000018",
+          name: "결제 테스트",
+          amount: 100,
+          buyer_email: "gildong@gmail.com",
+          buyer_name: "홍길동",
+          buyer_tel: "010-4242-4242",
+          buyer_addr: "서울특별시 강남구 신사동",
+          buyer_postcode: "01181",
+        },
+        function (rsp) {
+          // callback
+          if (rsp.success) {
+            jQuery
+              .ajax({
+                url: "http://localhost:4000/payment/validation?price=100", // 예: https://www.myservice.com/payments/complete
+                method: "POST",
+                data: {
+                  imp_uid: rsp.imp_uid,
+                  merchant_uid: rsp.merchant_uid,
+                },
+              })
+              .done(function (data) {
+                // 가맹점 서버 결제 API 성공시 로직
+                alert("성공");
+              });
+          } else {
+            alert("실패");
+          }
+        }
+      );
     }
   </script>
 </html>

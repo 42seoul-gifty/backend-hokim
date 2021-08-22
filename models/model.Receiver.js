@@ -15,30 +15,26 @@ module.exports = (sequelize, DataTypes) => {
   Receiver.associate = (models) => {
     Receiver.belongsTo(models.Preference, {
       as: "Preference",
-      foreignKey: "preference_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      foreignKey: "receiver_id",
+      targetKey: "id",
     });
 
     Receiver.belongsTo(models.Order, {
       as: "Order",
-      foreignKey: "order_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      foreignKey: "receiver_id",
+      targetKey: "id",
     });
 
     Receiver.belongsTo(models.Product, {
       as: "Product",
-      foreignKey: "product_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      foreignKey: "receiver_id",
+      targetKey: "id",
     });
 
     Receiver.belongsTo(models.Address, {
       as: "Address",
-      foreignKey: "address_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      foreignKey: "receiver_id",
+      targetKey: "id",
     });
   };
 
