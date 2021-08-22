@@ -1,32 +1,39 @@
 const Sequelize = require("sequelize");
-const dotenv = require("dotenv");
+const config = require("../config/config")["db_config"];
+const path = require("path");
+const fs = require("fs");
 
-dotenv.config(); //LOAD CONFIG
-
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-    timezone: "+09:00", //한국 시간 셋팅
-    operatorsAliases: 0,
-    pool: {
-      max: 5,
-      min: 0,
-      idle: 10000,
-    },
-  }
-);
+const sequelize = new Sequelize(config.database, config.user, config.password, {
+  host: config.host,
+  dialect: config.dialect,
+  timezone: config.timezone, //한국 시간 셋팅
+  operatorsAliases: 0,
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000,
+  },
+});
 
 let db = [];
 
-const model = require("./User")(sequelize, Sequelize.DataTypes);
-db[model.name] = model;
-if ("associate" in db[model.name]) {
-  db[model.name].associate(db);
-}
+fs.readdirSync(__dirname)
+  .filter((file) => {
+    return file.indexOf(".js") && file !== "index.js";
+  })
+  .forEach((file) => {
+    let model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes
+    );
+    db[model.name] = model;
+  });
+
+Object.keys(db).forEach((modelName) => {
+  if ("associate" in db[modelName]) {
+    db[modelName].associate(db);
+  }
+});
 
 console.log(`${process.env.SITE_DOMAIN}/kakao/callback`);
 db.sequelize = sequelize;
