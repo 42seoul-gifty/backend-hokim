@@ -9,8 +9,5 @@ router.get("/", (req, res) => {
 
 router.use("/login", auth);
 router.use("/payment", payment);
-router.post("/test", (req, res) => {
-  console.log(req.body);
-  res.json({})
-});
+
 module.exports = router;

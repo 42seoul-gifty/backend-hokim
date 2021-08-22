@@ -28,16 +28,18 @@
     <button onclick="pay()">결제하기</button>
   </body>
   <script>
+
     function kakao() {
       location.href = "/login/kakao";
     }
+
     function naver() {
       location.href = "/login/naver";
     }
-
+    
     function pay() {
       var IMP = window.IMP; // 생략 가능
-      IMP.init("imp71394683"); // 예: imp00000000
+      IMP.init("<%=process.env.IMP_CODE%>"); // 예: imp00000000
       IMP.request_pay(
         {
           // param
@@ -57,7 +59,7 @@
           if (rsp.success) {
             jQuery
               .ajax({
-                url: "http://localhost:4000/payment/validation?price=100", // 예: https://www.myservice.com/payments/complete
+                url: "<%=process.env.SITE_DOMAIN%>/payment/validation?price=100", // 예: https://www.myservice.com/payments/complete
                 method: "POST",
                 data: {
                   imp_uid: rsp.imp_uid,
