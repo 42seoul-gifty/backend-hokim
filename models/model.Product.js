@@ -21,21 +21,20 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = (models) => {
     Product.belongsTo(models.Preference, {
       as: "Preference",
-      foreignKey: "preference_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      foreignKey: "product_id",
+      targetKey: "id",
     });
 
     Product.hasMany(models.ProductImage, {
       as: "ProductImage",
-      foreignKey: "id",
+      foreignKey: "image_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });
 
     Product.hasMany(models.Receiver, {
       as: "Receiver",
-      foreignKey: "id",
+      foreignKey: "receiver_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });

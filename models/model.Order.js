@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       giver_name: { type: DataTypes.STRING, comment: "giver Phone Number" },
       giver_phone: { type: DataTypes.STRING, comment: "giver Name" },
-      merchant_uid: { type: DataTypes.STRING, comment: "merchant_uid" },
+      price: { type: DataTypes.INTEGER, comment: "price" },
       imp_uid: { type: DataTypes.STRING, comment: "imp_uid" },
     },
     {
@@ -21,13 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     Order.belongsTo(models.User, {
       as: "User",
       foreignKey: "user_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+      targetKey: "id",
     });
 
     Order.hasMany(models.Receiver, {
       as: "Receiver",
-      foreignKey: "id",
+      foreignKey: "receiver_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });

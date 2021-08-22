@@ -16,14 +16,14 @@ module.exports = (sequelize, DataTypes) => {
   Preference.associate = (models) => {
     Preference.hasMany(models.Receiver, {
       as: "Receiver",
-      foreignKey: "id",
+      foreignKey: "receiver_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });
 
     Preference.hasMany(models.Product, {
       as: "Product",
-      foreignKey: "id",
+      foreignKey: "product_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });

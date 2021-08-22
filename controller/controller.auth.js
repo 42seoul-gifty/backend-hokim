@@ -1,13 +1,14 @@
 const axios = require("axios");
 var querystring = require("querystring");
-const { kako_config, domain, naver_config } = require("../config/config");
+const { kakao_config, domain, naver_config } = require("../config/config");
 
 const { User } = require("../models");
 const { findOrCreate } = require("../lib/lib.User");
 
 const redirectKakao = async (req, res) => {
+  console.log;
   res.redirect(
-    `https://kauth.kakao.com/oauth/authorize?client_id=${kako_config.rest_key}&redirect_uri=${process.env.SITE_DOMAIN}/login/kakao/callback&response_type=code`
+    `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_config.rest_key}&redirect_uri=${process.env.SITE_DOMAIN}/login/kakao/callback&response_type=code`
   );
 };
 
@@ -28,10 +29,10 @@ const getKakaoToken = async (req, res) => {
       },
       data: querystring.stringify({
         grant_type: "authorization_code",
-        client_id: `${kako_config.rest_key}`,
+        client_id: `${kakao_config.rest_key}`,
         redirect_uri: `${domain}/login/kakao/callback`,
         code: req.query.code,
-        client_secret: `${kako_config.secret}`,
+        client_secret: `${kakao_config.secret}`,
       }),
     });
 
@@ -44,7 +45,7 @@ const getKakaoToken = async (req, res) => {
         Authorization: `Bearer ${result.data.access_token}`,
       },
     });
-
+    userData = kakaoUser.data.kakao_account;
     const user = await findOrCreate(
       userData.email,
       userData.profile.nickname,

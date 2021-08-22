@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   Address.associate = (models) => {
     Address.hasOne(models.Receiver, {
       as: "Receiver",
-      foreignKey: "id",
+      foreignKey: "receiver_id",
       sourceKey: "id",
       onDelete: "CASCADE",
     });
