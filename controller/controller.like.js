@@ -1,9 +1,9 @@
-const { Like } = require("../models");
+const { LikeProduct } = require("../models");
 
 const getAllLike = async (req, res) => {
   try {
-    const likes = await Like.findAll({
-      like: true,
+    const likes = await LikeProduct.findAll({
+      likes: true,
     });
     res.status(200).json({ success: true, likes });
   } catch (e) {
@@ -14,8 +14,8 @@ const getAllLike = async (req, res) => {
 
 const getAllDislike = async (req, res) => {
   try {
-    const likes = await Like.findAll({
-      like: false,
+    const likes = await LikeProduct.findAll({
+      likes: false,
     });
     res.status(200).json({ success: true, likes });
   } catch (e) {
@@ -26,8 +26,8 @@ const getAllDislike = async (req, res) => {
 
 const postLike = async (req, res, like) => {
   try {
-    await Like.create({
-      like: like,
+    await LikeProduct.create({
+      likes: like,
       receiver_id: req.body.receiver_id,
       product_id: req.params.product_id,
     });
