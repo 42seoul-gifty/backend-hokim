@@ -1,0 +1,307 @@
+<meta charset="UTF-8">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <link href="/stylesheets/fSelect.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/javascripts/fSelect.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+      <div class="col-3">
+            <%- include ('./nav.ejs') %>
+      </div>
+      <div class="col-9">
+        <div id="content">
+            <table id="select">
+                <tr>
+                  <tr>
+                    <td class="manage">
+                        <select id="monthly" class="manage form-select multiple" multiple="multiple">
+                            <option value="1">1월</option>
+                            <option value="2">2월</option>
+                            <option value="3">3월</option>
+                            <option value="4">4월</option>
+                            <option value="5">5월</option>
+                            <option value="6">6월</option>
+                            <option value="7">7월</option>
+                            <option value="8">8월</option>
+                            <option value="9">9월</option>
+                            <option value="10">10월</option>
+                            <option value="11">11월</option>
+                            <option value="12">12월</option>
+                          </select>
+                    </td>
+                    <td class="manage">  
+                          <select id="weekly" class="manage form-select multiple" multiple="multiple">
+                            <option value="1">1주차</option>
+                            <option value="2">2주차</option>
+                            <option value="3">3주차</option>
+                            <option value="4">4주차</option>
+                          </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" style="margin-left: 5px; height: 40px;" onclick="filter()">filter</button>
+                    </td>
+                    <td>
+                      <div style="margin-left: 30px;" id="pagination"></div>
+                    </td>
+                </tr>
+                </table>      
+             
+           
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">성별</th>
+                    <th scope="col">나이</th>
+                    <th scope="col">금액</th>
+                    <th scope="col">연락처</th>
+                    <th scope="col">주소1</th>
+                    <th scope="col">주소2</th>
+                    <th scope="col" style="width: 200px;">선택 제품</th>
+                    <th scope="col">배송상태</th>
+                  </tr>
+                </thead>
+                <tbody id="order_list">
+                    <tr>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"><select class="form-select" aria-label="Default select example">
+                            <option selected>배송전</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                          </select></td>
+                      </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+      
+    </div>
+ 
+  </div>
+  <script>
+ (function($) {
+  $(function() {
+    
+
+      window.fs_test = $('#monthly').fSelect({
+    placeholder: '주문월',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+window.fs_test = $('#weekly').fSelect({
+    placeholder: '주문주',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+
+  
+let container = $('#pagination');
+  container.pagination({
+    pageSize: 10,
+      dataSource: function(done){
+        let monthly= $('#monthly option:selected').map(function(){
+            return this.value;
+          }).get();
+
+          let weekly= $('#weekly option:selected').map(function(){
+            return this.value;
+          }).get();
+
+        fetch("https://gifty4u.com/admin/order/filter", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              monthly:monthly,
+              weekly:weekly,
+            }),
+          }).then((response) => response.json())
+          .then((res)=>{
+            console.log(res.data)
+            done(res.data)
+            })
+            .catch((err)=>{
+              console.log(err.error)
+            })
+      },
+      
+      callback: function (data, pagination) {
+        $('#order_list').empty();
+        var dataHtml= '';
+          $.each(data, function (index, order) {
+              dataHtml += `<tr> <td scope="col"><p>${index+1}</p></td>
+                      <td scope="col"><p>${order.gender}</p></td>
+                      <td scope="col"><p>${order.age}</p></td>
+                      <td scope="col"><p>${order.price}</p></td>
+                      <td scope="col"><p>${order.receive_tel}</p></td>
+                      <td scope="col" style="width:200px"><p>${order.address1}</p></td>
+                      <td scope="col" style="width:100px"><p>${order.address2}</p></td>
+                      <td scope="col" style="width:100px"><p onclick="window.open('${order.link}')">${order.product_name}</p></td>`
+
+              if(order.shipment_status === "배송전"){
+                dataHtml+=    `<td scope="col"><select onchange="shipmentChange(event)" class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                          </select></td></tr>`
+              }else if(order.shipment_status === "배송요청"){
+                dataHtml+=`<td scope="col"><select onchange="shipmentChange(event)" class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송전">배송전</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                          </select></td></tr>`
+              }else if(order.shipment_status === "배송완료"){
+                dataHtml+= `<td scope="col"><select onchange="shipmentChange(event)"  class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                          </select></td></tr>`
+              }else{
+                dataHtml+= `<td scope="col"><select onchange="shipmentChange(event)"  class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송전">배송전</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                          </select></td></tr>`
+              }        
+          });
+          $("#order_list").append(dataHtml);
+      }
+  })
+  });
+
+})(jQuery);
+function shipmentChange(e){
+  fetch("https://gifty4u.com/admin/order/shipment", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id:e.target.name,
+              shipment_status:e.target.value,
+            }),
+          }).then((response) => response.json())
+          .then((res)=>{
+            if(res.result === "update"){
+              alert("변경사항이 저장됐습니다.")
+            }
+            })
+            .catch((err)=>{
+              console.log(err.error)
+            })
+}
+
+function filter(){
+  window.fs_test = $('#monthly').fSelect({
+    placeholder: '주문월',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+window.fs_test = $('#weekly').fSelect({
+    placeholder: '주문주',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+
+  
+let container = $('#pagination');
+  container.pagination({
+    pageSize: 10,
+      dataSource: function(done){
+        let monthly= $('#monthly option:selected').map(function(){
+            return this.value;
+          }).get();
+
+          let weekly= $('#weekly option:selected').map(function(){
+            return this.value;
+          }).get();
+
+        fetch("https://gifty4u.com/admin/order/filter", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              monthly:monthly,
+              weekly:weekly,
+            }),
+          }).then((response) => response.json())
+          .then((res)=>{
+            console.log(res.data)
+            done(res.data)
+            }).catch((err)=>{
+              console.log(err.error)
+            })
+      },
+      
+      callback: function (data, pagination) {
+        $('#order_list').empty();
+        var dataHtml= '';
+          $.each(data, function (index, order) {
+              dataHtml += `<tr> <td scope="col"><p>${index+1}</p></td>
+                      <td scope="col"><p>${order.gender}</p></td>
+                      <td scope="col"><p>${order.age}</p></td>
+                      <td scope="col"><p>${order.price}</p></td>
+                      <td scope="col"><p>${order.receive_tel}</p></td>
+                      <td scope="col"><p>${order.address1}</p></td>
+                      <td scope="col"><p>${order.address2}</p></td>
+                      <td scope="col"><p>${order.link}</p></td>`
+
+              if(order.shipment_status === "배송전"){
+                dataHtml+=    `<td scope="col"><select onchange="shipmentChange(event)" class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                          </select></td></tr>`
+              }else if(order.shipment_status === "배송요청"){
+                dataHtml+=`<td scope="col"><select onchange="shipmentChange(event)" class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송전">배송전</option>
+                            <option value="배송완료">배송완료</option>
+                          </select></td></tr>`
+              }else{
+                dataHtml+= `<td scope="col"><select onchange="shipmentChange(event)"  class="form-select" name="${order.order_id}">
+                            <option selected>${order.shipment_status}</option>
+                            <option value="배송요청">배송요청</option>
+                            <option value="배송완료">배송완료</option>
+                          </select></td></tr>`
+              }        
+          });
+          $("#order_list").append(dataHtml);
+      }
+  });
+  }
+
+  </script>
+</body>
+</html>

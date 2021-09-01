@@ -8,6 +8,34 @@ const db_config = {
   dialect: process.env.DB_DIALECT,
   timezone: "+09:00",
 };
+
+const development = {
+  database: process.env.DATABASE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
+  timezone: "+09:00",
+};
+
+const production = {
+  database: process.env.DATABASE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
+  timezone: "+09:00",
+};
+
+const test = {
+  database: process.env.DATABASE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
+  timezone: "+09:00",
+};
+
 const domain = process.env.SITE_DOMAIN;
 
 const kakao_config = {
@@ -25,4 +53,13 @@ const imp_config = {
   secret: process.env.IMP_SECRET,
 };
 
-module.exports = { domain, db_config, kakao_config, naver_config, imp_config };
+module.exports = {
+  domain,
+  db_config,
+  kakao_config,
+  naver_config,
+  imp_config,
+  development,
+  test,
+  production,
+};

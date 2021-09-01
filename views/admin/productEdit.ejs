@@ -1,0 +1,215 @@
+<meta charset="UTF-8">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+<link href="/stylesheets/fSelect.css" rel="stylesheet">
+<script src="/javascripts/fSelect.js"></script>
+<style>
+  table tr th{
+    width: 100px;
+  }
+
+</style>
+</head>
+<body>
+    <div class="container">
+            <div id="content">
+              <div id="result" style="display: none;"><%= JSON.stringify(result) %></div>
+                <div style="margin: 3% auto; font-size: 20px; text-align: center;">상품수정</div>
+                <table class="table table-hover">
+                    <tr><th>상품코드</th><td><p id="product_code"><%= result[0].product_code %></p></td></tr>
+                    <tr><th>카테고리</th><td><select id="category" class="form-select" aria-label="Default select example">
+                        <option value="화장품">화장품</option>
+                        <option value="식품">식품</option>
+                        <option value="건강">건강</option>
+                        <option value="리빙">리빙</option>
+                        <option value="패션잡화">패션잡화</option>
+                        <option value="디지털">디지털</option>
+                    </select></td></tr>
+                    <tr><th>브랜드</th><td><input id="brand" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].brand %>"></td></tr>
+                    <tr><th>썸네일</th><td><input id="thumbnail" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].thumbnail %>"></td></tr>
+                    <tr><th>제품링크</th><td><input id="link" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].link %>"></td></tr>
+                     <tr><th>이미지</th><td> 
+                  <textarea id="image" class="form-control" rows="5" placeholder="쉼표(,)로 구분해주세요"></textarea>
+                        </td></tr>
+                    <tr><th>상품명</th><td><input id="product_name" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].product_name %>"></td></tr>
+                    <tr><th>상품소개</th><td><input id="title" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].title %>"></td></tr>
+                    <tr><th>상품정보제공고시</th><td>
+                      <textarea id="sub_title" class="form-control" rows="16"></textarea>
+                      </td></tr>
+                    <tr><th>소비자가격</th><td><input id="retail_price" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].retail_price %>"></td></tr>
+                    <tr><th>마진율</th><td><input id="fee_rate" type="text" class="form-control"aria-describedby="basic-addon1" value="<%= result[0].fee_rate %>"></td></tr>
+                    <tr><th>노출수</th><td><%= result[0].exposure_count %></td></tr>
+                    <tr><th>좋아요수</th><td><%= result[0].love_count %></td></tr>
+                    <tr><th>주문수</th><td><%= result[0].order_count %></td></tr>
+                    <tr><th>성별</th><td><div class="input-group mb-3  register">
+                        <select id="gender" class="form-select multiple" multiple="multiple">
+                          <option value="남성">남성</option>
+                          <option value="여성">여성</option>
+                        </select>
+                      </div></td></tr>
+                      <tr><th>연령대</th><td>
+                        <div class="input-group mb-3 register">
+                            <select id="age" class="form-select multiple" multiple="multiple">
+                                  <option value="20~24세">20~24세</option>
+                                  <option value="25~29세">25~29세</option>
+                                  <option value="30~34세">30~34세</option>
+                                  <option value="35~39세">35~39세</option>
+                                  <option value="40~44세">40~44세</option>
+                                  <option value="45세 이상">45세 이상</option>
+                          </select>
+                          </div>
+                      </td></tr>
+                      <tr><th>금액대</th><td>
+                        <select id="price" class="form-select" aria-label="Default select example">
+                            <option value="1만 5천원">1만 5천원</option>
+                            <option value="2만원">2만원</option>
+                            <option value="2만 5천원">2만 5천원</option>
+                            <option value="3만원">3만원</option>
+                            <option value="3만 5천원">3만 5천원</option>
+                            <option value="4만원">4만원</option>
+                            <option value="4만 5천원">4만 5천원</option>
+                            <option value="5만원">5만원</option>
+                          </select>
+                      </td></tr>
+                    </table>      
+                    <button style="margin: 5% 40%;" type="button" class="btn btn-primary" onclick="save()">저장하기</button>
+            </div>
+          </div>
+  <script>
+      (function($) {
+  $(function() {
+    window.fs_test = $('#gender').fSelect({
+    placeholder: '성별',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+window.fs_test = $('#age').fSelect({
+    placeholder: '연령',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+window.fs_test = $('#price').fSelect({
+    placeholder: '가격대',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+window.fs_test = $('#category').fSelect({
+    placeholder: '카테고리',
+    numDisplayed: 2,
+    overflowText: '{n} selected',
+    noResultsText: 'No results found',
+    searchText: 'Search',
+    showSearch: false
+});
+  });
+
+  let data = JSON.parse($('#result').text());
+  console.log(data)
+  $('#category').val(data[0].category).prop("selected",true)
+  $('#price').val(data[0].price).prop("selected",true)
+  let genders = []
+  let ages = []
+  let images = []
+  data.forEach((el)=>{ 
+    if (!genders.includes(el.gender)) {
+      genders.push(el.gender);
+      $(`#gender option[value='${el.gender}']`).prop("selected",true);
+    } 
+  })
+  data.forEach((el)=>{ 
+    if (!ages.includes(el.age)) {
+      ages.push(el.age);
+      $(`#age option[value='${el.age}']`).prop("selected",true);
+    } 
+  })
+  data.forEach((el)=>{ 
+    if (!images.includes(el.image_link)) {
+      images.push(el.image_link);
+    } 
+  })
+ $('#image').val(images.join(","));
+ $("#sub_title").val(data[0].sub_title.replace(/<br>/gi,'\n'));
+
+})(jQuery);
+
+function save(){
+  let images = $('#image').val().split(",");
+  let ages= $('#age option:selected').map(function(){
+    return this.value;
+  }).get();
+  let genders= $('#gender option:selected').map(function(){
+    return this.value;
+  }).get();
+  if(genders.length<1){alert("성별을 선택해주세요.")}
+  else if(ages.length<1){alert("연령대를 하나이상 선택해주세요.")}
+  else if($('#price option:selected').val()==="가격"){alert("가격을 선택해주세요.")}
+  else{
+    let retail_price = $('#retail_price').val()
+    if(retail_price===''){
+      retail_price=0
+    }
+    let fee_rate = $('#fee_rate').val()
+    if(fee_rate===''){
+      fee_rate=0
+    }
+    let sub_title = $('#sub_title').val().replace(/\n/gi, '<br>');
+  fetch("https://gifty4u.com/admin/product", {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    product_code: $('#product_code').text(),
+    category:  $('#category').val(),
+    product_name:  $('#product_name').val(),
+    thumbnail : $('#thumbnail').val(),
+    image :images,
+    brand : $('#brand').val(),
+    link : $('#link').val(),
+    retail_price :retail_price,
+    fee_rate : fee_rate,
+    title : $('#title').val(),
+    sub_title :sub_title,
+    gender : genders,
+    age :ages,
+    price : $('#price option:selected').val()
+  }),
+}).then((response) => response.json())
+.then((res)=>{
+  console.log(res.data)
+  if(res.data==='update'){
+    alert("제품이 수정되었습니다.")
+    location.href=`https://gifty4u.com/admin/product/detail?product_code=${$('#product_code').text()}`
+  }
+}).catch((err)=>{
+  alert(err.error)
+  console.log(err.error)
+})
+
+  }
+
+
+}
+
+function addImage(){
+
+
+}
+   </script>
+</body>
+</html>

@@ -4,9 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       gender: { type: DataTypes.STRING, comment: "gender" },
-      min_age: { type: DataTypes.STRING, comment: "min_age" },
-      max_age: { type: DataTypes.STRING, comment: "max_age" },
-      price: { type: DataTypes.STRING, comment: "price" },
     },
     {
       tableName: "Preference",
@@ -14,18 +11,22 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Preference.associate = (models) => {
-    Preference.hasMany(models.Receiver, {
-      as: "Receiver",
-      foreignKey: "receiver_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+    Preference.hasMany(models.Receiver, { foreignKey: "preference_id" });
+    Preference.hasMany(models.Product, { foreignKey: "preference_id" });
+    Preference.hasMany(models.ProductPreference, {
+      foreignKey: "preference_id",
     });
 
-    Preference.hasMany(models.Product, {
-      as: "Product",
-      foreignKey: "product_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
+    Preference.belongsTo(models.PreferenceAge, {
+      foreignKey: "age_id",
+    });
+
+    Preference.belongsTo(models.PreferenceGroup, {
+      foreignKey: "group_id",
+    });
+
+    Preference.belongsTo(models.PreferencePrice, {
+      foreignKey: "price_id",
     });
   };
 

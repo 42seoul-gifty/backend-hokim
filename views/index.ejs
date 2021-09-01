@@ -28,7 +28,6 @@
     <button onclick="pay()">결제하기</button>
   </body>
   <script>
-
     function kakao() {
       location.href = "/login/kakao";
     }
@@ -36,7 +35,7 @@
     function naver() {
       location.href = "/login/naver";
     }
-    
+
     function pay() {
       var IMP = window.IMP; // 생략 가능
       IMP.init("<%=process.env.IMP_CODE%>"); // 예: imp00000000
@@ -45,7 +44,7 @@
           // param
           pg: "html5_inicis",
           pay_method: "card",
-          merchant_uid: "test_"+new Date().getTime(),
+          merchant_uid: "test_" + new Date().getTime(),
           name: "결제 테스트",
           amount: 100,
           buyer_email: "gildong@gmail.com",
@@ -57,6 +56,8 @@
         function (rsp) {
           // callback
           if (rsp.success) {
+            //order 데이터베이스에 정보 쌓기
+
             jQuery
               .ajax({
                 url: "<%=process.env.SITE_DOMAIN%>/payment/validation?price=100", // 예: https://www.myservice.com/payments/complete

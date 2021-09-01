@@ -1,0 +1,87 @@
+
+  <div class="row">
+                
+    
+      <div class="col-3">
+            <%- include ('./nav.ejs') %>
+      </div>
+      <div class="col-9" style="margin-top: 30px;" id="top-col">
+        <div><h2>옵션 설정</h2></div>
+        
+
+              <div id="button-group"  style="text-align: center;" >
+                <button class="btn btn-success" onclick="deleteOption()">선택항목 삭제</button>
+                <button class="btn btn-success" onclick="saveOption()">저장</button>
+              </div>    
+ 
+        </div>
+      </div>
+      
+    </div>
+
+<script>
+  function deleteOption() {
+    $('input[type="checkbox"]').each(function (index, item) {
+      if ($(item).prop("checked") == true) 
+      {
+        console.log($(item).attr('new') + "?")
+        const label  =  $(item).closest("li").find('label')
+        if( $(label).hasClass("new"))
+          $(item).closest("li").remove();
+        else
+        {
+          $(item).closest("li").attr("hidden","");
+         $(label).addClass(" removed");
+        }
+    
+    }
+
+    });
+  }
+  
+
+  
+
+
+  function saveOption() { 
+    const age = [];
+    const price = [];
+    const group = [];
+
+    
+    $('label').each(function (index, item) {
+      var label 
+      if(item.className.includes('new'))
+        label = 'new'
+      else if(item.className.includes('edited'))
+        label = 'edited'
+      else if(item.className.includes('removed'))
+        label = 'removed'
+      else
+        return 1;
+
+
+      if(item.className.includes('age'))
+      age.push({value: item.textContent?.trim() ,label, origin: item.getAttribute('origin')?.trim() })
+      else if(item.className.includes('price'))
+      price.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+       else  if(item.className.includes('group'))
+       group.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+  });
+
+  axios({ url: "/admin/cateories", method: "patch", data:{
+    age,price,group
+  } })
+  .then((res) => {
+   alert("변경되었습니다.");
+   window.location = "/admin/app"
+  })
+  .catch((e) => {
+    console.log(e);
+  });
+
+  }
+
+</script>
+ <script type="module" src="/javascripts/admin/fillAppManager.js"></script>
+
