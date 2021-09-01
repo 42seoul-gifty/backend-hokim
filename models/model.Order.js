@@ -18,18 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Order.associate = (models) => {
-    Order.belongsTo(models.User, {
-      as: "User",
-      foreignKey: "user_id",
-      targetKey: "id",
-    });
-
-    Order.hasMany(models.Receiver, {
-      as: "Receiver",
-      foreignKey: "receiver_id",
-      sourceKey: "id",
-      onDelete: "CASCADE",
-    });
+    Order.belongsTo(models.User, { foreignKey: "user_id" });
+    Order.hasMany(models.Receiver, { foreignKey: "order_id" });
   };
   return Order;
 };

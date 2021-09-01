@@ -5,7 +5,9 @@
   "main": "App.js",
   "scripts": {
     "test": "node test.js",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "makeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:all",
+    "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like"
   },
   "repository": {
     "type": "git",
@@ -22,9 +24,11 @@
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
     "path": "^0.12.7",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0"
   }
 }

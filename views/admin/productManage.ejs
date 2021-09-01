@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3"><%- include ('./nav.ejs') %></div>
+    <div class="col-9">
+      <div id="content">
+        <table id="select">
+          <tr>
+            <td class="manage">
+              <select
+                id="gender"
+                class="manage form-select multiple"
+                multiple="multiple"
+              >
+                <option value="남성">남성</option>
+                <option value="여성">여성</option>
+              </select>
+            </td>
+            <td class="manage">
+              <select
+                id="age"
+                class="manage form-select multiple"
+                multiple="multiple"
+              >
+                <option value="20~24세">20~24세</option>
+                <option value="25~29세">25~29세</option>
+                <option value="30~34세">30~34세</option>
+                <option value="35~39세">35~39세</option>
+                <option value="40~44세">40~44세</option>
+                <option value="45세 이상">45세 이상</option>
+              </select>
+            </td>
+            <td class="manage">
+              <select
+                id="price"
+                class="manage form-select multiple"
+                multiple="multiple"
+              >
+                <option value="1만 5천원">1만 5천원</option>
+                <option value="2만원">2만원</option>
+                <option value="2만 5천원">2만 5천원</option>
+                <option value="3만원">3만원</option>
+                <option value="3만 5천원">3만 5천원</option>
+                <option value="4만원">4만원</option>
+                <option value="4만 5천원">4만 5천원</option>
+                <option value="5만원">5만원</option>
+              </select>
+            </td>
+            <td class="manage">
+              <select
+                id="category"
+                class="manage form-select multiple"
+                multiple="multiple"
+              >
+                <option value="화장품">화장품</option>
+                <option value="식품">식품</option>
+                <option value="건강">건강</option>
+                <option value="리빙">리빙</option>
+                <option value="패션잡화">패션잡화</option>
+                <option value="디지털">디지털</option>
+              </select>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="margin-left: 5px; height: 40px"
+                onclick="filter()"
+              >
+                filter
+              </button>
+            </td>
+            <td>
+              <div style="margin-left: 30px" id="pagination"></div>
+            </td>
+          </tr>
+        </table>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">코드</th>
+              <th scope="col">상품명</th>
+              <th scope="col">상품유형</th>
+              <th scope="col">썸네일</th>
+              <th scope="col">상품소개</th>
+              <th scope="col">판매처</th>
+              <th scope="col">노출수</th>
+              <th scope="col">좋아요수</th>
+              <th scope="col">주문수</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="product_list"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/javascripts/admin/fillProductManage.js"></script>

@@ -3,18 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     "ProductImage",
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      image_url: { type: DataTypes.STRING, comment: "Image Url" },
+      imageUrl: { type: DataTypes.STRING, comment: "Image Url" },
     },
     {
       tableName: "ProductImage",
     }
   );
   ProductImage.associate = (models) => {
-    ProductImage.belongsTo(models.ProductImage, {
-      as: "Product",
-      foreignKey: "product_id",
-      targetKey: "id",
-    });
+    ProductImage.belongsTo(models.ProductImage, { foreignKey: "product_id" });
   };
   return ProductImage;
 };

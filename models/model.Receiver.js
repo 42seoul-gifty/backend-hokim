@@ -5,7 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       phone: { type: DataTypes.STRING, comment: "Phone Number" },
       name: { type: DataTypes.STRING, comment: "Receiver Name" },
-      shipment_status: { type: DataTypes.STRING, comment: "Shipment Status" },
+      postcode: { type: DataTypes.STRING, comment: "postcode" },
+      address: { type: DataTypes.STRING, comment: "address" },
+      detailAddress: { type: DataTypes.STRING, comment: "detail Address" },
+      shipmentStatus: { type: DataTypes.STRING, comment: "Shipment Status" },
     },
     {
       tableName: "Receiver",
@@ -13,29 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Receiver.associate = (models) => {
-    Receiver.belongsTo(models.Preference, {
-      as: "Preference",
-      foreignKey: "receiver_id",
-      targetKey: "id",
-    });
-
-    Receiver.belongsTo(models.Order, {
-      as: "Order",
-      foreignKey: "receiver_id",
-      targetKey: "id",
-    });
-
-    Receiver.belongsTo(models.Product, {
-      as: "Product",
-      foreignKey: "receiver_id",
-      targetKey: "id",
-    });
-
-    Receiver.belongsTo(models.Address, {
-      as: "Address",
-      foreignKey: "receiver_id",
-      targetKey: "id",
-    });
+    Receiver.hasMany(models.Like, { foreignKey: "receiver_id" });
+    Receiver.belongsTo(models.Preference, { foreignKey: "preference_id" });
+    Receiver.belongsTo(models.Order, { foreignKey: "order_id" });
+    Receiver.belongsTo(models.Product, { foreignKey: "product_id" });
   };
 
   return Receiver;
