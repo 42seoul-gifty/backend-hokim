@@ -1,5 +1,6 @@
 const e = require("express");
-const { Receiver } = require("../models");
+const { findReceiverLikeProduct, addImageUrl } = require("../lib/lib.Product");
+const { Receiver, Product, Order, LikeProduct } = require("../models");
 
 const getReceiver = async (req, res) => {
   try {
@@ -29,7 +30,50 @@ const patchReceiver = async (req, res) => {
   }
 };
 
+const getReceiversChoice = async (req, res) => {
+  try {
+    var receiver = await Receiver.findOne({
+      where: { id: req.params.receiver_id },
+    });
+    receiver = receiver.toJSON();
+    const product = await Product.findOne({
+      where: { id: receiver.product_id },
+    });
+    addImageUrl([product]);
+
+    const order = await Order.findOne({
+      where: { id: receiver.order_id },
+    });
+    res.status(200).json({
+      success: true,
+      data: {
+        giver_name: order.giver_name,
+        giver_phone: order.giver_phone,
+        product,
+      },
+    });
+  } catch (e) {
+    res.status(400).json({ success: true, error: e.message });
+  }
+};
+
+const getReceiversLikes = async (req, res) => {
+  try {
+    var product = await findReceiverLikeProduct(req.params.receiver_id);
+    res.status(200).json({
+      success: true,
+      data: {
+        product,
+      },
+    });
+  } catch (e) {
+    res.status(400).json({ success: true, error: e.message });
+  }
+};
+
 module.exports = {
   getReceiver,
   patchReceiver,
+  getReceiversChoice,
+  getReceiversLikes,
 };
