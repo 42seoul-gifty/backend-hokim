@@ -17,7 +17,7 @@ const checkPaymentValidation = async (req, res) => {
       },
     });
     const { access_token } = getToken.data.response; // 인증 토큰
-    console.log(access_token);
+
     imp_uid = "imp_987642018546";
     // imp_uid로 아임포트 서버에서 결제 정보 조회
     const getPaymentData = await axios({
@@ -26,7 +26,7 @@ const checkPaymentValidation = async (req, res) => {
       headers: { Authorization: access_token }, // 인증 토큰 Authorization header에 추가
     });
     const paymentData = getPaymentData.data.response; // 조회한 결제 정보
-    console.log(paymentData);
+
     const { amount, status } = paymentData;
     if (amount == req.query.price) {
       // 결제금액 일치. 결제 된 금액 === 결제 되어야 하는 금액

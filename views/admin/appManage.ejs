@@ -24,7 +24,6 @@
     $('input[type="checkbox"]').each(function (index, item) {
       if ($(item).prop("checked") == true) 
       {
-        console.log($(item).attr('new') + "?")
         const label  =  $(item).closest("li").find('label')
         if( $(label).hasClass("new"))
           $(item).closest("li").remove();

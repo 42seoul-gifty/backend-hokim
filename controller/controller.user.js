@@ -2,7 +2,6 @@ const { User } = require("../models");
 
 const getUser = async (req, res) => {
   try {
-    console.log(req.params.user_id);
     const user = await User.findOne({
       where: { id: req.params.user_id },
     });

@@ -1,6 +1,7 @@
 const { Gender } = require("../config/constant");
 const { getAges, getPrices, getGroups } = require("../lib/lib.Preference");
 const { Product } = require("../models");
+const { findAdminFilteredProduct } = require("../lib/lib.Product");
 
 const {
   PreferenceAge,
@@ -109,12 +110,13 @@ const getProductPage = async (req, res) => {
   });
 };
 
-const getProducts = async (req, res) => {
+const getAdminFilterdProduct = async (req, res) => {
   try {
-    var products = await Product.findAll({});
-    products = products.map(function (product) {
-      return product.toJSON();
-    });
+    const products = await findAdminFilteredProduct(
+      req.body.gender,
+      req.body.age,
+      req.body.price
+    );
     res.status(200).json({ success: true, products });
   } catch (e) {
     console.log(e);
@@ -131,5 +133,5 @@ module.exports = {
   getAllCategory,
   patchAllCategory,
   getProductPage,
-  getProducts,
+  getAdminFilterdProduct,
 };

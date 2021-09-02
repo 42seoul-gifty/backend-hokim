@@ -65,7 +65,7 @@ const decodeToken = async (req, res, next) => {
       await generateRefreshToken(req, res, verifyAccess);
     }
     req.user = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
-    console.log(req.user);
+
     next();
   } catch (err) {
     console.log(err);

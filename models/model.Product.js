@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Product.associate = (models) => {
-    Product.belongsTo(models.Preference, { foreignKey: "preference_id" });
     Product.hasMany(models.ProductImage, { foreignKey: "product_id" });
     Product.hasMany(models.Receiver, { foreignKey: "product_id" });
     Product.hasMany(models.LikeProduct, { foreignKey: "product_id" });
