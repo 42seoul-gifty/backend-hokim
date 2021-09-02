@@ -135,6 +135,7 @@ axios({ url: "/all", method: "get" })
     const data = res.data.data;
     createUneditableOptionTable("성별", "gender", data.gender);
     createOptionTable("나이", "age", data.age);
+    createOptionTable("카테고리", "category", data.category);
     createOptionTable("금액대", "price", data.price);
     createOptionTable("그룹", "group", data.group);
     addEditButtonEvent();

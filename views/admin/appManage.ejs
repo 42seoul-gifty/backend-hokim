@@ -46,6 +46,7 @@
     const age = [];
     const price = [];
     const group = [];
+    const category = [];
 
     
     $('label').each(function (index, item) {
@@ -66,10 +67,12 @@
       price.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
        else  if(item.className.includes('group'))
        group.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+       else  if(item.className.includes('category'))
+       category.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
   });
 
   axios({ url: "/admin/cateories", method: "patch", data:{
-    age,price,group
+    age,price,group,category
   } })
   .then((res) => {
    alert("변경되었습니다.");

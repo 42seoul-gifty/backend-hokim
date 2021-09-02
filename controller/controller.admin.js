@@ -1,5 +1,10 @@
 const { Gender } = require("../config/constant");
-const { getAges, getPrices, getGroups } = require("../lib/lib.Preference");
+const {
+  getAges,
+  getPrices,
+  getGroups,
+  getCategories,
+} = require("../lib/lib.Preference");
 const { User } = require("../models");
 const { findAdminFilteredProduct } = require("../lib/lib.Product");
 
@@ -7,7 +12,9 @@ const {
   PreferenceAge,
   PreferencePrice,
   PreferenceGroup,
+  Category,
 } = require("../models");
+const { getAdminUsers } = require("../lib/lib.User");
 
 const getAgeCategory = async (req, res) => {
   try {
@@ -40,7 +47,7 @@ const getPriceCategory = async (req, res) => {
 
 const getGroupCategory = async (req, res) => {
   try {
-    const data = await getGroups();
+    const data = await getCategories();
     res.status(200).json({ success: true, data });
   } catch (e) {
     console.log(e);
@@ -52,12 +59,14 @@ const getAllCategory = async (req, res) => {
   const age = await getAges();
   const price = await getPrices();
   const group = await getGroups();
+  const category = await getCategories();
 
   res.json({
     data: {
       age,
       price,
       group,
+      category,
       gender: Gender,
     },
   });
@@ -83,10 +92,12 @@ const patchAllCategory = async (req, res) => {
     const age = await getAges();
     const price = await getPrices();
     const group = await getGroups();
+    const category = await getCategories();
 
     await updateCategory(PreferenceAge, age, req.body.age);
     await updateCategory(PreferencePrice, price, req.body.price);
     await updateCategory(PreferenceGroup, group, req.body.group);
+    await updateCategory(Category, category, req.body.category);
 
     res.status(200).json({ success: true });
   } catch (e) {
@@ -95,46 +106,38 @@ const patchAllCategory = async (req, res) => {
   }
 };
 
-const getAppPage = async (req, res) => {
-  res.render("admin/appManage", {
-    layout: "layout/layout",
-    data: {
-      gender: Gender,
-    },
-  });
-};
-
-const getProductPage = async (req, res) => {
-  const age = await getAges();
-  const price = await getPrices();
-  const group = await getGroups();
-
-  res.render("admin/productManage", {
-    layout: "layout/layout",
-    age,
-    price,
-    group,
-    gender: Gender,
-  });
-};
-
-const getUserPage = async (req, res) => {
-  const user = await User.findAll({});
-
-  res.render("admin/userManage", {
-    layout: "layout/layout",
-    user,
-  });
-};
-
 const getAdminFilterdProduct = async (req, res) => {
   try {
+    console.log(req.body);
     const products = await findAdminFilteredProduct(
       req.body.gender,
       req.body.age,
-      req.body.price
+      req.body.price,
+      req.body.category
     );
     res.status(200).json({ success: true, products });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
+const getAdminFilterdUser = async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await getAdminUsers(req.query.order);
+    res.status(200).json({ success: true, user });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
+const removeUser = async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.destroy({ where: { id: req.params.user_id } });
+    res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -146,10 +149,9 @@ module.exports = {
   getAgeCategory,
   getPriceCategory,
   getPriceCategory,
-  getAppPage,
-  getUserPage,
   getAllCategory,
   patchAllCategory,
-  getProductPage,
   getAdminFilterdProduct,
+  getAdminFilterdUser,
+  removeUser,
 };

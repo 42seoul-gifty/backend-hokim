@@ -2,13 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert("Order", [
+    await queryInterface.bulkInsert("Orders", [
       {
         giver_name: "kim",
         giver_phone: "010-0000-0000",
         price: "12000",
         imp_uid: "order_20210821233",
-        user_id: "1",
+        user_id: "3",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
@@ -26,7 +26,7 @@ module.exports = {
         giver_phone: "010-0000-0002",
         price: "34000",
         imp_uid: "order_202108216789",
-        user_id: "3",
+        user_id: "1",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
@@ -36,6 +36,15 @@ module.exports = {
         price: "2100",
         imp_uid: "order_202108210974",
         user_id: "4",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
+        giver_name: "kim",
+        giver_phone: "010-0000-0000",
+        price: "41000",
+        imp_uid: "order_20210821238",
+        user_id: "3",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
