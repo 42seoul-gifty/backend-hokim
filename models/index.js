@@ -35,7 +35,6 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-console.log(`${process.env.SITE_DOMAIN}/kakao/callback`);
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

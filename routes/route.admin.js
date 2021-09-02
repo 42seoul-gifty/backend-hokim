@@ -5,7 +5,7 @@ const admin = require("../controller/controller.admin");
 router.get("/app", admin.getAppPage);
 
 router.get("/product/manage", admin.getProductPage);
-router.post("/product/filter", admin.getProducts);
+router.post("/product/filter", admin.getAdminFilterdProduct);
 
 router.patch("/cateories", admin.patchAllCategory);
 

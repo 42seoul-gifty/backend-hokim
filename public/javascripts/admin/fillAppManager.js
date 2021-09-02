@@ -79,7 +79,6 @@ function editButtonClick(e) {
     e.target.innerHTML = "확인";
   } else {
     if (input.value != "") {
-      console.log(input.value);
       const label = $(e.target).closest("li").find("label")[0];
       if (!$(label).attr("origin")) $(label).attr("origin", label.innerHTML);
       label.innerHTML = input.value;
@@ -133,7 +132,6 @@ function addEditButtonEvent() {
 
 axios({ url: "/all", method: "get" })
   .then((res) => {
-    console.log(res.data);
     const data = res.data.data;
     createUneditableOptionTable("성별", "gender", data.gender);
     createOptionTable("나이", "age", data.age);

@@ -19,7 +19,6 @@ const getOrders = async (req, res) => {
 
 const getOrderDetail = async (req, res) => {
   try {
-    console.log(req.params.user_id);
     const order = await Order.findOne({
       where: { id: req.params.order_id, user_id: req.params.user_id },
     });
@@ -66,7 +65,6 @@ const postOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    console.log(req.params.user_id);
     const order = await Order.destroy({
       where: { id: req.params.order_id, user_id: req.params.user_id },
     });

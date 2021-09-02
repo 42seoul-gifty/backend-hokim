@@ -75,11 +75,10 @@
           }),
         })
           .then((res) => {
-            console.log(res.data);
-
             $("#product_list").empty();
             var dataHtml = "";
             const products = res.data.products;
+            console.log(products);
             //<td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
             // <td scope="col"><p>${product.exposure_count}</p></td>
 
@@ -90,9 +89,9 @@
 			  <td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
 			  <td scope="col"><p>${product.description}</p></td>
 			  <td scope="col"><p>${product.brand}</p></td>
-			  <td scope="col"><p>${product.exposure_count}</p></td>
-			  <td scope="col"><p>${product.love_count}</p></td>
-			  <td scope="col"><p>${product.order_count}</p></td>
+			  <td scope="col"><p>${product.exposes}</p></td>
+			  <td scope="col"><p>${product.likes}</p></td>
+			  <td scope="col"><p>${product.orders}</p></td>
 			  <td scope="col"><button type="button" class="btn btn-light" onclick="deleteProduct('${product.id}')">삭제</button></td></tr>`;
             });
             $("#product_list").append(dataHtml);
@@ -117,7 +116,6 @@ function deleteProduct(product_code) {
   })
     .then((response) => response.json())
     .then((res) => {
-      console.log(res.data);
       if (res.data === "delete") {
         alert("제품이 삭제됐습니다");
         window.location.reload();

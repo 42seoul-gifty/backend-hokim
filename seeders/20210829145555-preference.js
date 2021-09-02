@@ -4,14 +4,14 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert("Preference", [
       {
-        gender: "0",
+        gender_id: "0",
         age_id: "1",
         price_id: "2",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        gender: "0",
+        gender_id: "0",
         age_id: "2",
         group_id: "1",
         price_id: "1",
@@ -19,14 +19,14 @@ module.exports = {
         updatedAt: new Date(Date.now()),
       },
       {
-        gender: "0",
+        gender_id: "0",
         age_id: "3",
         price_id: "1",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        gender: "0",
+        gender_id: "0",
         age_id: "4",
         group_id: "3",
         price_id: "4",
