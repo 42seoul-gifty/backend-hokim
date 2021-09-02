@@ -17,8 +17,6 @@ router.get("/shipping", (req, res) => {
   res.render("../views/admin/shippingManage.ejs", {});
 });
 
-router.get("/user", (req, res) => {
-  res.render("../views/admin/userManage.ejs", {});
-});
+router.get("/user", admin.getUserPage);
 
 module.exports = router;

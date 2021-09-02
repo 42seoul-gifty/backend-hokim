@@ -1,6 +1,6 @@
 const { Gender } = require("../config/constant");
 const { getAges, getPrices, getGroups } = require("../lib/lib.Preference");
-const { Product } = require("../models");
+const { User } = require("../models");
 const { findAdminFilteredProduct } = require("../lib/lib.Product");
 
 const {
@@ -105,8 +105,25 @@ const getAppPage = async (req, res) => {
 };
 
 const getProductPage = async (req, res) => {
+  const age = await getAges();
+  const price = await getPrices();
+  const group = await getGroups();
+
   res.render("admin/productManage", {
     layout: "layout/layout",
+    age,
+    price,
+    group,
+    gender: Gender,
+  });
+};
+
+const getUserPage = async (req, res) => {
+  const user = await User.findAll({});
+
+  res.render("admin/userManage", {
+    layout: "layout/layout",
+    user,
   });
 };
 
@@ -130,6 +147,7 @@ module.exports = {
   getPriceCategory,
   getPriceCategory,
   getAppPage,
+  getUserPage,
   getAllCategory,
   patchAllCategory,
   getProductPage,
