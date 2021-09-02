@@ -2,25 +2,14 @@ const axios = require("axios");
 var querystring = require("querystring");
 const { kakao_config, domain, naver_config } = require("../config/config");
 
-const { User } = require("../models");
 const { findOrCreate } = require("../lib/lib.User");
 
-const redirectKakao = async (req, res) => {
-  console.log;
-  res.redirect(
-    `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_config.rest_key}&redirect_uri=${process.env.SITE_DOMAIN}/login/kakao/callback&response_type=code`
-  );
-};
-
-const redirectNaver = async (req, res) => {
-  res.redirect(
-    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_config.client_id}&redirect_uri=${process.env.SITE_DOMAIN}/login/naver/callback`
-  );
-};
+const { generateToken } = require("../middleware/jwt-auth");
 
 const getKakaoToken = async (req, res) => {
   try {
     //코드로 토큰 받아오기
+    console.log(req.query.code);
     const result = await axios({
       method: "post",
       url: "https://kauth.kakao.com/oauth/token",
@@ -30,7 +19,7 @@ const getKakaoToken = async (req, res) => {
       data: querystring.stringify({
         grant_type: "authorization_code",
         client_id: `${kakao_config.rest_key}`,
-        redirect_uri: `${domain}/login/kakao/callback`,
+        redirect_uri: `${domain}/login/kakao`,
         code: req.query.code,
         client_secret: `${kakao_config.secret}`,
       }),
@@ -52,20 +41,22 @@ const getKakaoToken = async (req, res) => {
       "kakao",
       result.data.access_token
     );
-    //console.log(user.get({ plain: true }));
+
+    //토큰 생성
+    await generateToken(req, res, user);
+    res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);
-    res.render("result", { success: "로그인 실패" });
+    res.status(400).json({ success: false, error: e.message });
     return;
   }
-  res.render("result", { success: "로그인 성공" });
 };
 
 const getNaverToken = async (req, res) => {
   try {
     code = req.query.code;
     state = req.query.state;
-    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${process.env.SITE_DOMAIN}/login/naver/callback&code=${code}&state=${state}`;
+    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${process.env.SITE_DOMAIN}/login/naver&code=${code}&state=${state}`;
 
     const result = await axios({
       method: "get",
@@ -84,7 +75,6 @@ const getNaverToken = async (req, res) => {
         Authorization: `${result.data.token_type} ${result.data.access_token}`,
       },
     });
-    console.log(naverUser.data.response.email);
     const user = await findOrCreate(
       naverUser.data.response.email,
       naverUser.data.response.nickname,
@@ -92,54 +82,30 @@ const getNaverToken = async (req, res) => {
       result.data.access_token
     );
 
-    console.log(user);
+    //토큰 생성
+    await generateToken(req, res, user);
+    res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);
-    res.render("result", { success: "로그인 실패" });
+    res.status(400).json({ success: false, error: e.message });
     return;
   }
-
-  res.render("result", { success: "로그인 성공" });
 };
 
-const kakaoLogout = async (req, res) => {
+const logout = async (req, res) => {
   try {
-    //카카오 로그아웃
-    await axios({
-      method: "post",
-      url: "https://kapi.kakao.com/v1/user/logout",
-      headers: {
-        Authorization: `Bearer ${req.body.access_token}`,
-      },
-    });
+    res.cookie("accessToken", "");
+    res.cookie("refreshToken", "");
+    res.json({ success: true });
   } catch (e) {
     console.log(e);
-    res.json({ success: false });
+    res.status(400).json({ success: false });
     return;
   }
-  res.json({ success: true });
-};
-
-const naverLogout = async (req, res) => {
-  try {
-    //네이버 로그아웃
-    await axios({
-      method: "post",
-      url: `https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&access_token=${req.body.access_token}&service_provider=NAVER`,
-    });
-  } catch (e) {
-    console.log(e);
-    res.json({ success: false });
-    return;
-  }
-  res.json({ success: true });
 };
 
 module.exports = {
-  redirectKakao,
   getKakaoToken,
-  kakaoLogout,
-  redirectNaver,
+  logout,
   getNaverToken,
-  naverLogout,
 };
