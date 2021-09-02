@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       phone: { type: DataTypes.STRING, comment: "Phone Number" },
+      auth: { type: DataTypes.STRING, comment: "Phone Number" },
       nickname: { type: DataTypes.STRING, comment: "User Name" },
       login_type: { type: DataTypes.STRING, comment: "Login Type" },
       token: { type: DataTypes.STRING, comment: "Login Token" },

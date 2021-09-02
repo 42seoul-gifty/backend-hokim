@@ -2,11 +2,13 @@ const express = require("express");
 const db = require("./models");
 const layout = require("express-ejs-layouts");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 class App {
   constructor() {
     this.app = express();
     this.setVieEngine();
     this.app.use(express.json());
+    this.app.use(cookieParser());
     this.app.use(express.static("./public"));
     this.app.use(require("./routes"));
     this.dbConnection();
