@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "Product",
     {
       id: { type: DataTypes.STRING, primaryKey: true },
-      category: { type: DataTypes.STRING, comment: "category" },
       brand: { type: DataTypes.STRING, comment: "brand" },
       name: { type: DataTypes.STRING, comment: "name" },
       description: { type: DataTypes.STRING, comment: "description" },
@@ -23,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Receiver, { foreignKey: "product_id" });
     Product.hasMany(models.LikeProduct, { foreignKey: "product_id" });
     Product.hasMany(models.ProductPreference, { foreignKey: "product_id" });
+    Product.belongsTo(models.Category, {
+      foreignKey: "category_id",
+    });
   };
 
   return Product;

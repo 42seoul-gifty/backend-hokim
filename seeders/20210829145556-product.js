@@ -7,7 +7,7 @@ module.exports = {
       [
         {
           id: "204",
-          category: "리빙",
+          category_id: "4",
           brand: "더하다하우스",
           name: "1-2인용 미니 돌솥 뚝배기",
           description: "(원목받침대 미포함) 미니 돌솥",
@@ -24,7 +24,7 @@ module.exports = {
 
         {
           id: "203",
-          category: "패션잡화",
+          category_id: "5",
           brand: "찌못미샵",
           name: "어깨깡패 소두곰인형",
           description: "소듕한 애착인형",
@@ -41,7 +41,7 @@ module.exports = {
 
         {
           id: "102",
-          category: "리빙",
+          category_id: "4",
           brand: "에어러블",
           name: "에어러블 플러스 선풍기",
           description: "선풍적인 인기의 선풍기",
@@ -58,7 +58,7 @@ module.exports = {
 
         {
           id: "101",
-          category: "건강",
+          category_id: "3",
           brand: "종근당",
           name: "종근당 락토핏 유산균 선물세트",
           description: "편리하게 장건강 챙겨요",

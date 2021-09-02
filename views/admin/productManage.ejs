@@ -44,20 +44,17 @@
                 class="manage form-select multiple"
                 multiple="multiple"
               >
-                <option value="화장품">화장품</option>
-                <option value="식품">식품</option>
-                <option value="건강">건강</option>
-                <option value="리빙">리빙</option>
-                <option value="패션잡화">패션잡화</option>
-                <option value="디지털">디지털</option>
+                <% category.forEach((el)=>{ %>
+                <option value="<%=el.id%>"><%=el.value%></option>
+                <% }) %>
               </select>
             </td>
             <td>
               <button
+                id="btn-filter"
                 type="button"
                 class="btn btn-primary"
                 style="margin-left: 5px; height: 40px"
-                onclick="filter()"
               >
                 filter
               </button>

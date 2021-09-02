@@ -13,6 +13,7 @@ module.exports = {
           detailAddress: "101호",
           shipmentStatus: "",
           preference_id: "1",
+          product_id: "101",
           order_id: "4",
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),

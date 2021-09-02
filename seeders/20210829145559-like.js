@@ -1,16 +1,55 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+    await queryInterface.bulkInsert(
+      "LikeProduct",
+      [
+        {
+          likes: true,
+          receiver_id: 1,
+          product_id: 101,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          likes: true,
+          receiver_id: 1,
+          product_id: 203,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          likes: false,
+          receiver_id: 1,
+          product_id: 102,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          likes: true,
+          receiver_id: 2,
+          product_id: 204,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          likes: false,
+          receiver_id: 2,
+          product_id: 101,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          likes: true,
+          receiver_id: 2,
+          product_id: 102,
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+      ],
+      {}
+    );
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -20,5 +59,5 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  }
+  },
 };
