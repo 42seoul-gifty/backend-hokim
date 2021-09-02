@@ -11,8 +11,9 @@
                 class="manage form-select multiple"
                 multiple="multiple"
               >
-                <option value="남성">남성</option>
-                <option value="여성">여성</option>
+                <% gender.forEach((el)=>{ %>
+                <option value="<%=el.id%>"><%=el.value%></option>
+                <% }) %>
               </select>
             </td>
             <td class="manage">
@@ -21,12 +22,9 @@
                 class="manage form-select multiple"
                 multiple="multiple"
               >
-                <option value="20~24세">20~24세</option>
-                <option value="25~29세">25~29세</option>
-                <option value="30~34세">30~34세</option>
-                <option value="35~39세">35~39세</option>
-                <option value="40~44세">40~44세</option>
-                <option value="45세 이상">45세 이상</option>
+                <% age.forEach((el)=>{ %>
+                <option value="<%=el.id%>"><%=el.value%></option>
+                <% }) %>
               </select>
             </td>
             <td class="manage">
@@ -35,14 +33,9 @@
                 class="manage form-select multiple"
                 multiple="multiple"
               >
-                <option value="1만 5천원">1만 5천원</option>
-                <option value="2만원">2만원</option>
-                <option value="2만 5천원">2만 5천원</option>
-                <option value="3만원">3만원</option>
-                <option value="3만 5천원">3만 5천원</option>
-                <option value="4만원">4만원</option>
-                <option value="4만 5천원">4만 5천원</option>
-                <option value="5만원">5만원</option>
+                <% price.forEach((el)=>{ %>
+                <option value="<%=el.id%>"><%=el.value%></option>
+                <% }) %>
               </select>
             </td>
             <td class="manage">
