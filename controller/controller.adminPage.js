@@ -36,35 +36,39 @@ const getProductPage = async (req, res) => {
 };
 
 const getProductDetailPage = async (req, res) => {
-  const product = await findOneProduct(req.params.product_id);
-  const preference = await findProdcutPreference(req.params.product_id);
-  const ageCategory = await getAges();
-  var age = [];
-  var gender = [];
+  try {
+    const product = await findOneProduct(req.params.product_id);
+    const preference = await findProdcutPreference(req.params.product_id);
+    const ageCategory = await getAges();
+    var age = [];
+    var gender = [];
 
-  preference.forEach((elem) => {
-    for (var i = 0; i < ageCategory.length; i += 1) {
+    preference.forEach((elem) => {
+      for (var i = 0; i < ageCategory.length; i += 1) {
+        if (
+          ageCategory[i].id == elem.age_id &&
+          !age.includes(ageCategory[i].value)
+        )
+          age.push(ageCategory[i].value);
+      }
+
       if (
-        ageCategory[i].id == elem.age_id &&
-        !age.includes(ageCategory[i].value)
+        gender.length < Gender.length + 2 * (Gender.length - 1) &&
+        !gender.includes(Gender[elem.gender_id].value)
       )
-        age.push(ageCategory[i].value);
-    }
-
-    if (
-      gender.length < Gender.length + 2 * (Gender.length - 1) &&
-      !gender.includes(Gender[elem.gender_id].value)
-    )
-      gender.push(Gender[elem.gender_id].value);
-  });
-
-  res.render("admin/productDetail", {
-    layout: "layout/layout",
-    product: product[0],
-    age: age.sort().join(", "),
-    gender: gender.sort().join(", "),
-    price: preference[0].price,
-  });
+        gender.push(Gender[elem.gender_id].value);
+    });
+    res.render("admin/productDetail", {
+      layout: "layout/layout",
+      product: product[0],
+      age: age.sort().join(", "),
+      gender: gender.sort().join(", "),
+      price: preference[0].price,
+    });
+  } catch (e) {
+    res.status(400).json({ error: e });
+    return;
+  }
 };
 
 const getProductEditPage = async (req, res) => {
@@ -105,6 +109,21 @@ const getReceiverPage = async (req, res) => {
   });
 };
 
+const getProductRegisterPage = async (req, res) => {
+  const age = await getAges();
+  const price = await getPrices();
+  const group = await getGroups();
+  const category = await getCategories();
+  res.render("admin/productRegister", {
+    layout: "layout/layout",
+    age,
+    price,
+    group,
+    gender: Gender,
+    category,
+  });
+};
+
 module.exports = {
   getProductDetailPage,
   getAppPage,
@@ -112,4 +131,5 @@ module.exports = {
   getProductPage,
   getReceiverPage,
   getProductEditPage,
+  getProductRegisterPage,
 };

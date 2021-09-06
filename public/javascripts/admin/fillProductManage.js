@@ -85,8 +85,6 @@ function filter() {
           $("#product_list").empty();
           var dataHtml = "";
           const products = res.data.products;
-          //<td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
-          // <td scope="col"><p>${product.exposure_count}</p></td>
 
           $.each(products, function (index, product) {
             dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>

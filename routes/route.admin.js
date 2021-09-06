@@ -15,9 +15,8 @@ router.patch("/product/edit/:product_id", filter.patchProductEditPage);
 
 router.patch("/cateories", category.patchAllCategory);
 
-router.get("/product/register", (req, res) => {
-  res.render("../views/admin/productRegister.ejs", {});
-});
+router.get("/product/register", adminPage.getProductRegisterPage);
+router.post("/product/register", filter.pushProductRegister);
 
 router.get("/shipping", adminPage.getReceiverPage);
 router.post("/shipping/filter", filter.getAdminFilterdReceiver);
