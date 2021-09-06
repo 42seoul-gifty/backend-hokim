@@ -272,7 +272,7 @@
         .then((res) => {
           console.log($("#product_id").val());
           alert("제품이 등록되었습니다.");
-          location.href = `/admin/product/detail/${$("#product_id").val()}`;
+          location.href = `/admin/product/manage`;
         })
         .catch((err) => {
           alert(err.error);

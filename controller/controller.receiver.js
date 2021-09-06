@@ -71,9 +71,29 @@ const getReceiversLikes = async (req, res) => {
   }
 };
 
+const updateReceiverShipment = async (req, res) => {
+  try {
+    const receiver = [];
+    await req.body.changed.forEach(async (element) => {
+      receiver.push(
+        await Receiver.update(
+          { shipmentStatus: element.value },
+          { where: { id: element.id } }
+        )
+      );
+    });
+
+    res.status(200).json({ success: true, receiver });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   getReceiver,
   patchReceiver,
   getReceiversChoice,
   getReceiversLikes,
+  updateReceiverShipment,
 };
