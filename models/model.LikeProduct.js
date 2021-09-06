@@ -12,7 +12,10 @@ module.exports = (sequelize, DataTypes) => {
 
   LikeProduct.associate = (models) => {
     LikeProduct.belongsTo(models.Receiver, { foreignKey: "receiver_id" });
-    LikeProduct.belongsTo(models.Product, { foreignKey: "product_id" });
+    LikeProduct.belongsTo(models.Product, {
+      foreignKey: "product_id",
+      onDelete: "CASCADE",
+    });
   };
 
   return LikeProduct;

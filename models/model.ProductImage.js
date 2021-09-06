@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ProductImage.associate = (models) => {
-    ProductImage.belongsTo(models.ProductImage, { foreignKey: "product_id" });
+    ProductImage.belongsTo(models.ProductImage, {
+      foreignKey: "product_id",
+      onDelete: "CASCADE",
+    });
   };
   return ProductImage;
 };
