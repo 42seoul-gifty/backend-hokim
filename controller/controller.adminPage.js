@@ -7,6 +7,7 @@ const {
 } = require("../lib/lib.Preference");
 
 const { getAdminUsers } = require("../lib/lib.User");
+const { findFilteredReceiver } = require("../lib/lib.Receiver");
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
@@ -42,8 +43,14 @@ const getUserPage = async (req, res) => {
   });
 };
 
+const getReceiverPage = async (req, res) => {
+  const receiver = await findFilteredReceiver();
+  res.render("admin/shippingManage", { layout: "layout/layout", receiver });
+};
+
 module.exports = {
   getAppPage,
   getUserPage,
   getProductPage,
+  getReceiverPage,
 };

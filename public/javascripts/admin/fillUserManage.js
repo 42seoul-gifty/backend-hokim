@@ -34,7 +34,6 @@ function userSort(value) {
           const data = res.data.user;
 
           $("#user_list").empty();
-          console.log(data);
           var dataHtml = "";
           $.each(data, function (index, user) {
             dataHtml += `<tr> <td scope="col"><p>${user.id}</p></td>
@@ -69,7 +68,6 @@ function userSort(value) {
 }
 
 function deleteUser(elem) {
-  console.log(elem.id);
   if (!confirm("정말 탈퇴시키시겠습니까?")) return;
   $(elem).closest("tr").remove();
   axios({

@@ -67,10 +67,6 @@ function filter() {
           return this.value;
         })
         .get();
-      console.log(genders);
-      console.log(ages);
-      console.log(prices);
-      console.log(categories);
 
       axios({
         url: "/admin/product/filter",
@@ -89,7 +85,6 @@ function filter() {
           $("#product_list").empty();
           var dataHtml = "";
           const products = res.data.products;
-          console.log(products);
           //<td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
           // <td scope="col"><p>${product.exposure_count}</p></td>
 
