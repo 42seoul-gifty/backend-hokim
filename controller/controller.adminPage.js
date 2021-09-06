@@ -16,6 +16,7 @@ const {
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
     layout: "layout/layout",
+    csrfToken: req.csrfToken(),
     data: {
       gender: Gender,
     },
@@ -34,6 +35,7 @@ const getProductPage = async (req, res) => {
     price,
     group,
     category,
+    csrfToken: req.csrfToken(),
     gender: Gender,
   });
 };
@@ -64,6 +66,7 @@ const getProductDetailPage = async (req, res) => {
     res.render("admin/productDetail", {
       layout: "layout/layout",
       product: product[0],
+      csrfToken: req.csrfToken(),
       age: age.sort().join(", "),
       gender: gender.sort().join(", "),
       price: preference[0].price,
@@ -89,6 +92,7 @@ const getProductEditPage = async (req, res) => {
     preference,
     age,
     price,
+    csrfToken: req.csrfToken(),
     group,
     gender: Gender,
     category,
@@ -100,6 +104,7 @@ const getUserPage = async (req, res) => {
 
   res.render("admin/userManage", {
     layout: "layout/layout",
+    csrfToken: req.csrfToken(),
     user,
   });
 };
@@ -108,6 +113,7 @@ const getReceiverPage = async (req, res) => {
   const receiver = await findFilteredReceiver();
   res.render("admin/shippingManage", {
     layout: "layout/layout",
+    csrfToken: req.csrfToken(),
     receiver,
   });
 };
@@ -122,6 +128,7 @@ const getProductRegisterPage = async (req, res) => {
     age,
     price,
     group,
+    csrfToken: req.csrfToken(),
     gender: Gender,
     category,
   });

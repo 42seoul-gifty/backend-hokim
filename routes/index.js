@@ -6,6 +6,7 @@ const admin = require("./route.admin");
 const product = require("./route.product");
 const user = require("./route.user");
 const receiver = require("./route.receiver");
+const csrfProtection = require("../middleware/csrfProtection");
 
 const getCategories = require("../controller/controller.adminCategory");
 
@@ -22,7 +23,7 @@ router.get("/all", getCategories.getAllCategory);
 router.use("/users", user);
 router.use("/login", auth);
 router.use("/payment", payment);
-router.use("/admin", admin);
+router.use("/admin", csrfProtection, admin);
 router.use("/products", product);
 router.use("/receiver", receiver);
 
