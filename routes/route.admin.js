@@ -18,6 +18,8 @@ router.patch("/cateories", category.patchAllCategory);
 router.get("/product/register", adminPage.getProductRegisterPage);
 router.post("/product/register", filter.pushProductRegister);
 
+router.delete("/product", filter.deleteProduct);
+
 router.get("/shipping", adminPage.getReceiverPage);
 router.post("/shipping/filter", filter.getAdminFilterdReceiver);
 router.patch("/shipping", filter.updateShipping);

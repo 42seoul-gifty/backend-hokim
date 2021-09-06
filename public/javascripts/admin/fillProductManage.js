@@ -88,17 +88,27 @@ function filter() {
 
           $.each(products, function (index, product) {
             dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>
-      <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${product.id}','상품수정','width=900,height=1000,left=500,top=50')">${product.name}</p></td>
-      <td scope="col"><p>${product.category}</p></td>
-      <td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
-      <td scope="col"><p>${product.description}</p></td>
-      <td scope="col"><p>${product.brand}</p></td>
-      <td scope="col"><p>${product.exposes}</p></td>
-      <td scope="col"><p>${product.likes}</p></td>
-      <td scope="col"><p>${product.orders}</p></td>
-      <td scope="col"><button type="button" class="btn btn-light" onclick="deleteProduct('${product.id}')">삭제</button></td></tr>`;
+            <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${product.id}','상품수정','width=900,height=1000,left=500,top=50')">${product.name}</p></td>
+            <td scope="col"><p>${product.category}</p></td>
+            <td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
+            <td scope="col"><p>${product.description}</p></td>
+            <td scope="col"><p>${product.brand}</p></td>
+            <td scope="col"><p>${product.exposes}</p></td>
+            <td scope="col"><p>${product.likes}</p></td>
+            <td scope="col"><p>${product.orders}</p></td>
+            <td scope="col"><button type="button" class="btn btn-light" id='${product.id}' >삭제</button></td></tr>`;
           });
           $("#product_list").append(dataHtml);
+
+          const buttons = document.getElementsByClassName("btn-light");
+          Array.from(buttons).forEach((elem) => {
+            elem.addEventListener("click", (e) => {
+              if (confirm("정말 삭제하시겠습니까?")) {
+                deleteProduct(e.target.id);
+                $(e.target).closest("tr").remove();
+              }
+            });
+          });
         })
         .catch((err) => {
           console.log(err.error);
@@ -107,22 +117,20 @@ function filter() {
   });
 }
 
-function deleteProduct(product_code) {
-  fetch("/admin/product", {
+function deleteProduct(id) {
+  axios({
+    url: "/admin/product",
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      product_code: product_code,
+    data: JSON.stringify({
+      product_id: id,
     }),
   })
-    .then((response) => response.json())
     .then((res) => {
-      if (res.data === "delete") {
-        alert("제품이 삭제됐습니다");
-        window.location.reload();
-      }
+      alert("제품이 삭제되었습니다");
+      window.location.reload();
     })
     .catch((err) => {
       alert(err.error);

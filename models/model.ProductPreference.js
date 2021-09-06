@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     ProductPreference.belongsTo(models.Preference, {
       foreignKey: "preference_id",
     });
-    ProductPreference.belongsTo(models.Product, { foreignKey: "product_id" });
+    ProductPreference.belongsTo(models.Product, {
+      foreignKey: "product_id",
+      onDelete: "CASCADE",
+    });
   };
 
   return ProductPreference;
