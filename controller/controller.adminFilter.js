@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Receiver } = require("../models");
 const { findAdminFilteredProduct } = require("../lib/lib.Product");
 
 const { getAdminUsers } = require("../lib/lib.User");
@@ -33,7 +33,6 @@ const getAdminFilterdUser = async (req, res) => {
 const getAdminFilterdReceiver = async (req, res) => {
   try {
     const receiver = await findFilteredReceiver(req.body.start, req.body.end);
-
     res.status(200).json({ success: true, receiver });
   } catch (e) {
     console.log(e);
@@ -43,9 +42,27 @@ const getAdminFilterdReceiver = async (req, res) => {
 
 const removeUser = async (req, res) => {
   try {
-    console.log(req.body);
     const user = await User.destroy({ where: { id: req.params.user_id } });
     res.status(200).json({ success: true });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
+const updateShipping = async (req, res) => {
+  try {
+    const receiver = [];
+    await req.body.changed.forEach(async (element) => {
+      receiver.push(
+        await Receiver.update(
+          { shipmentStatus: element.value },
+          { where: { id: element.id } }
+        )
+      );
+    });
+
+    res.status(200).json({ success: true, receiver });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -56,5 +73,6 @@ module.exports = {
   getAdminFilterdProduct,
   getAdminFilterdUser,
   getAdminFilterdReceiver,
+  updateShipping,
   removeUser,
 };

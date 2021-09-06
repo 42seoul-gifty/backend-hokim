@@ -17,6 +17,7 @@ router.get("/product/register", (req, res) => {
 
 router.get("/shipping", adminPage.getReceiverPage);
 router.post("/shipping/filter", filter.getAdminFilterdReceiver);
+router.patch("/shipping", filter.updateShipping);
 
 router.get("/user", adminPage.getUserPage);
 router.post("/user/filter", filter.getAdminFilterdUser);

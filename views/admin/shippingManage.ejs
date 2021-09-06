@@ -54,9 +54,45 @@
           </thead>
           <tbody id="order_list"></tbody>
         </table>
+
+        <div id="button-group" style="text-align: center">
+          <button class="btn btn-primary" onclick="saveOption()">
+            변경사항 저장
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  function saveOption() {
+    const changed = [];
+
+    $("select").each(function (index, item) {
+      if (item.className.includes("changed"))
+        changed.push({
+          id: item.id,
+          value: item.value?.trim(),
+        });
+    });
+
+    console.log(changed);
+
+    axios({
+      url: "/admin/shipping",
+      method: "patch",
+      data: {
+        changed,
+      },
+    })
+      .then((res) => {
+        alert("변경되었습니다.");
+        window.location = "/admin/shipping";
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+</script>
 <script type="module" src="/javascripts/admin/fillShippingManage.js"></script>

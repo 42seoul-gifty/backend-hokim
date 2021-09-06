@@ -41,7 +41,9 @@ function receiverSort(start, end) {
             <td scope="col">${user.detailAddress}</td>
             <td scope="col">${user.product ? user.product : "-"}</td>
             <td scope="col">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" aria-label="Default select example" id="${
+                user.id
+              }">
                 <option value="배송전" ${
                   user.shipmentStatus == "배송전" ? "selected" : ""
                 } >배송전</option>
@@ -59,10 +61,21 @@ function receiverSort(start, end) {
           </tr>`;
           });
           $("#order_list").append(dataHtml);
+
+          $(".form-select").each((index, elem) => {
+            $(elem).change(() => {
+              console.log(elem);
+              selectChange(elem);
+            });
+          });
         })
         .catch((err) => {
           console.log(err);
         });
     },
   });
+
+  const selectChange = (target) => {
+    if (!$(target).hasClass("changed")) $(target).addClass("changed");
+  };
 }
