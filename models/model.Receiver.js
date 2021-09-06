@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
 
   Receiver.associate = (models) => {
     Receiver.hasMany(models.LikeProduct, { foreignKey: "receiver_id" });
-    Receiver.belongsTo(models.Preference, { foreignKey: "preference_id" });
     Receiver.belongsTo(models.Order, { foreignKey: "order_id" });
     Receiver.belongsTo(models.Product, { foreignKey: "product_id" });
   };
