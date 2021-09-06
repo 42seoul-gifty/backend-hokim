@@ -9,6 +9,10 @@ router.get("/app", adminPage.getAppPage);
 router.get("/product/manage", adminPage.getProductPage);
 router.post("/product/filter", filter.getAdminFilterdProduct);
 
+router.get("/product/detail/:product_id", adminPage.getProductDetailPage);
+router.get("/product/edit/:product_id", adminPage.getProductEditPage);
+router.patch("/product/edit/:product_id", filter.patchProductEditPage);
+
 router.patch("/cateories", category.patchAllCategory);
 
 router.get("/product/register", (req, res) => {

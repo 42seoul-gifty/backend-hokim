@@ -64,7 +64,6 @@ function receiverSort(start, end) {
 
           $(".form-select").each((index, elem) => {
             $(elem).change(() => {
-              console.log(elem);
               selectChange(elem);
             });
           });

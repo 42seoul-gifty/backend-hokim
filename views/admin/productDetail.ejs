@@ -22,74 +22,43 @@
             <div id="content">
                 <div style="margin: 3% auto; font-size: 20px; text-align: center;">상품수정</div>
                 <table class="table table-hover">
-                    <tr><th>상품코드</th><td><%= result[0].product_code %></td></tr>
-                    <tr><th>카테고리</th><td><%= result[0].category_id %></td></tr>
-                    <tr><th>브랜드</th><td><%= result[0].brand %></td></tr>
-                    <tr><th>썸네일</th><td><img src=<%= result[0].thumbnail %> style="width:100px; height: 100px;"/></td></tr>
+                    <tr><th>상품코드</th><td><%= product.id %></td></tr>
+                    <tr><th>카테고리</th><td><%= product.category %></td></tr>
+                    <tr><th>브랜드</th><td><%= product.brand %></td></tr>
+                    <tr><th>썸네일</th><td><img src=<%= product.thumbnail %> style="width:100px; height: 100px;"/></td></tr>
                     <tr><th>이미지</th><td>
-                        <% let images = [] 
-                        result.forEach((el)=>{ 
-                              if (!images.includes(el.image_link)) {
-                                images.push(el.image_link);
-                            } 
-                          })
-                            images.forEach((image)=>{ %>
+                        <% 
+                          product.image_url.forEach((image)=>{ %>
                               <img src=<%= image %> style="width:100px; height: 100px;"/>
                               <% })
                            %>  
                         </td> 
-                    <tr><th>상품명</th><td><p onclick="window.open('<%= result[0].link %>')"><%= result[0].product_name %></p></td></tr>
-                    <tr><th>상품소개</th><td><%= result[0].title %></td></tr>
+                    <tr><th>상품명</th><td><p onclick="window.open('<%= product.link %>')"><%= product.name %></p></td></tr>
+                    <tr><th>상품소개</th><td><%= product.description %></td></tr>
                     <tr><th>상품정보제공고시</th><td>
-                      <% if (result[0].sub_title!==null) { 
-                        result[0].sub_title.split('<br>').forEach((el)=>{  %>
+                      <% if (product.detail!==null) { 
+                        product.detail.split('<br>').forEach((el)=>{  %>
                           <%= el %><br>
                           <%  })
                        }%> 
                     </td></tr>
-                    <tr><th>소비자가격</th><td><%= result[0].retail_price %></td></tr>
-                    <tr><th>마진율</th><td><%= result[0].fee_rate %></td></tr>
-                    <tr><th>노출수</th><td><%= result[0].exposure_count %></td></tr>
-                    <tr><th>좋아요수</th><td><%= result[0].love_count %></td></tr>
-                    <tr><th>주문수</th><td><%= result[0].order_count %></td></tr>
+                    <tr><th>소비자가격</th><td><%= product.retail_price %></td></tr>
+                    <tr><th>마진율</th><td><%= product.fee_rate %></td></tr>
+                    <tr><th>노출수</th><td><%= product.exposes %></td></tr>
+                    <tr><th>좋아요수</th><td><%= product.likes %></td></tr>
+                    <tr><th>주문수</th><td><%= product.orders %></td></tr>
                     <tr><th>성별</th><td>
-                      <% let genders = [] 
-                        result.forEach((el)=>{ 
-                              if (!genders.includes(el.gender)) {
-                                genders.push(el.gender);
-                            } 
-                          })
-                          genders.forEach((gender)=>{ %>
                               <%= gender %> 
-                              <% })
-                           %> 
                     </td></tr>
                       <tr><th>연령대</th><td>  
-                        <% let ages = [] 
-                        result.forEach((el)=>{ 
-                              if (!ages.includes(el.age)) {
-                                ages.push(el.age);
-                            } 
-                          })
-                          ages.forEach((age)=>{ %>
-                              <%= age %> 
-                              <% })
-                           %>
+                       
+                              <%=age %> 
                       </td></tr>
                       <tr><th>금액대</th><td>
-                        <% let prices = [] 
-                        result.forEach((el)=>{ 
-                              if (!prices.includes(el.price)) {
-                                prices.push(el.price);
-                            } 
-                          })
-                          prices.forEach((price)=>{ %>
-                              <%= price %> 
-                              <% })
-                           %>
+                              <%=price %> 
                       </td></tr>
                     </table>      
-                    <button style="margin: 5% 40%;" type="button" class="btn btn-primary" onclick="location.href='https://gifty4u.com/admin/product/edit?product_code=<%= result[0].product_code %>';">수정하기</button>
+                    <button style="margin: 5% 40%;" type="button" class="btn btn-primary" onclick="location.href='/admin/product/edit/<%= product.id %>';">수정하기</button>
             </div>
           </div>
   <script>

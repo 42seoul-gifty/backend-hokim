@@ -90,7 +90,7 @@ function filter() {
 
           $.each(products, function (index, product) {
             dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>
-      <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail?product_code=${product.id}','상품수정','width=900,height=1000,left=500,top=50')">${product.name}</p></td>
+      <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${product.id}','상품수정','width=900,height=1000,left=500,top=50')">${product.name}</p></td>
       <td scope="col"><p>${product.category}</p></td>
       <td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
       <td scope="col"><p>${product.description}</p></td>

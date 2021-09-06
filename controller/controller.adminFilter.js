@@ -1,12 +1,21 @@
-const { User, Receiver } = require("../models");
-const { findAdminFilteredProduct } = require("../lib/lib.Product");
+const {
+  User,
+  Receiver,
+  Product,
+  ProductPreference,
+  ProductImage,
+} = require("../models");
+const {
+  findAdminFilteredProduct,
+  findProdcutPreference,
+} = require("../lib/lib.Product");
 
 const { getAdminUsers } = require("../lib/lib.User");
 const { findFilteredReceiver } = require("../lib/lib.Receiver");
+const { findOrCreate } = require("../lib/lib.Preference");
 
 const getAdminFilterdProduct = async (req, res) => {
   try {
-    console.log(req.body);
     const products = await findAdminFilteredProduct(
       req.body.gender,
       req.body.age,
@@ -69,10 +78,75 @@ const updateShipping = async (req, res) => {
   }
 };
 
+const cartesian = (a, b, c) => {
+  const result = [];
+  a.forEach((a_elem) => {
+    b.forEach((b_elem) => {
+      result.push({ gender_id: a_elem, age_id: b_elem, price_id: c });
+    });
+  });
+  return result;
+};
+
+const patchProductEditPage = async (req, res) => {
+  //id: image:  gender: age: price
+  //:category: name: link:thumbnail:brand:retail_price: fee_rate:  description: detail
+
+  const preferences = cartesian(req.body.gender, req.body.age, req.body.price);
+
+  const preferencesBulk = [];
+
+  await Promise.all(
+    preferences.map(async (elem) => {
+      const pref = await findOrCreate(
+        elem.gender_id,
+        elem.age_id,
+        null,
+        elem.price_id
+      );
+      preferencesBulk.push({ preference_id: pref.id, product_id: req.body.id });
+    })
+  );
+  await ProductPreference.destroy({ where: { product_id: req.body.id } });
+  await ProductPreference.bulkCreate(preferencesBulk);
+
+  await Product.update(
+    {
+      category_id: req.body.category,
+      price: req.body.retail_price,
+      name: req.body.name,
+      link: req.body.link,
+      thumbnail: req.body.thumbnail,
+      brand: req.body.brand,
+      fee_rate: req.body.fee_rate,
+      description: req.body.description,
+      detail: req.body.detail,
+    },
+    { where: { id: req.body.id } }
+  );
+
+  const image_url = [];
+  req.body.image.forEach((elelm) => {
+    image_url.push({ product_id: req.body.id, imageUrl: elelm });
+  });
+  await ProductImage.destroy({ where: { product_id: req.body.id } });
+  await ProductImage.bulkCreate(image_url);
+
+  try {
+    // console.log(req.body);
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   getAdminFilterdProduct,
   getAdminFilterdUser,
   getAdminFilterdReceiver,
   updateShipping,
   removeUser,
+
+  patchProductEditPage,
 };

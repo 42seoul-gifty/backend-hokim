@@ -8,6 +8,7 @@ const {
 
 const { getAdminUsers } = require("../lib/lib.User");
 const { findFilteredReceiver } = require("../lib/lib.Receiver");
+const { findOneProduct, findProdcutPreference } = require("../lib/lib.Product");
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
@@ -34,6 +35,59 @@ const getProductPage = async (req, res) => {
   });
 };
 
+const getProductDetailPage = async (req, res) => {
+  const product = await findOneProduct(req.params.product_id);
+  const preference = await findProdcutPreference(req.params.product_id);
+  const ageCategory = await getAges();
+  var age = [];
+  var gender = [];
+
+  preference.forEach((elem) => {
+    for (var i = 0; i < ageCategory.length; i += 1) {
+      if (
+        ageCategory[i].id == elem.age_id &&
+        !age.includes(ageCategory[i].value)
+      )
+        age.push(ageCategory[i].value);
+    }
+
+    if (
+      gender.length < Gender.length + 2 * (Gender.length - 1) &&
+      !gender.includes(Gender[elem.gender_id].value)
+    )
+      gender.push(Gender[elem.gender_id].value);
+  });
+
+  res.render("admin/productDetail", {
+    layout: "layout/layout",
+    product: product[0],
+    age: age.sort().join(", "),
+    gender: gender.sort().join(", "),
+    price: preference[0].price,
+  });
+};
+
+const getProductEditPage = async (req, res) => {
+  const product = await findOneProduct(req.params.product_id);
+
+  const preference = await findProdcutPreference(req.params.product_id);
+
+  const age = await getAges();
+  const price = await getPrices();
+  const group = await getGroups();
+  const category = await getCategories();
+  res.render("admin/productEdit", {
+    layout: "layout/layout",
+    product: product[0],
+    preference,
+    age,
+    price,
+    group,
+    gender: Gender,
+    category,
+  });
+};
+
 const getUserPage = async (req, res) => {
   const user = await getAdminUsers();
 
@@ -45,12 +99,17 @@ const getUserPage = async (req, res) => {
 
 const getReceiverPage = async (req, res) => {
   const receiver = await findFilteredReceiver();
-  res.render("admin/shippingManage", { layout: "layout/layout", receiver });
+  res.render("admin/shippingManage", {
+    layout: "layout/layout",
+    receiver,
+  });
 };
 
 module.exports = {
+  getProductDetailPage,
   getAppPage,
   getUserPage,
   getProductPage,
   getReceiverPage,
+  getProductEditPage,
 };
