@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "Preference",
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      gender_id: { type: DataTypes.STRING, comment: "gender_id" },
+      gender_id: { type: DataTypes.INTEGER, comment: "gender_id" },
     },
     {
       tableName: "Preference",
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Preference.associate = (models) => {
-    Preference.hasMany(models.Receiver, { foreignKey: "preference_id" });
+    Preference.hasMany(models.Order, { foreignKey: "preference_id" });
     Preference.hasMany(models.ProductPreference, {
       foreignKey: "preference_id",
     });

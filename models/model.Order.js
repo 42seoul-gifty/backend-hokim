@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
     giver_phone: { type: DataTypes.STRING, comment: "giver Name" },
     price: { type: DataTypes.INTEGER, comment: "price" },
     imp_uid: { type: DataTypes.STRING, comment: "imp_uid" },
+    status: { type: DataTypes.STRING, comment: "status" },
   });
 
   Order.associate = (models) => {
     Order.belongsTo(models.User, { foreignKey: "user_id" });
     Order.hasMany(models.Receiver, { foreignKey: "order_id" });
+    Order.belongsTo(models.Preference, { foreignKey: "preference_id" });
   };
   return Order;
 };

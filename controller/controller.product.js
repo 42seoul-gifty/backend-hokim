@@ -1,5 +1,5 @@
 const { findOrCreate } = require("../lib/lib.Preference");
-const { findFilteredProduct } = require("../lib/lib.Product");
+const { findFilteredProduct, addImageUrl } = require("../lib/lib.Product");
 const { Product, ProductPreference, ProductImage } = require("../models");
 
 const getFilterdProduct = async (req, res) => {
@@ -18,9 +18,12 @@ const getFilterdProduct = async (req, res) => {
 
 const getProductDetail = async (req, res) => {
   try {
-    const product = await Product.findOne({
+    var product = await Product.findOne({
       where: { id: req.params.product_id },
     });
+    product = product.toJSON();
+    await addImageUrl([product]);
+    console.log(product);
     res.status(200).json({ success: true, data: product });
   } catch (e) {
     console.log(e);

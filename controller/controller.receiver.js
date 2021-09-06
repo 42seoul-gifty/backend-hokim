@@ -1,13 +1,20 @@
-const e = require("express");
-const { findReceiverLikeProduct, addImageUrl } = require("../lib/lib.Product");
-const { Receiver, Product, Order, LikeProduct } = require("../models");
+const {
+  findReceiverLikeProduct,
+  findOneProduct,
+  findFilteredProduct,
+} = require("../lib/lib.Product");
+const { Receiver, Preference, Order } = require("../models");
 
 const getReceiver = async (req, res) => {
   try {
-    receiver = await Receiver.findOne({
+    var receiver = await Receiver.findOne({
       where: { id: req.params.receiver_id },
     });
-    res.status(200).json({ success: true, receiver });
+    const product = await findOneProduct(receiver.product_id);
+    receiver = receiver.toJSON();
+    delete receiver.product_id;
+    receiver["product"] = product;
+    res.status(200).json({ success: true, data: receiver });
   } catch (e) {
     res.status(400).json({ success: true, error: e.message });
   }
@@ -35,21 +42,25 @@ const getReceiversChoice = async (req, res) => {
     var receiver = await Receiver.findOne({
       where: { id: req.params.receiver_id },
     });
-    receiver = receiver.toJSON();
-    const product = await Product.findOne({
-      where: { id: receiver.product_id },
-    });
-    addImageUrl([product]);
 
     const order = await Order.findOne({
+      include: [{ model: Preference, as: "Preference" }],
       where: { id: receiver.order_id },
     });
+    console.log(order.Preference.toJSON());
+
+    const products = await findFilteredProduct(
+      order.Preference.gender_id,
+      order.Preference.age_id,
+      order.Preference.price_id
+    );
+
     res.status(200).json({
       success: true,
       data: {
         giver_name: order.giver_name,
         giver_phone: order.giver_phone,
-        product,
+        products,
       },
     });
   } catch (e) {
@@ -59,11 +70,11 @@ const getReceiversChoice = async (req, res) => {
 
 const getReceiversLikes = async (req, res) => {
   try {
-    var product = await findReceiverLikeProduct(req.params.receiver_id);
+    var products = await findReceiverLikeProduct(req.params.receiver_id);
     res.status(200).json({
       success: true,
       data: {
-        product,
+        products,
       },
     });
   } catch (e) {

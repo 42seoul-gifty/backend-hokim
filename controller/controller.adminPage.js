@@ -8,7 +8,10 @@ const {
 
 const { getAdminUsers } = require("../lib/lib.User");
 const { findFilteredReceiver } = require("../lib/lib.Receiver");
-const { findOneProduct, findProdcutPreference } = require("../lib/lib.Product");
+const {
+  findOneAdminProduct,
+  findProdcutPreference,
+} = require("../lib/lib.Product");
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
@@ -37,7 +40,7 @@ const getProductPage = async (req, res) => {
 
 const getProductDetailPage = async (req, res) => {
   try {
-    const product = await findOneProduct(req.params.product_id);
+    const product = await findOneAdminProduct(req.params.product_id);
     const preference = await findProdcutPreference(req.params.product_id);
     const ageCategory = await getAges();
     var age = [];
@@ -72,7 +75,7 @@ const getProductDetailPage = async (req, res) => {
 };
 
 const getProductEditPage = async (req, res) => {
-  const product = await findOneProduct(req.params.product_id);
+  const product = await findOneAdminProduct(req.params.product_id);
 
   const preference = await findProdcutPreference(req.params.product_id);
 

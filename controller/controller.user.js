@@ -8,7 +8,11 @@ const getUser = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      user: user,
+      data: {
+        id: user.id,
+        nickname: user.nickname,
+        email: user.email,
+      },
     });
   } catch (e) {
     console.log(e);
