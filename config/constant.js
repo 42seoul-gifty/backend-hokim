@@ -7,10 +7,6 @@ const Gender = [
     id: 1,
     value: "여",
   },
-  {
-    id: 2,
-    value: "전체",
-  },
 ];
 
 module.exports = { Gender };
