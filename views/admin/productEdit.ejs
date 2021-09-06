@@ -281,6 +281,7 @@
           description: $("#description").val(),
           detail: detail,
           gender: genders,
+          _csrf: $("#_csrf").val(),
           age: ages,
           price: $("#price option:selected").val(),
         }),
@@ -290,7 +291,7 @@
           location.href = `/admin/product/detail/${$("#id").text()}`;
         })
         .catch((err) => {
-          alert(err.error);
+          alert("제품을 수정하지 못했습니다.");
           console.log(err.error);
         });
     }

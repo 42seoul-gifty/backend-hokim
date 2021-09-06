@@ -253,6 +253,7 @@
           "Content-Type": "application/json",
         },
         data: JSON.stringify({
+          _csrf: $("#_csrf").val(),
           id: $("#product_id").val(),
           category: $("#category").val(),
           name: $("#name").val(),
@@ -275,7 +276,7 @@
           location.href = `/admin/product/manage`;
         })
         .catch((err) => {
-          alert(err.error);
+          alert("제품을 등록하지 못했습니다.");
           console.log(err.error);
         });
     }

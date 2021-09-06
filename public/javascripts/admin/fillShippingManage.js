@@ -23,6 +23,7 @@ function receiverSort(start, end) {
         data: JSON.stringify({
           start: start,
           end: end,
+          _csrf: $("#_csrf").val(),
         }),
       })
         .then((res) => {

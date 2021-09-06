@@ -84,6 +84,7 @@
       method: "patch",
       data: {
         changed,
+        _csrf: $("#_csrf").val(),
       },
     })
       .then((res) => {
@@ -91,6 +92,7 @@
         window.location = "/admin/shipping";
       })
       .catch((e) => {
+        alert("변경하지 못했습니다.");
         console.log(e);
       });
   }

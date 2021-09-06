@@ -1,6 +1,6 @@
 
+
   <div class="row">
-                
     
       <div class="col-3">
             <%- include ('./nav.ejs') %>
@@ -64,16 +64,17 @@
        else  if(item.className.includes('category'))
        category.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
   });
-
-  axios({ url: "/admin/cateories", method: "patch", data:{
-    age,price,group,category
+ axios({ url: "/admin/cateories", method: "patch", data:{
+    age,price,group,category,
+    _csrf:$('#_csrf').val()
   } })
   .then((res) => {
    alert("변경되었습니다.");
    window.location = "/admin/app"
   })
   .catch((e) => {
-    console.log(e);
+    alert("실패했습니다.");
+    console.log(e.message);
   });
 
   }

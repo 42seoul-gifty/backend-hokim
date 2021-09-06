@@ -29,6 +29,9 @@ function userSort(value) {
         headers: {
           "Content-Type": "application/json",
         },
+        data: {
+          _csrf: $("#_csrf").val(),
+        },
       })
         .then((res) => {
           const data = res.data.user;
@@ -76,12 +79,15 @@ function deleteUser(elem) {
     headers: {
       "Content-Type": "application/json",
     },
+    data: {
+      _csrf: $("#_csrf").val(),
+    },
   })
     .then((res) => {
       alert("탈퇴 되었습니다");
     })
     .catch((err) => {
-      alert(err.error);
+      alert("탈퇴 시키지 못했습니다");
       console.log(err.error);
     });
 }

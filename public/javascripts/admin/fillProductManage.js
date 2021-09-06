@@ -79,6 +79,7 @@ function filter() {
           age: ages,
           price: prices,
           category: categories,
+          _csrf: $("#_csrf").val(),
         }),
       })
         .then((res) => {
@@ -126,6 +127,7 @@ function deleteProduct(id) {
     },
     data: JSON.stringify({
       product_id: id,
+      _csrf: $("#_csrf").val(),
     }),
   })
     .then((res) => {
@@ -133,7 +135,7 @@ function deleteProduct(id) {
       window.location.reload();
     })
     .catch((err) => {
-      alert(err.error);
+      alert("제품을 삭제하지 못했습니다.");
       console.log(err.error);
     });
 }
