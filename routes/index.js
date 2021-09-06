@@ -7,7 +7,7 @@ const product = require("./route.product");
 const user = require("./route.user");
 const receiver = require("./route.receiver");
 
-const getCategories = require("../controller/controller.admin");
+const getCategories = require("../controller/controller.adminCategory");
 
 router.get("/", (req, res) => {
   res.render("index", {});

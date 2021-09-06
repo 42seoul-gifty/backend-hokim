@@ -1,25 +1,26 @@
 const { Router } = require("express");
 const router = Router();
-const admin = require("../controller/controller.admin");
+const category = require("../controller/controller.adminCategory");
+const filter = require("../controller/controller.adminFilter");
 const adminPage = require("../controller/controller.adminPage");
 
 router.get("/app", adminPage.getAppPage);
 
 router.get("/product/manage", adminPage.getProductPage);
-router.post("/product/filter", admin.getAdminFilterdProduct);
+router.post("/product/filter", filter.getAdminFilterdProduct);
 
-router.patch("/cateories", admin.patchAllCategory);
+router.patch("/cateories", category.patchAllCategory);
 
 router.get("/product/register", (req, res) => {
   res.render("../views/admin/productRegister.ejs", {});
 });
 
-router.get("/shipping", (req, res) => {
-  res.render("../views/admin/shippingManage.ejs", {});
-});
+router.get("/shipping", adminPage.getReceiverPage);
+router.post("/shipping/filter", filter.getAdminFilterdReceiver);
+router.patch("/shipping", filter.updateShipping);
 
 router.get("/user", adminPage.getUserPage);
-router.post("/user/filter", admin.getAdminFilterdUser);
-router.delete("/user/:user_id", admin.removeUser);
+router.post("/user/filter", filter.getAdminFilterdUser);
+router.delete("/user/:user_id", filter.removeUser);
 
 module.exports = router;
