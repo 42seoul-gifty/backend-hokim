@@ -25,11 +25,11 @@
                     <tr><th>상품코드</th><td><%= product.id %></td></tr>
                     <tr><th>카테고리</th><td><%= product.category %></td></tr>
                     <tr><th>브랜드</th><td><%= product.brand %></td></tr>
-                    <tr><th>썸네일</th><td><img src=<%= product.thumbnail %> style="width:100px; height: 100px;"/></td></tr>
+                    <tr><th>썸네일</th><td><img src="<%= product.thumbnail%>" alt="thumbnail" style="width:100px; height: 100px;"/></td></tr>
                     <tr><th>이미지</th><td>
                         <% 
                           product.image_url.forEach((image)=>{ %>
-                              <img src=<%= image %> style="width:100px; height: 100px;"/>
+                              <img src= "<%=image%>" alt="image" style="width:100px; height: 100px;"/>
                               <% })
                            %>  
                         </td> 
@@ -44,9 +44,9 @@
                     </td></tr>
                     <tr><th>소비자가격</th><td><%= product.retail_price %></td></tr>
                     <tr><th>마진율</th><td><%= product.fee_rate %></td></tr>
-                    <tr><th>노출수</th><td><%= product.exposes %></td></tr>
-                    <tr><th>좋아요수</th><td><%= product.likes %></td></tr>
-                    <tr><th>주문수</th><td><%= product.orders %></td></tr>
+                    <tr><th>노출수</th><td><%= product.exposes? product.exposes:'0'  %></td></tr>
+                    <tr><th>좋아요수</th><td><%= product.likes? product.likes: '0' %></td></tr>
+                    <tr><th>주문수</th><td><%= product.orders? product.orders : '0' %></td></tr>
                     <tr><th>성별</th><td>
                               <%= gender %> 
                     </td></tr>
