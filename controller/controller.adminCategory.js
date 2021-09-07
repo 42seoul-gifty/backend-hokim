@@ -69,32 +69,27 @@ const getAllCategory = async (req, res) => {
   });
 };
 
-const updateCategory = async (model, originalData, newData) => {
+const updateCategory = async (model, newData, type) => {
   await newData.forEach(async (elem) => {
+    const data = { value: elem.value };
+    if (type == "price") data["retail_price"] = elem.retail_price;
+    console.log(data, elem.origin);
     if (elem.label == "removed")
-      await model.destroy({ where: { value: elem.value } });
+      await model.destroy({ where: { id: elem.origin } });
     else if (elem.label == "edited")
-      await model.update(
-        { value: elem.value },
-        { where: { value: elem.origin } }
-      );
+      await model.update(data, { where: { id: elem.origin } });
     else if (elem.label == "new") {
-      await model.create({ value: elem.value });
+      await model.create(data);
     }
   });
 };
 
 const patchAllCategory = async (req, res) => {
   try {
-    const age = await getAges();
-    const price = await getPrices();
-    const group = await getGroups();
-    const category = await getCategories();
-
-    await updateCategory(PreferenceAge, age, req.body.age);
-    await updateCategory(PreferencePrice, price, req.body.price);
-    await updateCategory(PreferenceGroup, group, req.body.group);
-    await updateCategory(Category, category, req.body.category);
+    await updateCategory(PreferenceAge, req.body.age);
+    await updateCategory(PreferencePrice, req.body.price, "price");
+    await updateCategory(PreferenceGroup, req.body.group);
+    await updateCategory(Category, req.body.category);
 
     res.status(200).json({ success: true });
   } catch (e) {
