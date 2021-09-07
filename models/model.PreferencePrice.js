@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       value: { type: DataTypes.STRING, comment: "price name" },
+      retail_price: { type: DataTypes.INTEGER, comment: "retail price" },
     },
     {
       tableName: "PreferencePrice",

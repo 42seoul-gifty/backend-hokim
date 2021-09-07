@@ -29,22 +29,26 @@ module.exports = {
     // price
     await queryInterface.bulkInsert("PreferencePrice", [
       {
-        value: "10000",
+        value: "1~1만 5천원",
+        retail_price: "15000",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        value: "20000",
+        value: "2~2만 5천원",
+        retail_price: "25000",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        value: "30000",
+        value: "3~3만 5천원",
+        retail_price: "35000",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        value: "40000",
+        value: "4~4만 5천원",
+        retail_price: "45000",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
