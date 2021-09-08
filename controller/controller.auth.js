@@ -56,7 +56,7 @@ const getNaverToken = async (req, res) => {
   try {
     code = req.query.code;
     state = req.query.state;
-    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${process.env.SITE_DOMAIN}/login/naver&code=${code}&state=${state}`;
+    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${naver_config.redirect}&code=${code}&state=${state}`;
 
     const result = await axios({
       method: "get",

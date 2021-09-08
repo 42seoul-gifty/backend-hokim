@@ -47,6 +47,7 @@ const kakao_config = {
 const naver_config = {
   client_id: process.env.NAVER_CLIENT_ID,
   secret: process.env.NAVER_SECRET,
+  redirect: process.env.NAVER_CALLBACK_URL,
 };
 
 const imp_config = {
