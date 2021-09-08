@@ -11,8 +11,9 @@ class App {
     this.app.use(cookieParser());
     this.app.use(express.static("./public"));
     const corsOptions = {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000", "https://localhost:3000"],
       credentials: true,
+      exposedHeaders: ["set-cookie"],
     };
     this.app.use(cors(corsOptions));
     this.app.use(require("./routes"));
