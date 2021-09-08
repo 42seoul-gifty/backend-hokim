@@ -8,6 +8,7 @@ const { generateToken } = require("../middleware/jwt-auth");
 
 const getKakaoToken = async (req, res) => {
   try {
+    console.log("kakao code : " + req.header("Authorization-Code"));
     //코드로 토큰 받아오기
     const result = await axios({
       method: "post",
@@ -19,7 +20,7 @@ const getKakaoToken = async (req, res) => {
         grant_type: "authorization_code",
         client_id: `${kakao_config.rest_key}`,
         redirect_uri: `${domain}/login/kakao`,
-        code: req.query.code,
+        code: req.header("Authorization-Code"),
         client_secret: `${kakao_config.secret}`,
       }),
     });
