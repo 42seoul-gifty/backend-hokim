@@ -2,6 +2,7 @@ const express = require("express");
 const db = require("./models");
 const layout = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 class App {
   constructor() {
     this.app = express();
@@ -9,7 +10,11 @@ class App {
     this.app.use(express.json());
     this.app.use(cookieParser());
     this.app.use(express.static("./public"));
-
+    const corsOptions = {
+      origin: "http://localhost:3000",
+      credentials: true,
+    };
+    app.use(cors(corsOptions));
     this.app.use(require("./routes"));
     this.dbConnection();
   }
