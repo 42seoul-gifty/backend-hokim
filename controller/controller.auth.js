@@ -1,6 +1,6 @@
 const axios = require("axios");
 var querystring = require("querystring");
-const { kakao_config, domain, naver_config } = require("../config/config");
+const { kakao_config, naver_config } = require("../config/config");
 
 const { findOrCreate } = require("../lib/lib.User");
 
@@ -19,7 +19,7 @@ const getKakaoToken = async (req, res) => {
       data: querystring.stringify({
         grant_type: "authorization_code",
         client_id: `${kakao_config.rest_key}`,
-        redirect_uri: `${domain}/login/kakao`,
+        redirect_uri: `${kakao_config.redirect}`,
         code: req.header("Authorization-Code"),
         client_secret: `${kakao_config.secret}`,
       }),

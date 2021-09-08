@@ -41,6 +41,7 @@ const domain = process.env.SITE_DOMAIN;
 const kakao_config = {
   rest_key: process.env.KAKAO_REST_KEY,
   secret: process.env.KAKAO_SECRET,
+  redirect: process.env.KAKAO_CALLBACK_URL,
 };
 
 const naver_config = {
