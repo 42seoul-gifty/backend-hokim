@@ -14,7 +14,7 @@ class App {
       origin: "http://localhost:3000",
       credentials: true,
     };
-    app.use(cors(corsOptions));
+    this.app.use(cors(corsOptions));
     this.app.use(require("./routes"));
     this.dbConnection();
   }
