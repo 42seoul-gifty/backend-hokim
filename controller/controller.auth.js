@@ -44,7 +44,13 @@ const getKakaoToken = async (req, res) => {
 
     //토큰 생성
     await generateToken(req, res, user);
-    res.status(200).json({ success: true });
+    console.log(req.cookies.refresh_token);
+    res.status(200).json({
+      success: true,
+      access_token: req.cookies.access_token,
+      refresh_token: req.cookies.refresh_token,
+      user,
+    });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });

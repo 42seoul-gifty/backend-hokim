@@ -2,16 +2,11 @@ const { Gender } = require("../config/constant");
 const {
   getAges,
   getPrices,
-  getGroups,
+  getFeatures,
   getCategories,
 } = require("../lib/lib.Preference");
 
-const {
-  PreferenceAge,
-  PreferencePrice,
-  PreferenceGroup,
-  Category,
-} = require("../models");
+const { Age, Price, Feature, Category } = require("../models");
 
 const getAgeCategory = async (req, res) => {
   try {
@@ -42,7 +37,7 @@ const getPriceCategory = async (req, res) => {
   }
 };
 
-const getGroupCategory = async (req, res) => {
+const getFeatureCategory = async (req, res) => {
   try {
     const data = await getCategories();
     res.status(200).json({ success: true, data });
@@ -53,27 +48,31 @@ const getGroupCategory = async (req, res) => {
 };
 
 const getAllCategory = async (req, res) => {
-  const age = await getAges();
-  const price = await getPrices();
-  const group = await getGroups();
-  const category = await getCategories();
-
-  res.json({
-    data: {
-      age,
-      price,
-      group,
-      category,
-      gender: Gender,
-    },
-  });
+  try {
+    const age = await getAges();
+    const price = await getPrices();
+    const feature = await getFeatures();
+    const category = await getCategories();
+    console.log(feature);
+    res.json({
+      data: {
+        age,
+        price,
+        feature,
+        category,
+        gender: Gender,
+      },
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const updateCategory = async (model, newData, type) => {
   await newData.forEach(async (elem) => {
     const data = { value: elem.value };
     if (type == "price") data["retail_price"] = elem.retail_price;
-    console.log(data, elem.origin);
+
     if (elem.label == "removed")
       await model.destroy({ where: { id: elem.origin } });
     else if (elem.label == "edited")
@@ -86,9 +85,11 @@ const updateCategory = async (model, newData, type) => {
 
 const patchAllCategory = async (req, res) => {
   try {
-    await updateCategory(PreferenceAge, req.body.age);
-    await updateCategory(PreferencePrice, req.body.price, "price");
-    await updateCategory(PreferenceGroup, req.body.group);
+    await updateCategory(Age, req.body.age);
+    await updateCategory(Price, req.body.price, "price");
+    console.log(req.body.feature);
+
+    await updateCategory(Feature, req.body.feature);
     await updateCategory(Category, req.body.category);
 
     res.status(200).json({ success: true });
@@ -101,7 +102,6 @@ const patchAllCategory = async (req, res) => {
 module.exports = {
   getGenderCategory,
   getAgeCategory,
-  getPriceCategory,
   getPriceCategory,
   getAllCategory,
   patchAllCategory,

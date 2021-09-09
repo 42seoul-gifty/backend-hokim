@@ -39,7 +39,7 @@
   function saveOption() { 
     const age = [];
     const price = [];
-    const group = [];
+    const feature = [];
     const category = [];
 
     
@@ -57,8 +57,8 @@
 
       if(item.className.includes('age'))
       age.push({value: item.textContent?.trim() ,label, origin: item.getAttribute('origin')?.trim() })
-       else  if(item.className.includes('group'))
-       group.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+       else  if(item.className.includes('feature'))
+       feature.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
        else  if(item.className.includes('category'))
        category.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
       else if(item.className.includes('price'))
@@ -73,7 +73,7 @@
     });
     console.log(price)
  axios({ url: "/admin/cateories", method: "patch", data:{
-    age,price,group,category,
+    age,price,feature,category,
     _csrf:$('#_csrf').val()
   } })
   .then((res) => {

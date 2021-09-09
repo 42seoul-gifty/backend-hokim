@@ -10,10 +10,14 @@ module.exports = {
           name: "receiverKim",
           postcode: "00001",
           address: "101동 101아파트",
-          detailAddress: "101호",
-          shipmentStatus: "",
+          detail_address: "101호",
           product_id: "101",
           order_id: "4",
+
+          age_id: "1",
+          price_id: "2",
+          gender: "남",
+
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
@@ -22,9 +26,13 @@ module.exports = {
           name: "receiverLee",
           postcode: "00002",
           address: "102동 102아파트",
-          detailAddress: "102호",
-          shipmentStatus: "",
+          detail_address: "102호",
           order_id: "2",
+
+          age_id: "4",
+          price_id: "1",
+          gender: "남",
+
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
@@ -34,9 +42,13 @@ module.exports = {
           name: "receiverPark",
           postcode: "00003",
           address: "103동 103아파트",
-          detailAddress: "103호",
-          shipmentStatus: "",
+          detail_address: "103호",
           order_id: "1",
+
+          age_id: "2",
+          price_id: "4",
+          gender: "여",
+
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
@@ -46,9 +58,14 @@ module.exports = {
           name: "receiverChoi",
           postcode: "00004",
           address: "104동 104아파트",
-          detailAddress: "104호",
-          shipmentStatus: "",
+          detail_address: "104호",
+          shipment_status: "배송요청",
           order_id: "3",
+
+          age_id: "3",
+          price_id: "1",
+          gender: "여",
+
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
@@ -58,11 +75,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("Receiver", null, {});
   },
 };

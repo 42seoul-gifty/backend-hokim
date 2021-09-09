@@ -21,7 +21,7 @@ router.patch("/cateories", category.patchAllCategory);
 router.get("/product/register", adminPage.getProductRegisterPage);
 router.post("/product/register", product.postProduct);
 
-router.delete("/product", product.deleteProduct);
+router.delete("/product/:product_id", product.deleteProduct);
 
 router.get("/shipping", adminPage.getReceiverPage);
 router.post("/shipping/filter", filter.getAdminFilterdReceiver);

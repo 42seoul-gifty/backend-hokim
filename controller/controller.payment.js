@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { imp_config, domain } = require("../config/config");
 
-const { Order } = require("../models");
+const { Orders } = require("../models");
 
 const checkPaymentValidation = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ const checkPaymentValidation = async (req, res) => {
     const { amount, status } = paymentData;
     if (amount == req.query.price) {
       // 결제금액 일치. 결제 된 금액 === 결제 되어야 하는 금액
-      await Order.create({
+      await Orders.create({
         user_id: 1,
         imp_uid: imp_uid,
         price: req.query.price,

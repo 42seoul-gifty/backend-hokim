@@ -3,12 +3,30 @@ module.exports = (sequelize, DataTypes) => {
     "Receiver",
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      phone: { type: DataTypes.STRING, comment: "Phone Number" },
-      name: { type: DataTypes.STRING, comment: "Receiver Name" },
-      postcode: { type: DataTypes.STRING, comment: "postcode" },
-      address: { type: DataTypes.STRING, comment: "address" },
-      detailAddress: { type: DataTypes.STRING, comment: "detail Address" },
-      shipmentStatus: { type: DataTypes.STRING, comment: "Shipment Status" },
+      phone: {
+        type: DataTypes.STRING,
+        comment: "Phone Number",
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.STRING,
+        comment: "Receiver Name",
+        allowNull: false,
+      },
+      postcode: {
+        type: DataTypes.STRING,
+        comment: "postcode",
+        allowNull: false,
+      },
+      address: { type: DataTypes.STRING, comment: "address", allowNull: false },
+      detail_address: { type: DataTypes.STRING, comment: "detail Address" },
+      shipment_status: {
+        type: DataTypes.STRING,
+        comment: "Shipment Status",
+        defaultValue: "배송전",
+      },
+      gender: { type: DataTypes.STRING, comment: "Receiver Name" },
+      updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
     },
     {
       tableName: "Receiver",
@@ -16,9 +34,15 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Receiver.associate = (models) => {
-    Receiver.hasMany(models.LikeProduct, { foreignKey: "receiver_id" });
-    Receiver.belongsTo(models.Order, { foreignKey: "order_id" });
+    Receiver.hasMany(models.Likes, {
+      foreignKey: { name: "receiver_id", allowNull: false },
+    });
+    Receiver.belongsTo(models.Orders, { foreignKey: "order_id" });
     Receiver.belongsTo(models.Product, { foreignKey: "product_id" });
+
+    Receiver.belongsTo(models.Age, { foreignKey: "age_id" });
+    Receiver.belongsTo(models.Price, { foreignKey: "price_id" });
+    Receiver.belongsTo(models.Feature, { foreignKey: "feature_id" });
   };
 
   return Receiver;

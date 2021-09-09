@@ -23,13 +23,13 @@
                 <div style="margin: 3% auto; font-size: 20px; text-align: center;">상품수정</div>
                 <table class="table table-hover">
                     <tr><th>상품코드</th><td><%= product.id %></td></tr>
-                    <tr><th>카테고리</th><td><%= product.category %></td></tr>
-                    <tr><th>브랜드</th><td><%= product.brand %></td></tr>
+                    <tr><th>카테고리</th><td><%= product.Category.value %></td></tr>
+                    <tr><th>브랜드</th><td><%= product.Brand.value %></td></tr>
                     <tr><th>썸네일</th><td><img src="<%= product.thumbnail%>" alt="thumbnail" style="width:100px; height: 100px;"/></td></tr>
                     <tr><th>이미지</th><td>
                         <% 
-                          product.image_url.forEach((image)=>{ %>
-                              <img src= "<%=image%>" alt="image" style="width:100px; height: 100px;"/>
+                          product.ProductImages.forEach((image)=>{ %>
+                              <img src= "<%=image.image_url%>" alt="image" style="width:100px; height: 100px;"/>
                               <% })
                            %>  
                         </td> 
@@ -38,7 +38,7 @@
                     <tr><th>상품정보제공고시</th><td>
                       <% if (product.detail!==null) { 
                         product.detail.split('<br>').forEach((el)=>{  %>
-                          <%= el %><br>
+                          <%= el %><br/>
                           <%  })
                        }%> 
                     </td></tr>
@@ -48,14 +48,21 @@
                     <tr><th>좋아요수</th><td><%= product.likes? product.likes: '0' %></td></tr>
                     <tr><th>주문수</th><td><%= product.orders? product.orders : '0' %></td></tr>
                     <tr><th>성별</th><td>
-                              <%= gender %> 
+                      <% 
+                      product.ProductGenders.forEach((gender)=>{ %>
+                          <%= gender.gender%>
+                          <% })
+                        %>  
                     </td></tr>
                       <tr><th>연령대</th><td>  
-                       
-                              <%=age %> 
+                        <% 
+                        product.Ages.forEach((age)=>{ %>
+                            <%= age.value%>
+                            <% })
+                          %>  
                       </td></tr>
                       <tr><th>금액대</th><td>
-                              <%=price %> 
+                              <%=product.Price.value %> 
                       </td></tr>
                     </table>      
                     <button style="margin: 5% 40%;" type="button" class="btn btn-primary" onclick="location.href='/admin/product/edit/<%= product.id %>';">수정하기</button>

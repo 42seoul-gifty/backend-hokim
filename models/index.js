@@ -29,6 +29,21 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
+db["ProductAge"] = sequelize.define(
+  "ProductAge",
+  {},
+  {
+    tableName: "ProductAge",
+  }
+);
+db["ProductFeature"] = sequelize.define(
+  "ProductFeature",
+  {},
+  {
+    tableName: "ProductFeature",
+  }
+);
+
 Object.keys(db).forEach((modelName) => {
   if ("associate" in db[modelName]) {
     db[modelName].associate(db);

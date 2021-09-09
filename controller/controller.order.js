@@ -1,12 +1,47 @@
 const { findOrCreate } = require("../lib/lib.Preference");
-const { findOneProduct } = require("../lib/lib.Product");
+const { findOneProduct, convertImageUrl } = require("../lib/lib.Product");
 const { createReciever } = require("../lib/lib.Receiver");
-const { Order, Receiver, Product, Preference } = require("../models");
+const {
+  Orders,
+  Receiver,
+  Product,
+  Price,
+  Age,
+  Feature,
+  ProductImage,
+} = require("../models");
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.findAll({
+    var orders = await Orders.findAll({
+      include: [
+        {
+          model: Receiver,
+          attributes: [
+            "id",
+            "name",
+            "phone",
+            "postcode",
+            "address",
+            "detail_address",
+          ],
+        },
+      ],
       where: { user_id: req.params.user_id },
+      attributes: [
+        "giver_name",
+        "giver_phone",
+        ["createdAt", "order_date"],
+        "payment_amount",
+        "status",
+      ],
+    });
+
+    orders = orders.map((order) => {
+      order = order.toJSON();
+      order["receiver"] = order.Receivers[0];
+      delete order.Receivers;
+      return order;
     });
 
     res.status(200).json({
@@ -21,31 +56,58 @@ const getOrders = async (req, res) => {
 
 const getOrderDetail = async (req, res) => {
   try {
-    var order = await Order.findOne({
-      include: [{ model: Preference, as: "Preference" }],
+    var order = await Orders.findOne({
+      include: [
+        {
+          model: Receiver,
+          attributes: [
+            "id",
+            "name",
+            "phone",
+            "postcode",
+            "address",
+            "detail_address",
+          ],
+          include: [
+            {
+              model: Product,
+              attributes: [
+                "id",
+                "name",
+                "description",
+                "detail",
+                "thumbnail",
+                ["retail_price", "price"],
+              ],
+              include: [{ model: ProductImage, attributes: ["image_url"] }],
+              attributes: [
+                "id",
+                "name",
+                "description",
+                "detail",
+                "thumbnail",
+                ["retail_price", "price"],
+              ],
+            },
+          ],
+        },
+      ],
+      attributes: [
+        "giver_name",
+        "giver_phone",
+        ["createdAt", "order_date"],
+        "payment_amount",
+        "status",
+      ],
       where: { id: req.params.order_id, user_id: req.params.user_id },
     });
-    var receiver = await Receiver.findOne({
-      where: { order_id: req.params.order_id },
-    });
-    const product = await findOneProduct(receiver.product_id);
-    const preference = {};
-
     order = order.toJSON();
-    console.log(order);
-    preference["age"] = [order.Preference.age_id];
-    preference["price"] = order.Preference.price_id;
-    preference["gender"] = [order.Preference.gender_id];
+    order["receiver"] = order.Receivers[0];
+    delete order.Receivers;
+    if (order.receiver.Product) convertImageUrl(order.receiver.Product);
+    order.receiver["product"] = order.receiver.Product;
 
-    receiver = receiver.toJSON();
-    receiver["product"] = product;
-    order["receiver"] = receiver;
-    order["preference"] = preference;
-    order["order_date"] = order.createdAt;
-    delete order.Preference;
-    delete order.createdAt;
-    delete order.updatedAt;
-    delete order.user_id;
+    delete order.receiver.Product;
 
     res.status(200).json({
       success: true,
@@ -59,21 +121,15 @@ const getOrderDetail = async (req, res) => {
 
 const postOrder = async (req, res) => {
   try {
-    const preference = await findOrCreate(
-      gender_id,
-      age_id,
-      group_id,
-      price_id
-    );
-    const order = await Order.create({
+    //TODO : Preference 교차테이블 작성
+    const order = await Orders.create({
       user_id: req.params.user_id,
       giver_name: req.body.giver_name,
       giver_phone: req.body.giver_phone,
-      price: req.body.price,
-      preference_id: preference.id,
+      payment_amount: req.body.price,
       imp_uid: req.body.imp_uid,
     });
-    const receiver = await createReciever(
+    const receiver = await Receiver.create(
       req.body.receiver_name,
       req.body.receiver_phone,
       order.toJSON().id,
@@ -96,9 +152,12 @@ const postOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    const order = await Order.destroy({
-      where: { id: req.params.order_id, user_id: req.params.user_id },
-    });
+    await Orders.update(
+      { deleted: true },
+      {
+        where: { id: req.params.order_id, user_id: req.params.user_id },
+      }
+    );
 
     res.status(200).json({
       success: true,

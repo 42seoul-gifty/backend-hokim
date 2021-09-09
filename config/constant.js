@@ -1,10 +1,10 @@
 const Gender = [
   {
-    id: 0,
+    id: "남",
     value: "남",
   },
   {
-    id: 1,
+    id: "여",
     value: "여",
   },
 ];

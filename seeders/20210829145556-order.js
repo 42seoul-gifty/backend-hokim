@@ -6,50 +6,47 @@ module.exports = {
       {
         giver_name: "kim",
         giver_phone: "010-0000-0000",
-        price: "12000",
+        payment_amount: "12000",
         imp_uid: "order_20210821233",
-        user_id: "3",
-        preference_id: "2",
+        status: "결제완료",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
         giver_name: "lee",
         giver_phone: "010-0000-0001",
-        price: "23000",
+        payment_amount: "23000",
         imp_uid: "order_202108212344",
         user_id: "2",
-        preference_id: "4",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
         giver_name: "park",
         giver_phone: "010-0000-0002",
-        price: "34000",
+        payment_amount: "34000",
         imp_uid: "order_202108216789",
         user_id: "1",
-        preference_id: "1",
+        status: "결제완료",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
         giver_name: "choi",
         giver_phone: "010-0000-0003",
-        price: "2100",
+        payment_amount: "2100",
         imp_uid: "order_202108210974",
         user_id: "4",
-        preference_id: "2",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
         giver_name: "kim",
         giver_phone: "010-0000-0000",
-        price: "41000",
-        preference_id: "3",
+        payment_amount: "41000",
         imp_uid: "order_20210821238",
         user_id: "3",
+        status: "결제완료",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
@@ -57,11 +54,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("Orders", null, {});
   },
 };

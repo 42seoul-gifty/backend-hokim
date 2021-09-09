@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // age
-    await queryInterface.bulkInsert("PreferenceAge", [
+    await queryInterface.bulkInsert("Age", [
       {
         value: "10",
         createdAt: new Date(Date.now()),
@@ -27,7 +27,7 @@ module.exports = {
     ]);
 
     // price
-    await queryInterface.bulkInsert("PreferencePrice", [
+    await queryInterface.bulkInsert("Price", [
       {
         value: "1~1만 5천원",
         retail_price: "15000",
@@ -55,7 +55,7 @@ module.exports = {
     ]);
 
     // group
-    await queryInterface.bulkInsert("PreferenceGroup", [
+    await queryInterface.bulkInsert("Feature", [
       {
         value: "school",
         createdAt: new Date(Date.now()),
@@ -80,11 +80,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("Age", null, {});
+    await queryInterface.bulkDelete("Price", null, {});
+    await queryInterface.bulkDelete("Feature", null, {});
   },
 };

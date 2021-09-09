@@ -1,26 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define(
-    "Category",
+  const Brand = sequelize.define(
+    "Brand",
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       value: {
         type: DataTypes.STRING,
-        comment: "Category name",
+        comment: "Brand name",
         allowNull: false,
       },
       updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
       deleted: { type: DataTypes.BOOLEAN, defaultValue: 0 },
     },
     {
-      tableName: "Category",
+      tableName: "Brand",
     }
   );
 
-  Category.associate = (models) => {
-    Category.hasMany(models.Product, {
-      foreignKey: "category_id",
+  Brand.associate = (models) => {
+    Brand.hasMany(models.Product, {
+      foreignKey: "brand_id",
     });
   };
 
-  return Category;
+  return Brand;
 };

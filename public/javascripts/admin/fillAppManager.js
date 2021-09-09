@@ -182,7 +182,7 @@ axios({ url: "/all", method: "get" })
 
     createOptionTable("카테고리", "category", data.category);
     createOptionTable("금액대", "price", data.price);
-    createOptionTable("그룹", "group", data.group);
+    createOptionTable("그룹", "feature", data.feature);
     addEditButtonEvent();
   })
   .catch((e) => {
