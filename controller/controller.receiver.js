@@ -1,19 +1,59 @@
 const {
   findReceiverLikeProduct,
-  findOneProduct,
   findFilteredProduct,
+  convertImageUrl,
 } = require("../lib/lib.Product");
-const { Receiver, Preference, Order } = require("../models");
+const {
+  Receiver,
+  ProductImage,
+  Orders,
+  Product,
+  ProductGender,
+  Price,
+  Age,
+} = require("../models");
+const { getFilterdProduct } = require("./controller.product");
 
 const getReceiver = async (req, res) => {
   try {
     var receiver = await Receiver.findOne({
+      include: [
+        {
+          model: Product,
+          attributes: [
+            "id",
+            "name",
+            "description",
+            "detail",
+            "thumbnail",
+            ["retail_price", "price"],
+          ],
+          include: [{ model: ProductImage, attributes: ["image_url"] }],
+          attributes: [
+            "id",
+            "name",
+            "description",
+            "detail",
+            "thumbnail",
+            ["retail_price", "price"],
+          ],
+        },
+      ],
+      attributes: [
+        "id",
+        "name",
+        "phone",
+        "postcode",
+        "address",
+        "detail_address",
+      ],
       where: { id: req.params.receiver_id },
     });
-    const product = await findOneProduct(receiver.product_id);
+
     receiver = receiver.toJSON();
-    delete receiver.product_id;
-    receiver["product"] = product;
+    convertImageUrl(receiver.Product);
+    receiver["product"] = receiver.Product;
+    delete receiver.Product;
     res.status(200).json({ success: true, data: receiver });
   } catch (e) {
     res.status(400).json({ success: true, error: e.message });
@@ -40,37 +80,62 @@ const patchReceiver = async (req, res) => {
 const getReceiversChoice = async (req, res) => {
   try {
     var receiver = await Receiver.findOne({
+      include: [
+        {
+          model: Orders,
+          attributes: ["giver_name", "giver_phone"],
+        },
+      ],
       where: { id: req.params.receiver_id },
     });
+    receiver = receiver.toJSON();
 
-    const order = await Order.findOne({
-      include: [{ model: Preference, as: "Preference" }],
-      where: { id: receiver.order_id },
+    var products = await Product.findAll({
+      include: [
+        {
+          model: ProductGender,
+          attributes: [],
+          where: receiver.gender ? { gender: receiver.gender } : {},
+        },
+        {
+          model: Price,
+          attributes: [],
+          where: receiver.price_id ? { id: receiver.price_id } : {},
+        },
+        {
+          model: Age,
+          attributes: [],
+          where: receiver.age_id ? { id: receiver.age_id } : {},
+        },
+        { model: ProductImage, attributes: ["image_url", "id"] },
+      ],
+      attributes: [
+        "id",
+        "name",
+        "description",
+        "detail",
+        "thumbnail",
+        ["retail_price", "price"],
+      ],
     });
-    console.log(order.Preference.toJSON());
-
-    const products = await findFilteredProduct(
-      order.Preference.gender_id,
-      order.Preference.age_id,
-      order.Preference.price_id
-    );
-
-    res.status(200).json({
-      success: true,
-      data: {
-        giver_name: order.giver_name,
-        giver_phone: order.giver_phone,
-        products,
-      },
+    products = products.map((product) => {
+      product = product.toJSON();
+      convertImageUrl(product);
+      return product;
     });
+
+    const data = receiver.Order;
+    data["products"] = products;
+    res.status(200).json({ success: true, data });
   } catch (e) {
-    res.status(400).json({ success: true, error: e.message });
+    res.status(400).json({ success: false, error: e.message });
   }
 };
 
 const getReceiversLikes = async (req, res) => {
   try {
     var products = await findReceiverLikeProduct(req.params.receiver_id);
+    //TODO: 삭제될수도?
     res.status(200).json({
       success: true,
       data: {
@@ -84,11 +149,12 @@ const getReceiversLikes = async (req, res) => {
 
 const updateReceiverShipment = async (req, res) => {
   try {
+    //TODO:수정이 필요할 수도 있음
     const receiver = [];
     await req.body.changed.forEach(async (element) => {
       receiver.push(
         await Receiver.update(
-          { shipmentStatus: element.value },
+          { shipment_status: element.value },
           { where: { id: element.id } }
         )
       );

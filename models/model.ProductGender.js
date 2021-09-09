@@ -1,23 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const ProductImage = sequelize.define(
-    "ProductImage",
+  const ProductGender = sequelize.define(
+    "ProductGender",
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-      image_url: {
+      gender: {
         type: DataTypes.STRING,
-        comment: "Image Url",
+        comment: "Gender name",
         allowNull: false,
       },
       updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
     },
     {
-      tableName: "ProductImage",
+      tableName: "ProductGender",
     }
   );
-  ProductImage.associate = (models) => {
-    ProductImage.belongsTo(models.ProductImage, {
+
+  ProductGender.associate = (models) => {
+    ProductGender.belongsTo(models.Product, {
       foreignKey: { name: "product_id", allowNull: false },
     });
   };
-  return ProductImage;
+
+  return ProductGender;
 };

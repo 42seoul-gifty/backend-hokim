@@ -1,16 +1,26 @@
-const { findAdminFilteredProduct } = require("../lib/lib.Product");
-
-const { getAdminUsers } = require("../lib/lib.User");
-const { findFilteredReceiver } = require("../lib/lib.Receiver");
+const {
+  User,
+  Receiver,
+  Product,
+  Price,
+  Age,
+  Feature,
+  Brand,
+  Category,
+} = require("../models");
 
 const getAdminFilterdProduct = async (req, res) => {
   try {
-    const products = await findAdminFilteredProduct(
-      req.body.gender,
-      req.body.age,
-      req.body.price,
-      req.body.category
-    );
+    const products = await Product.findAll({
+      include: [
+        { model: Price, attributes: ["id", "value"] },
+        { model: Age, attributes: ["id", "value"] },
+        { model: Feature, attributes: ["id", "value"] },
+        { model: Brand, attributes: ["id", "value"] },
+        { model: Category, attributes: ["id", "value"] },
+      ],
+    });
+
     res.status(200).json({ success: true, products });
   } catch (e) {
     console.log(e);
@@ -20,7 +30,7 @@ const getAdminFilterdProduct = async (req, res) => {
 
 const getAdminFilterdUser = async (req, res) => {
   try {
-    const user = await getAdminUsers(req.query.order);
+    const user = await User.findAll({});
     res.status(200).json({ success: true, user });
   } catch (e) {
     console.log(e);
@@ -30,7 +40,13 @@ const getAdminFilterdUser = async (req, res) => {
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
-    const receiver = await findFilteredReceiver(req.body.start, req.body.end);
+    const receiver = await Receiver.findAll({
+      include: [
+        { model: Price, attributes: ["id", "value"] },
+        { model: Age, attributes: ["id", "value"] },
+        { model: Feature, attributes: ["id", "value"] },
+      ],
+    });
     res.status(200).json({ success: true, receiver });
   } catch (e) {
     console.log(e);

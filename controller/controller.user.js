@@ -22,7 +22,10 @@ const getUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.destroy({ where: { id: req.params.user_id } });
+    const user = await User.update(
+      { deleted: true },
+      { where: { id: req.params.user_id } }
+    );
     res.status(200).json({ success: true });
   } catch (e) {
     console.log(e);

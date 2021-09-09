@@ -11,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       phone: { type: DataTypes.STRING, comment: "Phone Number" },
-      auth: { type: DataTypes.STRING, comment: "Phone Number" },
-      nickname: { type: DataTypes.STRING, comment: "User Name" },
-      login_type: { type: DataTypes.STRING, comment: "Login Type" },
+      nickname: {
+        type: DataTypes.STRING,
+        comment: "User Name",
+        allowNull: false,
+      },
+      login_type: {
+        type: DataTypes.STRING,
+        comment: "Login Type",
+        allowNull: false,
+      },
       token: { type: DataTypes.STRING, comment: "Login Token" },
+      updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
       createdAt: {
         type: DataTypes.DATE,
         get() {
@@ -23,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
           );
         },
       },
+      deleted: { type: DataTypes.BOOLEAN, defaultValue: 0 },
     },
     {
       tableName: "User",
@@ -30,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = (models) => {
-    User.hasMany(models.Order, { foreignKey: "user_id" });
+    User.hasMany(models.Orders, { foreignKey: "user_id" });
   };
 
   return User;

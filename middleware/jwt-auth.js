@@ -9,8 +9,7 @@ const generateRefreshToken = async (req, res, user) => {
     });
     await User.update({ token: newRefreshToken }, { where: { id: user.id } });
 
-    res.cookie("refreshToken", newRefreshToken);
-    req.cookies.refreshToken = newRefreshToken;
+    req.cookies.refresh_token = newRefreshToken;
   } catch (e) {
     console.log(e);
     return null;
@@ -25,8 +24,7 @@ const generateAccessToken = (req, res, user) => {
       { expiresIn: "1m", issuer: "gifty" }
     );
 
-    res.cookie("accessToken", newAccessToken);
-    req.cookies.accessToken = newAccessToken;
+    req.cookies.access_token = newAccessToken;
   } catch (e) {
     console.log(e);
     return null;
@@ -35,7 +33,7 @@ const generateAccessToken = (req, res, user) => {
 
 const checkRefreshToken = async (req, verifyRefresh) => {
   const user = await User.findOne({
-    where: { token: req.cookies.refreshToken },
+    where: { token: req.cookies.refresh_token },
   });
   if (user && verifyRefresh) return user;
   return false;
@@ -52,9 +50,9 @@ const checkVerify = (token) => {
 
 const decodeToken = async (req, res, next) => {
   try {
-    if (!req.cookies.accessToken) throw Error("token does not exist.");
-    const verifyAccess = checkVerify(req.cookies.accessToken);
-    const verifyRefresh = checkVerify(req.cookies.refreshToken);
+    if (!req.cookies.access_token) throw Error("token does not exist.");
+    const verifyAccess = checkVerify(req.cookies.access_token);
+    const verifyRefresh = checkVerify(req.cookies.refresh_token);
 
     if (!verifyAccess) {
       const user = await checkRefreshToken(req, verifyRefresh);
@@ -64,7 +62,7 @@ const decodeToken = async (req, res, next) => {
     } else if (!verifyRefresh) {
       await generateRefreshToken(req, res, verifyAccess);
     }
-    req.user = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
+    req.user = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET);
 
     next();
   } catch (err) {

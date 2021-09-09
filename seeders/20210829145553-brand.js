@@ -2,34 +2,34 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert("Preference", [
+    await queryInterface.bulkInsert("Brand", [
       {
-        gender_id: "0",
-        age_id: "1",
-        price_id: "2",
+        value: "종근당",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        gender_id: "0",
-        age_id: "2",
-        group_id: "1",
-        price_id: "1",
+        value: "에어러블",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        gender_id: "0",
-        age_id: "3",
-        price_id: "1",
+        value: "찌못미샵",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
       {
-        gender_id: "0",
-        age_id: "4",
-        group_id: "3",
-        price_id: "4",
+        value: "더하다하우스",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
+        value: "패션잡화",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
+        value: "디지털",
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       },
@@ -37,11 +37,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete("Brand", null, {});
   },
 };

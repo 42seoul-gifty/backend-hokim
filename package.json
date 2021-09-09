@@ -6,8 +6,9 @@
   "scripts": {
     "test": "node test.js",
     "start": "nodemon server.js",
-    "makeSeedOne": "node_modules/.bin/sequelize db:migrate && sequelize db:seed --seed  20210829145559-like.js",
+    "makeSeedOne": "node_modules/.bin/sequelize db:migrate && sequelize db:seed --seed  20210829145556-order.js",
     "makeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:all",
+    "removeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:undo:all",
     "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like"
   },
   "repository": {

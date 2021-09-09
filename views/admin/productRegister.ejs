@@ -67,12 +67,15 @@
         <tr>
           <th>이미지</th>
           <td>
-            <textarea
-              id="image"
-              class="form-control"
-              rows="5"
-              placeholder="쉼표(,)로 구분해주세요"
-            ></textarea>
+            <div id="image-list"></div>
+            <div style="float: right; margin-top: 10px">
+              <button class="btn btn-primary" onclick="addImageInput()">
+                추가
+              </button>
+              <button class="btn btn-danger" onclick="deleteImageInput()">
+                삭제
+              </button>
+            </div>
           </td>
         </tr>
         <tr>
@@ -135,7 +138,7 @@
                 multiple="multiple"
               >
                 <% gender.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
+                <option value="<%=el.value%>"><%=el.value%></option>
                 <% }) %>
               </select>
             </div>
@@ -179,7 +182,21 @@
     </div>
   </div>
 </div>
+
 <script>
+  function addImageInput() {
+    $("#image-list ").append(`<input
+    type="text"
+    class="form-control image_url"
+    aria-describedby="basic-addon1"
+    value=""
+   
+  />`);
+  }
+  function deleteImageInput() {
+    $("#image-list input").last().remove();
+  }
+
   (function ($) {
     $(function () {
       window.fs_test = $("#gender").fSelect({
@@ -218,7 +235,12 @@
   })(jQuery);
 
   function save() {
-    let images = $("#image").val().split(",");
+    let images = [];
+    $("#image-list input").each(function (index, item) {
+      images.push({
+        image_url: item.value?.trim(),
+      });
+    });
     let ages = $("#age option:selected")
       .map(function () {
         return this.value;
@@ -236,14 +258,9 @@
     } else if ($("#price option:selected").val() === "가격") {
       alert("가격을 선택해주세요.");
     } else {
-      let retail_price = $("#retail_price").val();
-      if (retail_price === "") {
-        retail_price = 0;
-      }
-      let fee_rate = $("#fee_rate").val();
-      if (fee_rate === "") {
-        fee_rate = 0;
-      }
+      let retail_price =
+        $("#retail_price").val() == "" ? 0 : $("#retail_price").val();
+      let fee_rate = $("#fee_rate").val() == "" ? 0 : $("#fee_rate").val();
       let detail = $("#detail").val().replace(/\n/gi, "<br>");
 
       axios({
@@ -258,13 +275,13 @@
           category: $("#category").val(),
           name: $("#name").val(),
           thumbnail: $("#thumbnail").val(),
-          image: images,
+          images,
           brand: $("#brand").val(),
           link: $("#link").val(),
-          retail_price: retail_price,
-          fee_rate: fee_rate,
+          retail_price,
+          fee_rate,
           description: $("#description").val(),
-          detail: detail,
+          detail,
           gender: genders,
           age: ages,
           price: $("#price option:selected").val(),

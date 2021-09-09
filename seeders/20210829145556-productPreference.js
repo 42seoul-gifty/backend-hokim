@@ -3,59 +3,68 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert(
-      "ProductPreference",
+      "ProductAge",
       [
         {
-          product_id: "204",
-          preference_id: "1",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-
-        {
-          product_id: "203",
-          preference_id: "4",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-
-        {
-          product_id: "102",
-          preference_id: "2",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-
-        {
+          age_id: "1",
           product_id: "101",
-          preference_id: "3",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          product_id: "214",
-          preference_id: "1",
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
 
         {
-          product_id: "213",
-          preference_id: "4",
+          age_id: "2",
+          product_id: "101",
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
 
         {
-          product_id: "112",
-          preference_id: "2",
+          age_id: "1",
+          product_id: "102",
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
 
         {
-          product_id: "111",
-          preference_id: "3",
+          age_id: "3",
+          product_id: "203",
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+      ],
+      {}
+    );
+    await queryInterface.bulkInsert(
+      "ProductGender",
+      [
+        {
+          gender: "남",
+          product_id: "101",
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          gender: "여",
+          product_id: "101",
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+        {
+          gender: "여",
+          product_id: "102",
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+      ],
+      {}
+    );
+    await queryInterface.bulkInsert(
+      "ProductFeature",
+      [
+        {
+          feature_id: "1",
+          product_id: "101",
           createdAt: new Date(Date.now()),
           updatedAt: new Date(Date.now()),
         },
