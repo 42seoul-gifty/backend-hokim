@@ -29,6 +29,12 @@ module.exports = {
     // price
     await queryInterface.bulkInsert("Price", [
       {
+        value: "결제테스트용",
+        retail_price: "100",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
         value: "1~1만 5천원",
         retail_price: "15000",
         createdAt: new Date(Date.now()),
