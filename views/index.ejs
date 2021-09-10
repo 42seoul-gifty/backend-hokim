@@ -25,7 +25,8 @@
     <h1>Hello Gifty</h1>
     <button onclick="kakao()">kakao login</button>
     <button onclick="naver()">naver login</button>
-    <button onclick="pay()">결제하기</button>
+    <button onclick="pay(100)">결제하기</button>
+    <button onclick="pay(150)">위조 결제하기</button>
     <button onclick="location.href='/admin/app'">어드민으로 이동</button>
   </body>
   <script>
@@ -37,17 +38,39 @@
       location.href = "/login/naver/test";
     }
 
-    function pay() {
+    function pay(amount) {
       var IMP = window.IMP; // 생략 가능
+
+      axios({
+        url: "/users/1/orders",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          giver_name: "test",
+          giver_phone: "test",
+          receiver_name: "test",
+          receiver_phone: "test",
+          gender: "1",
+          age: "2",
+          price: "1",
+        },
+      }).then((res) => {
+        openIMP(res.data.merchant_uid, amount);
+      });
+    }
+
+    function openIMP(merchant_uid, amount) {
       IMP.init("<%=process.env.IMP_CODE%>"); // 예: imp00000000
       IMP.request_pay(
         {
           // param
           pg: "html5_inicis",
           pay_method: "card",
-          merchant_uid: "test_" + new Date().getTime(),
+          merchant_uid: merchant_uid,
           name: "결제 테스트",
-          amount: 100,
+          amount: amount,
           buyer_email: "gildong@gmail.com",
           buyer_name: "홍길동",
           buyer_tel: "010-4242-4242",
@@ -55,22 +78,28 @@
           buyer_postcode: "01181",
         },
         function (rsp) {
+          console.log(rsp);
           // callback
           if (rsp.success) {
             //order 데이터베이스에 정보 쌓기
 
-            jQuery
-              .ajax({
-                url: "<%=process.env.SITE_DOMAIN%>/payment/validation?price=100", // 예: https://www.myservice.com/payments/complete
-                method: "POST",
-                data: {
-                  imp_uid: rsp.imp_uid,
-                  merchant_uid: rsp.merchant_uid,
-                },
-              })
-              .done(function (data) {
+            axios({
+              url: `<%=process.env.SITE_DOMAIN%>/payment/validation?price=${amount}`, // 예: https://www.myservice.com/payments/complete
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              data: {
+                imp_uid: rsp.imp_uid,
+                merchant_uid: rsp.merchant_uid,
+              },
+            })
+              .then(function (data) {
                 // 가맹점 서버 결제 API 성공시 로직
                 alert("성공");
+              })
+              .catch((e) => {
+                alert("실패");
               });
           } else {
             alert("실패");

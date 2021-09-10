@@ -16,9 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       postcode: {
         type: DataTypes.STRING,
         comment: "postcode",
-        allowNull: false,
       },
-      address: { type: DataTypes.STRING, comment: "address", allowNull: false },
+      address: { type: DataTypes.STRING, comment: "address" },
       detail_address: { type: DataTypes.STRING, comment: "detail Address" },
       shipment_status: {
         type: DataTypes.STRING,

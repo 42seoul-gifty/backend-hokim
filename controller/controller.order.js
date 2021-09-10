@@ -121,28 +121,28 @@ const getOrderDetail = async (req, res) => {
 
 const postOrder = async (req, res) => {
   try {
-    //TODO : Preference 교차테이블 작성
+    var price = await Price.findOne({
+      id: req.body.price,
+    });
     const order = await Orders.create({
       user_id: req.params.user_id,
       giver_name: req.body.giver_name,
       giver_phone: req.body.giver_phone,
-      payment_amount: req.body.price,
+      payment_amount: price.toJSON().retail_price,
       imp_uid: req.body.imp_uid,
     });
-    const receiver = await Receiver.create(
-      req.body.receiver_name,
-      req.body.receiver_phone,
-      order.toJSON().id,
-      req.body.gender,
-      req.body.age,
-      req.body.group_id,
-      req.body.price
-    );
+    await Receiver.create({
+      name: req.body.receiver_name,
+      phone: req.body.receiver_phone,
+      order_id: order.toJSON().id,
+      gender: req.body.gender,
+      age_id: req.body.age,
+      price_id: req.body.price,
+    });
 
     res.status(200).json({
       success: true,
-      order,
-      receiver,
+      merchant_uid: order.toJSON().id,
     });
   } catch (e) {
     console.log(e);

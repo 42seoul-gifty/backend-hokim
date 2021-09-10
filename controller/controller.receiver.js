@@ -11,6 +11,7 @@ const {
   ProductGender,
   Price,
   Age,
+  Likes,
 } = require("../models");
 const { getFilterdProduct } = require("./controller.product");
 
@@ -62,15 +63,33 @@ const getReceiver = async (req, res) => {
 
 const patchReceiver = async (req, res) => {
   try {
-    await Receiver.update(
+    var receiver = await Receiver.update(
       {
         product_id: req.body.product_id,
         postcode: req.body.postcode,
         address: req.body.address,
-        detailAddress: req.body.address_detail,
+        detail_address: req.body.address_detail,
       },
       { where: { id: req.params.receiver_id } }
     );
+    const likesData = req.body.likes.map((likeProduct) => {
+      return {
+        product_id: likeProduct,
+        receiver_id: req.params.receiver_id,
+        likes: true,
+      };
+    });
+    const dislikesData = req.body.dislikes.map((dislikeProduct) => {
+      return {
+        product_id: dislikeProduct,
+        receiver_id: req.params.receiver_id,
+        likes: false,
+      };
+    });
+
+    await Likes.bulkCreate(likesData);
+    await Likes.bulkCreate(dislikesData);
+
     res.status(200).json({ success: true });
   } catch (e) {
     res.status(400).json({ success: true, error: e.message });
@@ -132,21 +151,6 @@ const getReceiversChoice = async (req, res) => {
   }
 };
 
-const getReceiversLikes = async (req, res) => {
-  try {
-    var products = await findReceiverLikeProduct(req.params.receiver_id);
-    //TODO: 삭제될수도?
-    res.status(200).json({
-      success: true,
-      data: {
-        products,
-      },
-    });
-  } catch (e) {
-    res.status(400).json({ success: true, error: e.message });
-  }
-};
-
 const updateReceiverShipment = async (req, res) => {
   try {
     //TODO:수정이 필요할 수도 있음
@@ -170,6 +174,5 @@ module.exports = {
   getReceiver,
   patchReceiver,
   getReceiversChoice,
-  getReceiversLikes,
   updateReceiverShipment,
 };

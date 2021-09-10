@@ -60,9 +60,10 @@ const getKakaoToken = async (req, res) => {
 
 const getNaverToken = async (req, res) => {
   try {
-    code = req.query.code;
-    state = req.query.state;
-    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${naver_config.redirect}&code=${code}&state=${state}`;
+    console.log("result");
+    code = req.header("Authorization-Code");
+
+    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${naver_config.redirect}&code=${code}`;
 
     const result = await axios({
       method: "get",
@@ -73,6 +74,8 @@ const getNaverToken = async (req, res) => {
       },
     });
 
+    console.log("??");
+    console.log("result");
     //엑세스 토큰으로 사용자 정보 불러오기
     const naverUser = await axios({
       method: "get",
@@ -90,7 +93,11 @@ const getNaverToken = async (req, res) => {
 
     //토큰 생성
     await generateToken(req, res, user);
-    res.status(200).json({ success: true });
+    res.status(200).json({
+      success: true,
+      access_token: req.cookies.access_token,
+      refresh_token: req.cookies.refresh_token,
+    });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
