@@ -29,6 +29,12 @@ router.patch("/shipping", receiver.updateReceiverShipment);
 
 router.get("/user", adminPage.getUserPage);
 router.post("/user/filter", filter.getAdminFilterdUser);
+router.get("/user/detail/:user_id", adminPage.getUserDetailPage);
 router.delete("/user/:user_id", user.deleteUser);
+
+router.get("/order/detail/:order_id", adminPage.getOrderDetailPage);
+
+router.get("/receiver/detail/:receiver_id", adminPage.getReceiverDetailPage);
+router.patch("/receiver/:receiver_id", receiver.patchReceiverAdmin);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { Gender } = require("../config/constant");
+const { Gender, Shipment } = require("../config/constant");
 const {
   Product,
   ProductGender,
@@ -9,8 +9,13 @@ const {
   Category,
   Brand,
   Likes,
+  User,
+  Orders,
+  Receiver,
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
+
+const { getAges, getPrices } = require("../lib/lib.Preference");
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
@@ -121,6 +126,31 @@ const getProductEditPage = async (req, res) => {
   });
 };
 
+const getUserDetailPage = async (req, res) => {
+  const user = await User.findOne({ where: { id: req.params.user_id } });
+  const orders = await Orders.findAll({
+    attributes: {
+      include: [
+        [
+          Sequelize.fn(
+            "date_format",
+            Sequelize.col("Orders.createdAt"),
+            "%Y-%m-%d %H:%i"
+          ),
+          "createdAt",
+        ],
+      ],
+    },
+    where: { user_id: req.params.user_id },
+  });
+  res.render("admin/userDetail", {
+    layout: "layout/layout",
+    csrfToken: req.csrfToken(),
+    user,
+    orders,
+  });
+};
+
 const getUserPage = async (req, res) => {
   res.render("admin/userManage", {
     layout: "layout/layout",
@@ -151,12 +181,84 @@ const getProductRegisterPage = async (req, res) => {
   });
 };
 
+const getOrderDetailPage = async (req, res) => {
+  const order = await Orders.findOne({
+    attributes: {
+      include: [
+        [
+          Sequelize.fn(
+            "date_format",
+            Sequelize.col("Orders.createdAt"),
+            "%Y-%m-%d %H:%i"
+          ),
+          "createdAt",
+        ],
+      ],
+    },
+    where: { id: req.params.order_id },
+  });
+
+  const receivers = await Receiver.findAll({
+    include: [
+      {
+        model: Price,
+        attributes: ["value"],
+      },
+      {
+        model: Age,
+        attributes: ["value"],
+      },
+    ],
+    where: { order_id: req.params.order_id },
+    row: true,
+  });
+  console.log(receivers);
+  res.render("admin/orderDetail", {
+    layout: "layout/layout",
+    csrfToken: req.csrfToken(),
+    order,
+    receivers,
+  });
+};
+
+const getReceiverDetailPage = async (req, res) => {
+  const ages = await getAges();
+  const prices = await getPrices();
+  const receiver = await Receiver.findOne({
+    include: [
+      {
+        model: Price,
+        attributes: ["value"],
+      },
+      {
+        model: Age,
+        attributes: ["value"],
+      },
+    ],
+    where: { id: req.params.receiver_id },
+    row: true,
+  });
+  console.log(Shipment);
+  res.render("admin/receiverDetail", {
+    layout: "layout/layout",
+    csrfToken: req.csrfToken(),
+    genders: Gender,
+    ages,
+    prices,
+    receiver,
+    shipments: Shipment,
+  });
+};
+
 module.exports = {
   getProductDetailPage,
   getAppPage,
   getUserPage,
+  getUserDetailPage,
   getProductPage,
   getReceiverPage,
   getProductEditPage,
   getProductRegisterPage,
+  getOrderDetailPage,
+  getReceiverDetailPage,
 };

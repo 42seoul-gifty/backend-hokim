@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "결제대기",
       comment: "status",
     },
-    payment_amount: {
+    paid_amount: {
       type: DataTypes.INTEGER,
-      comment: "payment_amount",
+      comment: "paid_amount",
       allowNull: false,
     },
     updatedBy: { type: DataTypes.STRING, comment: "last Editor" },

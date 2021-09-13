@@ -79,7 +79,7 @@ const getAdminFilterdUser = async (req, res) => {
             "order_count",
           ],
           [
-            Sequelize.fn("SUM", Sequelize.col("Orders.payment_amount")),
+            Sequelize.fn("SUM", Sequelize.col("Orders.paid_amount")),
             "order_amount",
           ],
         ],

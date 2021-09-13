@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3"><%- include ('./nav.ejs') %></div>
+    <div class="col-9" style="margin-top: 30px">
+      <div id="content">
+        <div style="margin: 3% auto; font-size: 20px; text-align: center">
+          <h2>주문 정보</h2>
+        </div>
+        <table class="table table-hover">
+          <tr>
+            <th>보내는 분 이름</th>
+            <td><%= order.giver_name%></td>
+          </tr>
+          <tr>
+            <th>보내는 분 번호</th>
+            <td><%= order.giver_phone%></td>
+          </tr>
+          <tr>
+            <th>결제금액</th>
+            <td><%= order.paid_amount%></td>
+          </tr>
+          <tr>
+            <th>결제시간</th>
+            <td><%= order.createdAt%></td>
+          </tr>
+          <tr>
+            <th>결제상태</th>
+            <td><%= order.status%></td>
+          </tr>
+
+          <tr>
+            <th>받는분</th>
+            <td>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">번호</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody id="order_list">
+                  <% receivers.forEach((receiver, index)=>{ %>
+                  <tr>
+                    <td scope="col"><%=index + 1%></td>
+                    <td scope="col"><%=receiver.name%></td>
+                    <td scope="col"><%=receiver.phone%></td>
+                    <td scope="col">
+                      <button
+                        type="button"
+                        class="btn btn-light btn-resign"
+                        id="${user.id}"
+                        onclick="location.href='/admin/receiver/detail/<%=receiver.id%>'"
+                      >
+                        수정하기
+                      </button>
+                    </td>
+                  </tr>
+
+                  <% }) %>
+                </tbody>
+              </table>
+
+              <%= %>
+            </td>
+          </tr>
+        </table>
+        <button style="margin: 5% 40%" type="button" class="btn btn-primary">
+          수정하기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

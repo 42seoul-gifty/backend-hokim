@@ -31,7 +31,7 @@ const getOrders = async (req, res) => {
         "giver_name",
         "giver_phone",
         ["createdAt", "order_date"],
-        "payment_amount",
+        "paid_amount",
         "status",
       ],
     });
@@ -95,7 +95,7 @@ const getOrderDetail = async (req, res) => {
         "giver_name",
         "giver_phone",
         ["createdAt", "order_date"],
-        "payment_amount",
+        "paid_amount",
         "status",
       ],
       where: { id: req.params.order_id, user_id: req.params.user_id },
@@ -127,7 +127,7 @@ const postOrder = async (req, res) => {
       user_id: req.params.user_id,
       giver_name: req.body.giver_name,
       giver_phone: req.body.giver_phone,
-      payment_amount: price.toJSON().retail_price,
+      paid_amount: price.toJSON().retail_price,
       imp_uid: req.body.imp_uid,
     });
     await Receiver.create({
