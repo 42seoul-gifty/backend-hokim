@@ -1,0 +1,242 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3"><%- include ('./nav.ejs') %></div>
+    <div class="col-9" style="margin-top: 30px">
+      <div id="content">
+        <div style="margin: 3% auto; font-size: 20px; text-align: center">
+          <h2>받는 분 정보</h2>
+        </div>
+        <div id="id" hidden> <%= receiver.id%> </div>
+        <table class="table table-hover">
+          <tr>
+            <th>이름</th>
+            <td>
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                aria-describedby="basic-addon1"
+                value="<%= receiver.name%>"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>번호</th>
+            <td>
+              <input
+                id="phone"
+                type="text"
+                class="form-control"
+                aria-describedby="basic-addon1"
+                value="<%= receiver.phone%>"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>성별</th>
+            <td>
+
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                id="gender"
+              >
+              <% genders.forEach((gender, index)=>{ %>
+                <option value="<%=gender.id%>"
+                  <% if (gender.value==receiver.gender) { %> 
+                   selected
+                   <% }%> 
+                  ><%=gender.value%></option>
+                <% }) %>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <th>나이</th>
+            <td>
+
+            <select
+            class="form-select"
+            aria-label="Default select example"
+            id="age"
+          >
+          <% ages.forEach((age, index)=>{ %>
+            <option value="<%=age.id%>"
+              <% if (age.value==receiver.Age.value) { %> 
+               selected
+               <% }%> 
+              ><%=age.value%></option>
+            <% }) %>
+          </select>
+
+
+          </td>
+          </tr>
+
+          <tr>
+            <th>금액대</th>
+            <td>
+              <select
+              class="form-select"
+              aria-label="Default select example"
+              id="price"
+            >
+            <% prices.forEach((price, index)=>{ %>
+              <option value="<%=price.id%>"
+                <% if (price.value==receiver.Price.value) { %> 
+                 selected
+                 <% }%> 
+                ><%=price.value%></option>
+              <% }) %>
+            </select>
+            
+            
+            </td>
+          </tr>
+
+          <tr>
+            <th>선택된 상품</th>
+            <td>
+              <input
+              id="product"
+              type="text"
+              class="form-control"
+              aria-describedby="basic-addon1"
+              value="<%=receiver.product_id%>"
+            />
+              <!-- <div class="input-group mb-3">
+                <input
+                  id="product"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="basic-addon1"
+                  placeholder="이름으로 검색하세요"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text" id="basic-addon2">검색</span>
+                </div>
+            </div> -->
+            </td>
+          </tr>
+
+          <tr>
+            <th>주소</th>
+            <td>
+              <input
+                id="address"
+                type="text"
+                class="form-control"
+                aria-describedby="basic-addon1"
+                value="<%= receiver.address%>"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>상세주소</th>
+            <td>
+              <input
+                id="detail_address"
+                type="text"
+                class="form-control"
+                aria-describedby="basic-addon1"
+                value="<%= receiver.detail_address%>"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>우편번호</th>
+            <td>
+              <input
+                id="postcode"
+                type="text"
+                class="form-control"
+                aria-describedby="basic-addon1"
+                value="<%= receiver.postcode%>"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <th>배송상태</th>
+            <td>
+            
+              <select
+              class="form-select"
+              aria-label="Default select example"
+              id="shipment"
+            >
+            <% shipments.forEach((shipment, index)=>{ %>
+              <option value="<%=shipment.value%>"
+                <% if (shipment.value==receiver.shipment_status) { %> 
+                 selected
+                 <% }%> 
+                ><%=shipment.value%></option>
+              <% }) %>
+            </select>
+            
+            </td>
+          </tr>
+        </table>
+        <button style="margin: 5% 40%" type="button" class="btn btn-primary" onclick="save()">
+          저장하기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+
+
+  function save(){
+
+    $("select").each(function (index, item) {
+      if (item.className.includes("changed"))
+        changed.push({
+          id: item.id,
+          value: item.value?.trim(),
+        });
+    });
+
+
+    axios({
+      url: `/admin/receiver/${$("#id").text()}`,
+      method: "patch",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        name: $("#name").val(),
+        phone: $("#phone").val(),
+        address: $("#address").val(),
+        detail_address: $("#detail_address").val(),
+        postcode: $("#postcode").val(),
+
+
+        
+        gender: $("#gender").val(),
+        age_id: $("#age").val(),
+        price_id: $("#price").val(),
+        shipment_status: $("#shipment").val(),
+
+        _csrf: $("#_csrf").val(),
+      }),
+    })
+      .then((res) => {
+        const id = $("#id").text()
+        alert(`제품이 수정되었습니다.`);
+        location.href = `/admin/receiver/detail/${id}`;
+      })
+      .catch((err) => {
+        alert("제품을 수정하지 못했습니다.");
+        console.log(err.error);
+      });
+  }
+
+
+
+
+</script>

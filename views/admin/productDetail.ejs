@@ -23,6 +23,7 @@
                 <div style="margin: 3% auto; font-size: 20px; text-align: center;">상품수정</div>
                 <table class="table table-hover">
                     <tr><th>상품코드</th><td><%= product.id %></td></tr>
+                    <tr><th>상태</th><td><%= product.deleted == 1 ? "판매중지" : "판매중"%></td></tr>
                     <tr><th>카테고리</th><td><%= product.Category.value %></td></tr>
                     <tr><th>브랜드</th><td><%= product.Brand.value %></td></tr>
                     <tr><th>썸네일</th><td><img src="<%= product.thumbnail%>" alt="thumbnail" style="width:100px; height: 100px;"/></td></tr>

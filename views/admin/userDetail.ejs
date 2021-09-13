@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3"><%- include ('./nav.ejs') %></div>
+    <div class="col-9" style="margin-top: 30px">
+      <div id="content">
+        <div style="margin: 3% auto; font-size: 20px; text-align: center">
+          <h2>유저 정보</h2>
+        </div>
+        <table class="table table-hover">
+          <tr>
+            <th>이름</th>
+            <td><%= user.nickname %></td>
+          </tr>
+          <tr>
+            <th>이메일</th>
+            <td><%= user.email %></td>
+          </tr>
+          <tr>
+            <th>전화번호</th>
+            <td><%= user.phone %></td>
+          </tr>
+          <tr>
+            <th>로그인타입</th>
+            <td><%= user.login_type %></td>
+          </tr>
+          <tr>
+            <th>상태</th>
+            <td><%= user.deleted == 1 ? "탈퇴됨":"가입됨" %></td>
+          </tr>
+          <tr>
+            <th>주문 내역</th>
+            <td>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">imp_uid</th>
+                    <th scope="col">주문일</th>
+                    <th scope="col">주문금액</th>
+                    <th scope="col">결제상태</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody id="order_list">
+                  <% orders.forEach((order, index)=>{ %>
+                  <tr>
+                    <td scope="col"><%=index + 1%></td>
+                    <td scope="col">
+                      <p
+                        onclick="location.href='/admin/order/detail/<%=order.id%>'"
+                      >
+                        <%=order.imp_uid%>
+                      </p>
+                    </td>
+                    <td scope="col"><%=order.createdAt%></td>
+                    <td scope="col"><%=order.paid_amount%></td>
+                    <td scope="col"><%=order.status%></td>
+                    <td scope="col">
+                      <button
+                        type="button"
+                        class="btn btn-light btn-resign"
+                        id="<%=order.imp_uid%>"
+                      >
+                        환불
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+
+              <%= %>
+            </td>
+          </tr>
+        </table>
+        <button style="margin: 5% 40%" type="button" class="btn btn-primary">
+          수정하기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

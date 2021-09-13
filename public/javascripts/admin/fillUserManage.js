@@ -40,7 +40,9 @@ function userSort(value) {
           var dataHtml = "";
           $.each(data, function (index, user) {
             dataHtml += `<tr> <td scope="col"><p>${user.id}</p></td>
-                          <td scope="col"><p>${user.nickname}</p></td>
+                          <td scope="col">
+                          <p onclick="location.href='/admin/user/detail/${user.id}'">${user.nickname}
+                          </p></td>
                           <td scope="col"><p>${user.createdAt}</p></td>
                           <td scope="col"><p>${user.order_count}</p></td>
                           <td scope="col"><p>${user.order_amount}</p></td>

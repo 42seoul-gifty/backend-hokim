@@ -66,7 +66,7 @@ const checkPaymentValidation = async (req, res) => {
     order = order.toJSON();
     const { amount, status } = paymentData;
     console.log(amount, order);
-    if (amount == order.payment_amount) {
+    if (amount == order.paid_amount) {
       await Orders.update(
         { status: "결제완료" },
         { where: { id: merchant_uid } }
@@ -94,7 +94,7 @@ const checkPaymentValidation = async (req, res) => {
       try {
         const refundResult = await refund(access_token, paymentData);
         console.log(refundResult);
-        refundStatus = "위조결제환불";
+        refundStatus = "환불완료";
       } catch (e) {
         refundStatus = "위조결제";
       }

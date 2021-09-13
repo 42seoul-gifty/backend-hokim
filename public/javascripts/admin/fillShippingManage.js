@@ -34,10 +34,12 @@ function receiverSort(start, end) {
           var dataHtml = "";
           $.each(data, function (index, user) {
             dataHtml += `<tr>
-            <td scope="col">${user.id}</td>
-            <td scope="col">${user.gender}</td>
-            <td scope="col">${user.Age.value}</td>
-            <td scope="col">${user.Price.value}</td>
+            <td scope="col">
+            ${user.id}</td>
+            <td scope="col"><p onclick="location.href='/admin/receiver/detail/${
+              user.id
+            }'">${user.name}
+            </p></td>
             <td scope="col">${user.phone}</td>
             <td scope="col">${user.address}</td>
             <td scope="col">${user.detail_address}</td>
