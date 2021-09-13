@@ -2,54 +2,47 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert(
-      "Likes",
-      [
-        {
-          likes: true,
-          receiver_id: 1,
-          product_id: 101,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          likes: true,
-          receiver_id: 1,
-          product_id: 203,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          likes: false,
-          receiver_id: 1,
-          product_id: 102,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          likes: true,
-          receiver_id: 2,
-          product_id: 204,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          likes: false,
-          receiver_id: 2,
-          product_id: 101,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          likes: true,
-          receiver_id: 2,
-          product_id: 102,
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-      ],
-      {}
-    );
+    const makeRandom = (min, max) => {
+      return Math.floor(Math.random() * (max - min) + min);
+    };
+    const detail = [];
+
+    for (var i = 0; i < 10; i++) {
+      detail.push({
+        product_id: "10" + i,
+        likes: makeRandom(0, 10) > 5 ? true : false,
+        receiver_id: makeRandom(1, 5),
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+
+      detail.push({
+        product_id: "11" + i,
+        likes: makeRandom(0, 10) > 5 ? true : false,
+        receiver_id: makeRandom(1, 5),
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+
+      detail.push({
+        product_id: "21" + i,
+        likes: makeRandom(0, 10) > 5 ? true : false,
+        receiver_id: makeRandom(1, 5),
+
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+
+      detail.push({
+        product_id: "22" + i,
+        likes: makeRandom(0, 10) > 5 ? true : false,
+        receiver_id: makeRandom(1, 5),
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+    }
+
+    await queryInterface.bulkInsert("Likes", detail, {});
   },
 
   down: async (queryInterface, Sequelize) => {

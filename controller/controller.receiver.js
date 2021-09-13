@@ -2,6 +2,7 @@ const {
   findReceiverLikeProduct,
   findFilteredProduct,
   convertImageUrl,
+  productIncludeFilter,
 } = require("../lib/lib.Product");
 const {
   Receiver,
@@ -109,25 +110,13 @@ const getReceiversChoice = async (req, res) => {
     });
     receiver = receiver.toJSON();
 
+    const include = productIncludeFilter(
+      receiver.gender,
+      receiver.price_id,
+      receiver.age_id
+    );
     var products = await Product.findAll({
-      include: [
-        {
-          model: ProductGender,
-          attributes: [],
-          where: receiver.gender ? { gender: receiver.gender } : {},
-        },
-        {
-          model: Price,
-          attributes: [],
-          where: receiver.price_id ? { id: receiver.price_id } : {},
-        },
-        {
-          model: Age,
-          attributes: [],
-          where: receiver.age_id ? { id: receiver.age_id } : {},
-        },
-        { model: ProductImage, attributes: ["image_url", "id"] },
-      ],
+      include,
       attributes: [
         "id",
         "name",

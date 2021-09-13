@@ -1,64 +1,68 @@
 "use strict";
+const makeRandom = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+};
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert(
-      "ProductAge",
-      [
-        {
-          age_id: "1",
-          product_id: "101",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
+    const detailAge = [];
+    const detailGender = [];
 
-        {
-          age_id: "2",
-          product_id: "101",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
+    for (var i = 0; i < 10; i++) {
+      detailAge.push({
+        age_id: makeRandom(1, 5),
+        product_id: "10" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailAge.push({
+        age_id: makeRandom(1, 5),
+        product_id: "11" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailAge.push({
+        age_id: makeRandom(1, 5),
+        product_id: "21" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailAge.push({
+        age_id: makeRandom(1, 5),
+        product_id: "22" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
 
-        {
-          age_id: "1",
-          product_id: "102",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
+      detailGender.push({
+        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        product_id: "10" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailGender.push({
+        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        product_id: "11" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailGender.push({
+        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        product_id: "21" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+      detailGender.push({
+        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        product_id: "22" + i,
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      });
+    }
 
-        {
-          age_id: "3",
-          product_id: "203",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-      ],
-      {}
-    );
-    await queryInterface.bulkInsert(
-      "ProductGender",
-      [
-        {
-          gender: "남",
-          product_id: "101",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          gender: "여",
-          product_id: "101",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-        {
-          gender: "여",
-          product_id: "102",
-          createdAt: new Date(Date.now()),
-          updatedAt: new Date(Date.now()),
-        },
-      ],
-      {}
-    );
+    await queryInterface.bulkInsert("ProductAge", detailAge, {});
+    await queryInterface.bulkInsert("ProductGender", detailGender, {});
+
     await queryInterface.bulkInsert(
       "ProductFeature",
       [
