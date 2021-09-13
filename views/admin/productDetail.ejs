@@ -44,9 +44,9 @@
                     </td></tr>
                     <tr><th>소비자가격</th><td><%= product.retail_price %></td></tr>
                     <tr><th>마진율</th><td><%= product.fee_rate %></td></tr>
-                    <tr><th>노출수</th><td><%= product.exposes? product.exposes:'0'  %></td></tr>
-                    <tr><th>좋아요수</th><td><%= product.likes? product.likes: '0' %></td></tr>
-                    <tr><th>주문수</th><td><%= product.orders? product.orders : '0' %></td></tr>
+                    <tr><th>노출수</th><td><%= count.view_count? count.view_count:'0'  %></td></tr>
+                    <tr><th>좋아요수</th><td><%= count.like_count? count.like_count: '0' %></td></tr>
+                    <tr><th>주문수</th><td><%= count.orders? product.orders : '0' %></td></tr>
                     <tr><th>성별</th><td>
                       <% 
                       product.ProductGenders.forEach((gender)=>{ %>

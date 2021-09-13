@@ -41,7 +41,9 @@ function receiverSort(start, end) {
             <td scope="col">${user.phone}</td>
             <td scope="col">${user.address}</td>
             <td scope="col">${user.detail_address}</td>
-            <td scope="col">${user.product ? user.product : "-"}</td>
+            <td scope="col">${
+              user?.Product?.name ? user.Product.name : "-"
+            }</td>
             <td scope="col">
               <select class="form-select" aria-label="Default select example" id="${
                 user.id
