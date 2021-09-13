@@ -1,5 +1,3 @@
-const pricePrefix = "(결제금액: ";
-
 function createUneditableOptionTable(title, name, data) {
   var innerText = `<table id="select" class="table" style="margin-top: 10px;">
 	  <tr><th>${title}</th></tr>
@@ -40,9 +38,6 @@ function createOptionTable(title, name, data) {
 	  <ul class="list-group" type=${name}>
 	  `;
   data.forEach((elem) => {
-    if (name == "price")
-      elem.value = elem.value + pricePrefix + `${elem.retail_price})`;
-
     innerText += `	 
 		 <li class="list-group-item" >
 		  <div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
@@ -55,8 +50,9 @@ function createOptionTable(title, name, data) {
 				</div> 
 			</div>
 			<div class="col-auto my-1">
-			  <input class="form-control" name=${title} type="text" value="" hidden
-        ${name == "price" ? "placeholder='금액대,결제금액'" : ""}
+			  <input class="form-control" name=${title} 
+        type=${name == "price" ? "number" : "text"} value="" hidden
+     
         >
 			</div> 
 			
@@ -69,9 +65,7 @@ function createOptionTable(title, name, data) {
 
   innerText += ` 
 	  <li class="list-group-item" >
-		<input class="form-control" name=${title} type="text" value="" placeholder="${title}을(를) 입력하세요. ${
-    name == "price" ? "(금액대,결제금액)" : ""
-  }" >
+		<input class="form-control" name=${title} type="text" value="" placeholder="${title}을(를) 입력하세요." >
 		<button  class="btn btn-success form-control btn-add" >추가</button>
 		
 	  </li>
@@ -105,16 +99,6 @@ function editButtonClick(e) {
     e.target.innerHTML = "확인";
   } else {
     if (value != "") {
-      if ($(e.target).closest("ul").attr("type") == "price") {
-        if (!checkPriceInput(value)) {
-          alert("입력값이 잘못되었습니다.");
-          return;
-        }
-        value =
-          value.split(",")[0] +
-          pricePrefix +
-          `${parseInt(value.split(",")[1])})`;
-      }
       const label = $(e.target).closest("li").find("label")[0];
       label.innerHTML = value;
       $(label).addClass(" edited");
@@ -128,15 +112,6 @@ function addOption(e) {
   var input = $(e.target).closest("li").find("input")[0].value;
   const name = $(ul).attr("type");
 
-  if (name == "price") {
-    if (!checkPriceInput(input)) {
-      alert("입력값이 잘못되었습니다.");
-      return;
-    }
-    input =
-      input.split(",")[0] + pricePrefix + `${parseInt(input.split(",")[1])})`;
-  }
-
   $(ul).find("li").last().before(`
     <li class="list-group-item" >
      <div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
@@ -147,8 +122,8 @@ function addOption(e) {
   		 </div>
   	 </div>
   	 <div class="col-auto my-1">
-  	   <input class="form-control" name=${name} type="text" value="" hidden
-       ${name == "price" ? "placeholder='금액대,결제금액'" : ""}
+  	   <input class="form-control" name=${name} type="text" value=""
+       type=${name == "price" ? "number" : "text"} hidden
        >
   	 </div>
 

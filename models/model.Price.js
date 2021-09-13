@@ -4,13 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       value: {
-        type: DataTypes.STRING,
-        comment: "price name",
-        allowNull: false,
-      },
-      retail_price: {
         type: DataTypes.INTEGER,
-        comment: "retail price",
+        comment: "price name",
         allowNull: false,
       },
       updatedBy: { type: DataTypes.STRING, comment: "last Editor" },

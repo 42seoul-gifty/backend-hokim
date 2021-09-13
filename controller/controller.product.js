@@ -1,4 +1,4 @@
-const { convertImageUrl } = require("../lib/lib.Product");
+const { convertImageUrl, productIncludeFilter } = require("../lib/lib.Product");
 const {
   Product,
   Brand,
@@ -11,26 +11,16 @@ const {
 } = require("../models");
 
 const getFilterdProduct = async (req, res) => {
+  const include = productIncludeFilter(
+    req.query.gender,
+    req.query.price,
+    req.query.age
+  );
+
   try {
     var products = await Product.findAll({
-      include: [
-        {
-          model: ProductGender,
-          attributes: [],
-          where: req.query.gender ? { gender: req.query.gender } : {},
-        },
-        {
-          model: Price,
-          attributes: [],
-          where: req.query.price ? { id: req.query.price } : {},
-        },
-        {
-          model: Age,
-          attributes: [],
-          where: req.query.age ? { id: req.query.age } : {},
-        },
-        { model: ProductImage, attributes: ["image_url", "id"] },
-      ],
+      include,
+
       attributes: [
         "id",
         "name",
@@ -39,6 +29,7 @@ const getFilterdProduct = async (req, res) => {
         "thumbnail",
         ["retail_price", "price"],
       ],
+      where: {},
     });
     products = products.map((product) => {
       product = product.toJSON();

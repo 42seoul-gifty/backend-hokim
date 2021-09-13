@@ -68,10 +68,9 @@ const getAllCategory = async (req, res) => {
   }
 };
 
-const updateCategory = async (model, newData, type) => {
+const updateCategory = async (model, newData) => {
   await newData.forEach(async (elem) => {
     const data = { value: elem.value };
-    if (type == "price") data["retail_price"] = elem.retail_price;
 
     if (elem.label == "removed")
       await model.destroy({ where: { id: elem.origin } });
@@ -86,7 +85,7 @@ const updateCategory = async (model, newData, type) => {
 const patchAllCategory = async (req, res) => {
   try {
     await updateCategory(Age, req.body.age);
-    await updateCategory(Price, req.body.price, "price");
+    await updateCategory(Price, req.body.price);
     console.log(req.body.feature);
 
     await updateCategory(Feature, req.body.feature);

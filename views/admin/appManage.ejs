@@ -62,14 +62,8 @@
        else  if(item.className.includes('category'))
        category.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
       else if(item.className.includes('price'))
-      {
-        const value = item.textContent?.trim().split("(결제금액: ")[0]
-        const retail_price = parseInt(item.textContent?.trim().split("(결제금액: ")[1])
-        const dataValue = {value, label, retail_price, origin:item.getAttribute('origin')?.trim()}
-        console.log(dataValue)
-        price.push(dataValue)
-        console.log(price)
-      } 
+      price.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+       
     });
     console.log(price)
  axios({ url: "/admin/cateories", method: "patch", data:{
