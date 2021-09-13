@@ -8,7 +8,9 @@ const {
   Feature,
   Category,
   Brand,
+  Likes,
 } = require("../models");
+const Sequelize = require("../models").Sequelize;
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
@@ -51,10 +53,35 @@ const getProductDetailPage = async (req, res) => {
       ],
       where: { id: req.params.product_id },
     });
+    const count = await Product.findOne({
+      attributes: [
+        [Sequelize.fn("COUNT", Sequelize.col("Likes.likes")), "view_count"],
+        [
+          Sequelize.fn(
+            "SUM",
+            Sequelize.literal("CASE WHEN Likes.likes = 1 THEN 1 ELSE 0 END")
+          ),
+          "like_count",
+        ],
+        [
+          Sequelize.fn(
+            "SUM",
+            Sequelize.literal("CASE WHEN Likes.likes = 0 THEN 1 ELSE 0 END")
+          ),
+          "dislike_count",
+        ],
+      ],
 
+      include: [{ model: Likes, attributes: [] }],
+      where: { id: req.params.product_id },
+      group: ["Product.id"],
+      distinct: true,
+    });
+    console.log(count.toJSON());
     res.render("admin/productDetail", {
       layout: "layout/layout",
       product: product,
+      count: count.toJSON(),
       csrfToken: req.csrfToken(),
     });
   } catch (e) {
@@ -80,6 +107,7 @@ const getProductEditPage = async (req, res) => {
     ],
     where: { id: req.params.product_id },
   });
+
   res.render("admin/productEdit", {
     layout: "layout/layout",
     product: product,

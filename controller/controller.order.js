@@ -1,6 +1,5 @@
-const { findOrCreate } = require("../lib/lib.Preference");
-const { findOneProduct, convertImageUrl } = require("../lib/lib.Product");
-const { createReciever } = require("../lib/lib.Receiver");
+const { convertImageUrl } = require("../lib/lib.Product");
+
 const {
   Orders,
   Receiver,

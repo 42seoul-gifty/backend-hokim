@@ -86,7 +86,7 @@ function filter() {
           $("#product_list").empty();
           var dataHtml = "";
           const products = res.data.products;
-
+          console.log(products);
           $.each(products, function (index, product) {
             dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>
             <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${product.id}','상품수정','width=900,height=1000,left=500,top=50')">${product.name}</p></td>
@@ -94,9 +94,9 @@ function filter() {
             <td scope="col"><p><img src="${product.thumbnail}" alt="" style="width:100px; height: 100px;"/></p></td>
             <td scope="col"><p>${product.description}</p></td>
             <td scope="col"><p>${product.Brand?.value}</p></td>
-            <td scope="col"><p>${product.exposes}</p></td>
-            <td scope="col"><p>${product.likes}</p></td>
-            <td scope="col"><p>${product.orders}</p></td>
+            <td scope="col"><p>${product.view_count}</p></td>
+            <td scope="col"><p>${product.like_count}</p></td>
+            <td scope="col"><p>${res.data.order[index].order_count}</p></td>
             <td scope="col"><button type="button" class="btn btn-light" id='${product.id}' >삭제</button></td></tr>`;
           });
           $("#product_list").append(dataHtml);
@@ -112,7 +112,7 @@ function filter() {
           });
         })
         .catch((err) => {
-          console.log(err.error);
+          console.log(err.message);
         });
     },
   });

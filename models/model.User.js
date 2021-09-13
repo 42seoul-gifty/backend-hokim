@@ -23,14 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       token: { type: DataTypes.STRING, comment: "Login Token" },
       updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
-      createdAt: {
-        type: DataTypes.DATE,
-        get() {
-          return moment(this.getDataValue("createdAt")).format(
-            "YYYY/MM/DD h:mm:ss"
-          );
-        },
-      },
       deleted: { type: DataTypes.BOOLEAN, defaultValue: 0 },
     },
     {

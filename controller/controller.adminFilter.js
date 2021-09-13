@@ -7,21 +7,54 @@ const {
   Feature,
   Brand,
   Category,
+  Orders,
+  Likes,
 } = require("../models");
+const Sequelize = require("../models").Sequelize;
 
 const getAdminFilterdProduct = async (req, res) => {
   try {
     const products = await Product.findAll({
+      attributes: {
+        include: [
+          [Sequelize.fn("COUNT", Sequelize.col("Likes.likes")), "view_count"],
+          [
+            Sequelize.fn(
+              "SUM",
+              Sequelize.literal("CASE WHEN Likes.likes = 1 THEN 1 ELSE 0 END")
+            ),
+            "like_count",
+          ],
+        ],
+      },
+
       include: [
-        { model: Price, attributes: ["id", "value"] },
-        { model: Age, attributes: ["id", "value"] },
-        { model: Feature, attributes: ["id", "value"] },
         { model: Brand, attributes: ["id", "value"] },
+        { model: Likes, attributes: [] },
         { model: Category, attributes: ["id", "value"] },
       ],
+      group: ["Product.id"],
     });
 
-    res.status(200).json({ success: true, products });
+    const order = await Product.findAll({
+      attributes: [
+        "id",
+        [
+          Sequelize.fn(
+            "SUM",
+            Sequelize.literal(
+              "CASE WHEN Receivers.product_id is not null THEN 1 ELSE 0 END"
+            )
+          ),
+          "order_count",
+        ],
+      ],
+
+      include: [{ model: Receiver, attributes: [] }],
+      group: ["Product.id"],
+    });
+
+    res.status(200).json({ success: true, products, order });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -30,7 +63,36 @@ const getAdminFilterdProduct = async (req, res) => {
 
 const getAdminFilterdUser = async (req, res) => {
   try {
-    const user = await User.findAll({});
+    const user = await User.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn(
+              "date_format",
+              Sequelize.col("User.createdAt"),
+              "%Y-%m-%d %H:%i"
+            ),
+            "createdAt",
+          ],
+          [
+            Sequelize.fn("COUNT", Sequelize.col("Orders.user_id")),
+            "order_count",
+          ],
+          [
+            Sequelize.fn("SUM", Sequelize.col("Orders.payment_amount")),
+            "order_amount",
+          ],
+        ],
+      },
+      include: [
+        {
+          model: Orders,
+          attributes: [],
+        },
+      ],
+      group: ["User.id"],
+      raw: true,
+    });
     res.status(200).json({ success: true, user });
   } catch (e) {
     console.log(e);
@@ -44,6 +106,7 @@ const getAdminFilterdReceiver = async (req, res) => {
       include: [
         { model: Price, attributes: ["id", "value"] },
         { model: Age, attributes: ["id", "value"] },
+        { model: Product, attributes: ["id", "name"] },
         { model: Feature, attributes: ["id", "value"] },
       ],
     });

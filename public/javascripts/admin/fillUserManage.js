@@ -35,15 +35,15 @@ function userSort(value) {
       })
         .then((res) => {
           const data = res.data.user;
-
+          console.log(data);
           $("#user_list").empty();
           var dataHtml = "";
           $.each(data, function (index, user) {
             dataHtml += `<tr> <td scope="col"><p>${user.id}</p></td>
                           <td scope="col"><p>${user.nickname}</p></td>
                           <td scope="col"><p>${user.createdAt}</p></td>
-                          <td scope="col"><p>${user.count}</p></td>
-                          <td scope="col"><p>${user.sum}</p></td>
+                          <td scope="col"><p>${user.order_count}</p></td>
+                          <td scope="col"><p>${user.order_amount}</p></td>
                           <td scope="col">
                           <button
                             type="button"
