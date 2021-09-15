@@ -82,7 +82,6 @@ const getProductDetailPage = async (req, res) => {
       group: ["Product.id"],
       distinct: true,
     });
-    console.log(count.toJSON());
     res.render("admin/productDetail", {
       layout: "layout/layout",
       product: product,
@@ -212,7 +211,6 @@ const getOrderDetailPage = async (req, res) => {
     where: { order_id: req.params.order_id },
     row: true,
   });
-  console.log(receivers);
   res.render("admin/orderDetail", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),
@@ -238,7 +236,6 @@ const getReceiverDetailPage = async (req, res) => {
     where: { id: req.params.receiver_id },
     row: true,
   });
-  console.log(Shipment);
   res.render("admin/receiverDetail", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),

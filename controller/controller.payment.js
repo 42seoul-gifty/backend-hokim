@@ -3,7 +3,7 @@ const { imp_config, domain } = require("../config/config");
 
 const { Orders } = require("../models");
 
-const ageIMPAccessToken = async () => {
+const getIMPAccessToken = async () => {
   const getToken = await axios({
     url: "https://api.iamport.kr/users/getToken",
     method: "post", // POST method
@@ -56,7 +56,7 @@ const checkPaymentValidation = async (req, res) => {
   var paymentData;
   try {
     //액세스 토큰(access token) 발급 받기
-    access_token = await ageIMPAccessToken();
+    access_token = await getIMPAccessToken();
     // imp_uid로 아임포트 서버에서 결제 정보 조회
     paymentData = await getIMPData(access_token, req.body.imp_uid);
 
@@ -65,7 +65,7 @@ const checkPaymentValidation = async (req, res) => {
     }); // DB에 결제 정보 저장
     order = order.toJSON();
     const { amount, status } = paymentData;
-    console.log(amount, order);
+
     if (amount == order.paid_amount) {
       await Orders.update(
         { status: "결제완료" },
@@ -91,13 +91,7 @@ const checkPaymentValidation = async (req, res) => {
     } else {
       // 결제금액 불일치. 위/변조 된 결제
       var refundStatus;
-      try {
-        const refundResult = await refund(access_token, paymentData);
-        console.log(refundResult);
-        refundStatus = "환불완료";
-      } catch (e) {
-        refundStatus = "위조결제";
-      }
+      refundStatus = "위조결제";
       await Orders.update(
         { status: refundStatus },
         { where: { id: merchant_uid } }
