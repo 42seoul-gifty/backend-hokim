@@ -32,14 +32,11 @@ const getAdminFilterdProduct = async (req, res) => {
     const condition = req.body.category.map((elem) => {
       return { category_id: elem };
     });
-
+    include.push(
+      { model: Receiver, attributes: [] },
+      { model: Likes, attributes: [] }
+    );
     const products = await Product.findAll({
-      include,
-      group: ["Product.id"],
-      where: condition.length == 0 ? {} : { [Op.or]: condition },
-    });
-
-    const count = await Product.findAll({
       attributes: {
         include: [
           [Sequelize.fn("COUNT", Sequelize.col("Likes.likes")), "view_count"],
@@ -63,15 +60,12 @@ const getAdminFilterdProduct = async (req, res) => {
           ],
         ],
       },
-      include: [
-        { model: Receiver, attributes: [] },
-        { model: Likes, attributes: [] },
-      ],
+      include,
       group: ["Product.id"],
       where: condition.length == 0 ? {} : { [Op.or]: condition },
     });
 
-    res.status(200).json({ success: true, products, count });
+    res.status(200).json({ success: true, products });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -80,7 +74,6 @@ const getAdminFilterdProduct = async (req, res) => {
 
 const getAdminFilterdUser = async (req, res) => {
   try {
-    console.log(req.query);
     const orderValue = [];
     if (req.query.value && req.query.order)
       orderValue.push([sequelize.literal(req.query.value), req.query.order]);
@@ -124,10 +117,9 @@ const getAdminFilterdUser = async (req, res) => {
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
-    console.log(req.body);
     const startDate =
       !req.body.start || req.body.start == ""
-        ? new Date(1995 - 01 - 01)
+        ? new Date("1995-01-01")
         : req.body.start;
     const endDate =
       !req.body.end || req.body.end == "" ? getKoreaTime() : req.body.end;
