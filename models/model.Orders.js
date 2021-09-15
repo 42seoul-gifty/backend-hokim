@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
       comment: "giver Name",
       allowNull: false,
     },
+    merchant_uid: { type: DataTypes.STRING, comment: "merchant_uid" },
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "결제대기",
+      comment: "status",
+    },
     imp_uid: { type: DataTypes.STRING, comment: "imp_uid" },
     status: {
       type: DataTypes.STRING,

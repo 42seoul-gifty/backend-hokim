@@ -1,3 +1,4 @@
+const { getKoreaTime } = require("../lib/lib.getKoreaTime");
 const { convertImageUrl } = require("../lib/lib.Product");
 
 const {
@@ -123,10 +124,15 @@ const postOrder = async (req, res) => {
     var price = await Price.findOne({
       where: { id: req.body.price },
     });
+
+    const merchant_uid =
+      req.params.user_id + "-" + getKoreaTime().toISOString();
+
     const order = await Orders.create({
       user_id: req.params.user_id,
       giver_name: req.body.giver_name,
       giver_phone: req.body.giver_phone,
+      merchant_uid,
       paid_amount: price.toJSON().value,
       imp_uid: req.body.imp_uid,
     });
@@ -141,7 +147,7 @@ const postOrder = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      merchant_uid: order.toJSON().id,
+      merchant_uid,
     });
   } catch (e) {
     console.log(e);

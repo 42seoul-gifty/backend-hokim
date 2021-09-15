@@ -50,6 +50,7 @@ module.exports = {
         giver_name: name[makeRandom(0, 4)],
         giver_phone: "010-0000-0000",
         paid_amount: makeRandom(1, 5) * 1000,
+        merchant_uid: "merchant-" + imp_uid[i],
         imp_uid: imp_uid[i],
         user_id: id[makeRandom(0, 4)],
         status: "결제완료",
