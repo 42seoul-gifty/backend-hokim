@@ -121,7 +121,7 @@ const getOrderDetail = async (req, res) => {
 const postOrder = async (req, res) => {
   try {
     var price = await Price.findOne({
-      id: req.body.price,
+      where: { id: req.body.price },
     });
     const order = await Orders.create({
       user_id: req.params.user_id,
