@@ -53,7 +53,7 @@ const getAllCategory = async (req, res) => {
     const price = await getPrices();
     const feature = await getFeatures();
     const category = await getCategories();
-    console.log(feature);
+
     res.json({
       data: {
         age,
@@ -86,7 +86,6 @@ const patchAllCategory = async (req, res) => {
   try {
     await updateCategory(Age, req.body.age);
     await updateCategory(Price, req.body.price);
-    console.log(req.body.feature);
 
     await updateCategory(Feature, req.body.feature);
     await updateCategory(Category, req.body.category);

@@ -134,8 +134,6 @@ const postProduct = async (req, res) => {
   //:category: name: link:thumbnail:brand:retail_price: fee_rate:  description: detail
 
   try {
-    console.log(req.body);
-
     var brand = await Brand.findOrCreate({ where: { value: req.body.brand } });
     brand = brand[0].toJSON();
 

@@ -127,7 +127,7 @@ const postOrder = async (req, res) => {
       user_id: req.params.user_id,
       giver_name: req.body.giver_name,
       giver_phone: req.body.giver_phone,
-      paid_amount: price.toJSON().retail_price,
+      paid_amount: price.toJSON().value,
       imp_uid: req.body.imp_uid,
     });
     await Receiver.create({
