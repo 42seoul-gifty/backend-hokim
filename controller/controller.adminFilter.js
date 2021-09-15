@@ -9,6 +9,7 @@ const {
   Category,
   Orders,
   Likes,
+  ProductImage,
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
 const { productIncludeMutipleFilter } = require("../lib/lib.Product");
@@ -61,6 +62,7 @@ const getAdminFilterdProduct = async (req, res) => {
         ],
       },
       include: [
+        { model: ProductImage, attributes: ["image_url", "id"] },
         { model: Receiver, attributes: [] },
         { model: Likes, attributes: [] },
       ],
