@@ -168,8 +168,8 @@ const postProduct = async (req, res) => {
     );
 
     await ProductGender.bulkCreate(
-      req.body.gender.map((gender) => {
-        return { product_id: product.id, gender };
+      req.body.gender.map((gender_id) => {
+        return { product_id: product.id, gender_id };
       })
     );
 
