@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     Product.hasMany(models.Likes, {
       foreignKey: { name: "product_id", allowNull: false },
     });
-    Product.hasMany(models.ProductGender, { foreignKey: "product_id" });
     Product.belongsTo(models.Category, {
       foreignKey: "category_id",
     });
@@ -40,6 +39,15 @@ module.exports = (sequelize, DataTypes) => {
 
     Product.belongsTo(models.Price, {
       foreignKey: "price_id",
+    });
+
+    Product.belongsToMany(models.Gender, {
+      through: {
+        //교차테이블
+        model: "ProductGender",
+        unique: false,
+      },
+      foreignKey: { name: "product_id", allowNull: false },
     });
 
     Product.belongsToMany(models.Age, {

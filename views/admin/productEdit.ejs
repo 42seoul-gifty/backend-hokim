@@ -149,7 +149,7 @@
               multiple="multiple"
             >
               <% gender.forEach((el)=>{ %>
-              <option value="<%=el.value%>"><%=el.value%></option>
+              <option value="<%=el.id%>"><%=el.value%></option>
               <% }) %>
             </select>
           </div>
@@ -258,8 +258,8 @@
     $("#category").val(data.Category.id).prop("selected", true);
     $("#price").val(data.Price.id).prop("selected", true);
 
-    data.ProductGenders.forEach((elem) => {
-      $(`#gender option[value='${elem.gender}']`).prop("selected", true);
+    data.Genders.forEach((elem) => {
+      $(`#gender option[value='${elem.id}']`).prop("selected", true);
     });
 
     data.Ages.forEach((elem) => {

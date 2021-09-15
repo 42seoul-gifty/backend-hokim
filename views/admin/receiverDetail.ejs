@@ -43,7 +43,7 @@
               >
               <% genders.forEach((gender, index)=>{ %>
                 <option value="<%=gender.id%>"
-                  <% if (gender.value==receiver.gender) { %> 
+                  <% if (gender.id==receiver.gender_id) { %> 
                    selected
                    <% }%> 
                   ><%=gender.value%></option>
@@ -217,7 +217,7 @@
 
 
         
-        gender: $("#gender").val(),
+        gender_id: $("#gender").val(),
         age_id: $("#age").val(),
         price_id: $("#price").val(),
         shipment_status: $("#shipment").val(),

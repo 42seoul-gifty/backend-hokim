@@ -4,6 +4,7 @@ const {
   getPrices,
   getFeatures,
   getCategories,
+  getGenders,
 } = require("../lib/lib.Preference");
 
 const { Age, Price, Feature, Category } = require("../models");
@@ -53,6 +54,7 @@ const getAllCategory = async (req, res) => {
     const price = await getPrices();
     const feature = await getFeatures();
     const category = await getCategories();
+    const gender = await getGenders();
 
     res.json({
       data: {
@@ -60,7 +62,7 @@ const getAllCategory = async (req, res) => {
         price,
         feature,
         category,
-        gender: Gender,
+        gender,
       },
     });
   } catch (e) {

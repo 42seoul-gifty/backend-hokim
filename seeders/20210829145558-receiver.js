@@ -19,7 +19,7 @@ module.exports = {
         order_id: parseInt(i) + 1,
         age_id: makeRandom(1, 5),
         price_id: makeRandom(1, 5),
-        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        gender_id: makeRandom(1, 4),
 
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),

@@ -50,8 +50,8 @@
                     <tr><th>주문수</th><td><%= count.orders? product.orders : '0' %></td></tr>
                     <tr><th>성별</th><td>
                       <% 
-                      product.ProductGenders.forEach((gender)=>{ %>
-                          <%= gender.gender%>
+                      product.Genders.forEach((gender)=>{ %>
+                          <%= gender.value%>
                           <% })
                         %>  
                     </td></tr>
