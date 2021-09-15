@@ -21,15 +21,15 @@ const getAdminFilterdProduct = async (req, res) => {
       req.body.price,
       req.body.age
     );
-    const condition = req.body.category.map((elem) => {
-      return { category_id: elem };
-    });
-
-    console.log(condition);
     include.push(
       { model: Brand, attributes: ["id", "value"] },
       { model: Category, attributes: ["id", "value"] }
     );
+
+    const condition = req.body.category.map((elem) => {
+      return { category_id: elem };
+    });
+
     const products = await Product.findAll({
       include,
       group: ["Product.id"],
@@ -65,6 +65,7 @@ const getAdminFilterdProduct = async (req, res) => {
         { model: Likes, attributes: [] },
       ],
       group: ["Product.id"],
+      where: condition.length == 0 ? {} : { [Op.or]: condition },
     });
 
     res.status(200).json({ success: true, products, count });
