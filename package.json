@@ -9,7 +9,9 @@
     "makeSeedOne": "node_modules/.bin/sequelize db:migrate && sequelize db:seed --seed  20210829145559-imageUrl.js",
     "makeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:all",
     "removeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:undo:all",
-    "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like"
+    "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like",
+    "mochaClient": "node_modules/.bin/mocha test/controller.client.spec.js",
+    "mochaServer": "node_modules/.bin/mocha test/controller.server.spec.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   "homepage": "https://github.com/42seoul-gifty/Backend_hokim#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "chai": "^4.3.4",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
@@ -37,5 +40,8 @@
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.1"
   }
 }

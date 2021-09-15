@@ -88,7 +88,6 @@ function filter() {
           const products = res.data.products;
           console.log(products);
           $.each(products, function (index, product) {
-            const count = res.data.count[index];
             dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>
             <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${
               product.id
@@ -101,9 +100,9 @@ function filter() {
             }" alt="" style="width:100px; height: 100px;"/></p></td>
             <td scope="col"><p>${product.description}</p></td>
             <td scope="col"><p>${product.Brand?.value}</p></td>
-            <td scope="col"><p>${count.view_count}</p></td>
-            <td scope="col"><p>${count.like_count}</p></td>
-            <td scope="col"><p>${count.order_count}</p></td>
+            <td scope="col"><p>${product.view_count}</p></td>
+            <td scope="col"><p>${product.like_count}</p></td>
+            <td scope="col"><p>${product.order_count}</p></td>
             <td scope="col">
             ${
               product.deleted == 1

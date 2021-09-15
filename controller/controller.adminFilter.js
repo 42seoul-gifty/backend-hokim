@@ -12,6 +12,9 @@ const {
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
 const { productIncludeMutipleFilter } = require("../lib/lib.Product");
+const { getKoreaTime } = require("../lib/lib.getKoreaTime");
+const sequelize = require("../models").sequelize;
+
 const { Op } = require("sequelize");
 
 const getAdminFilterdProduct = async (req, res) => {
@@ -29,14 +32,11 @@ const getAdminFilterdProduct = async (req, res) => {
     const condition = req.body.category.map((elem) => {
       return { category_id: elem };
     });
-
+    include.push(
+      { model: Receiver, attributes: [] },
+      { model: Likes, attributes: [] }
+    );
     const products = await Product.findAll({
-      include,
-      group: ["Product.id"],
-      where: condition.length == 0 ? {} : { [Op.or]: condition },
-    });
-
-    const count = await Product.findAll({
       attributes: {
         include: [
           [Sequelize.fn("COUNT", Sequelize.col("Likes.likes")), "view_count"],
@@ -60,15 +60,12 @@ const getAdminFilterdProduct = async (req, res) => {
           ],
         ],
       },
-      include: [
-        { model: Receiver, attributes: [] },
-        { model: Likes, attributes: [] },
-      ],
+      include,
       group: ["Product.id"],
       where: condition.length == 0 ? {} : { [Op.or]: condition },
     });
 
-    res.status(200).json({ success: true, products, count });
+    res.status(200).json({ success: true, products });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -77,6 +74,9 @@ const getAdminFilterdProduct = async (req, res) => {
 
 const getAdminFilterdUser = async (req, res) => {
   try {
+    const orderValue = [];
+    if (req.query.value && req.query.order)
+      orderValue.push([sequelize.literal(req.query.value), req.query.order]);
     const user = await User.findAll({
       attributes: {
         include: [
@@ -106,6 +106,7 @@ const getAdminFilterdUser = async (req, res) => {
       ],
       group: ["User.id"],
       raw: true,
+      order: orderValue,
     });
     res.status(200).json({ success: true, user });
   } catch (e) {
@@ -116,6 +117,13 @@ const getAdminFilterdUser = async (req, res) => {
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
+    const startDate =
+      !req.body.start || req.body.start == ""
+        ? new Date("1995-01-01")
+        : req.body.start;
+    const endDate =
+      !req.body.end || req.body.end == "" ? getKoreaTime() : req.body.end;
+
     const receiver = await Receiver.findAll({
       include: [
         { model: Price, attributes: ["id", "value"] },
@@ -123,6 +131,12 @@ const getAdminFilterdReceiver = async (req, res) => {
         { model: Product, attributes: ["id", "name"] },
         { model: Feature, attributes: ["id", "value"] },
       ],
+      where: {
+        createdAt: {
+          [Op.lte]: endDate,
+          [Op.gt]: startDate,
+        },
+      },
     });
     res.status(200).json({ success: true, receiver });
   } catch (e) {

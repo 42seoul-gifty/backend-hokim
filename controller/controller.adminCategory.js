@@ -19,9 +19,10 @@ const getAgeCategory = async (req, res) => {
   }
 };
 
-const getGenderCategory = (req, res) => {
+const getGenderCategory = async (req, res) => {
   try {
-    res.status(200).json({ success: true, data: Gender });
+    const data = await getGenders();
+    res.status(200).json({ success: true, data });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });

@@ -47,7 +47,6 @@ const getFilterdProduct = async (req, res) => {
 
 const getProductDetail = async (req, res) => {
   try {
-    console.log("in");
     var product = await Product.findOne({
       include: [{ model: ProductImage }],
       where: { id: req.params.product_id },
@@ -72,7 +71,6 @@ const getProductDetail = async (req, res) => {
 const patchProduct = async (req, res) => {
   //id: image:  gender: age: price
   //:category: name: link:thumbnail:brand:retail_price: fee_rate:  description: detail
-  // console.log(req.body);
   try {
     await req.body.images.forEach(async (elem) => {
       if (elem.label == "removed")
@@ -97,7 +95,6 @@ const patchProduct = async (req, res) => {
       })
     );
 
-    console.log(req.body.gender);
     await ProductGender.destroy({ where: { product_id: req.body.id } });
     await ProductGender.bulkCreate(
       req.body.gender.map((gender_id) => {
