@@ -43,6 +43,13 @@ db["ProductFeature"] = sequelize.define(
     tableName: "ProductFeature",
   }
 );
+db["ProductGender"] = sequelize.define(
+  "ProductGender",
+  {},
+  {
+    tableName: "ProductGender",
+  }
+);
 
 Object.keys(db).forEach((modelName) => {
   if ("associate" in db[modelName]) {

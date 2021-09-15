@@ -35,25 +35,25 @@ module.exports = {
       });
 
       detailGender.push({
-        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        gender_id: makeRandom(1, 4),
         product_id: "10" + i,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       });
       detailGender.push({
-        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        gender_id: makeRandom(1, 4),
         product_id: "11" + i,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       });
       detailGender.push({
-        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        gender_id: makeRandom(1, 4),
         product_id: "21" + i,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
       });
       detailGender.push({
-        gender: makeRandom(0, 10) > 5 ? "남" : "여",
+        gender_id: makeRandom(1, 4),
         product_id: "22" + i,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),

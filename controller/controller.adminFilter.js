@@ -11,10 +11,32 @@ const {
   Likes,
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
+const { productIncludeMutipleFilter } = require("../lib/lib.Product");
+const { Op } = require("sequelize");
 
 const getAdminFilterdProduct = async (req, res) => {
   try {
+    const include = productIncludeMutipleFilter(
+      req.body.gender,
+      req.body.price,
+      req.body.age
+    );
+    const condition = req.body.category.map((elem) => {
+      return { category_id: elem };
+    });
+
+    console.log(condition);
+    include.push(
+      { model: Brand, attributes: ["id", "value"] },
+      { model: Category, attributes: ["id", "value"] }
+    );
     const products = await Product.findAll({
+      include,
+      group: ["Product.id"],
+      where: condition.length == 0 ? {} : { [Op.or]: condition },
+    });
+
+    const count = await Product.findAll({
       attributes: {
         include: [
           [Sequelize.fn("COUNT", Sequelize.col("Likes.likes")), "view_count"],
@@ -25,36 +47,27 @@ const getAdminFilterdProduct = async (req, res) => {
             ),
             "like_count",
           ],
+
+          "id",
+          [
+            Sequelize.fn(
+              "SUM",
+              Sequelize.literal(
+                "CASE WHEN Receivers.product_id is not null THEN 1 ELSE 0 END"
+              )
+            ),
+            "order_count",
+          ],
         ],
       },
-
       include: [
-        { model: Brand, attributes: ["id", "value"] },
+        { model: Receiver, attributes: [] },
         { model: Likes, attributes: [] },
-        { model: Category, attributes: ["id", "value"] },
       ],
       group: ["Product.id"],
     });
 
-    const order = await Product.findAll({
-      attributes: [
-        "id",
-        [
-          Sequelize.fn(
-            "SUM",
-            Sequelize.literal(
-              "CASE WHEN Receivers.product_id is not null THEN 1 ELSE 0 END"
-            )
-          ),
-          "order_count",
-        ],
-      ],
-
-      include: [{ model: Receiver, attributes: [] }],
-      group: ["Product.id"],
-    });
-
-    res.status(200).json({ success: true, products, order });
+    res.status(200).json({ success: true, products, count });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });

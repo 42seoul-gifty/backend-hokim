@@ -1,7 +1,7 @@
-const { Gender, Shipment } = require("../config/constant");
+const { Shipment } = require("../config/constant");
 const {
   Product,
-  ProductGender,
+  Gender,
   ProductImage,
   Price,
   Age,
@@ -15,15 +15,12 @@ const {
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
 
-const { getAges, getPrices } = require("../lib/lib.Preference");
+const { getAges, getPrices, getGenders } = require("../lib/lib.Preference");
 
 const getAppPage = async (req, res) => {
   res.render("admin/appManage", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),
-    data: {
-      gender: Gender,
-    },
   });
 };
 
@@ -32,6 +29,7 @@ const getProductPage = async (req, res) => {
   const price = await Price.findAll({});
   const feature = await Feature.findAll({});
   const category = await Category.findAll({});
+  const gender = await getGenders();
 
   res.render("admin/productManage", {
     layout: "layout/layout",
@@ -40,7 +38,7 @@ const getProductPage = async (req, res) => {
     feature,
     category,
     csrfToken: req.csrfToken(),
-    gender: Gender,
+    gender,
   });
 };
 
@@ -48,7 +46,7 @@ const getProductDetailPage = async (req, res) => {
   try {
     const product = await Product.findOne({
       include: [
-        { model: ProductGender, attributes: ["id", "gender"] },
+        { model: Gender, attributes: ["id", "value"] },
         { model: Price, attributes: ["id", "value"] },
         { model: Age, attributes: ["id", "value"] },
         { model: Feature, attributes: ["id", "value"] },
@@ -99,9 +97,11 @@ const getProductEditPage = async (req, res) => {
   const price = await Price.findAll({});
   const feature = await Feature.findAll({});
   const category = await Category.findAll({});
+
+  const gender = await getGenders();
   const product = await Product.findOne({
     include: [
-      { model: ProductGender, attributes: ["id", "gender"] },
+      { model: Gender, attributes: ["id", "value"] },
       { model: Price, attributes: ["id", "value"] },
       { model: Age, attributes: ["id", "value"] },
       { model: Feature, attributes: ["id", "value"] },
@@ -119,7 +119,7 @@ const getProductEditPage = async (req, res) => {
     price,
     feature,
     category,
-    gender: Gender,
+    gender,
 
     csrfToken: req.csrfToken(),
   });
@@ -169,13 +169,15 @@ const getProductRegisterPage = async (req, res) => {
   const price = await Price.findAll({});
   const feature = await Feature.findAll({});
   const category = await Category.findAll({});
+
+  const gender = await getGenders();
   res.render("admin/productRegister", {
     layout: "layout/layout",
     age,
     price,
     feature,
     csrfToken: req.csrfToken(),
-    gender: Gender,
+    gender,
     category,
   });
 };
@@ -222,6 +224,8 @@ const getOrderDetailPage = async (req, res) => {
 const getReceiverDetailPage = async (req, res) => {
   const ages = await getAges();
   const prices = await getPrices();
+
+  const genders = await getGenders();
   const receiver = await Receiver.findOne({
     include: [
       {
@@ -239,7 +243,7 @@ const getReceiverDetailPage = async (req, res) => {
   res.render("admin/receiverDetail", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),
-    genders: Gender,
+    genders,
     ages,
     prices,
     receiver,

@@ -2,6 +2,24 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert("gender", [
+      {
+        value: "여",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
+        value: "남",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+      {
+        value: "모두",
+        createdAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      },
+    ]);
+
     // age
     await queryInterface.bulkInsert("Age", [
       {

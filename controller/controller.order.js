@@ -134,7 +134,7 @@ const postOrder = async (req, res) => {
       name: req.body.receiver_name,
       phone: req.body.receiver_phone,
       order_id: order.toJSON().id,
-      gender: req.body.gender,
+      gender_id: req.body.gender,
       age_id: req.body.age,
       price_id: req.body.price,
     });

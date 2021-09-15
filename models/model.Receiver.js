@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         comment: "Shipment Status",
         defaultValue: "배송전",
       },
-      gender: { type: DataTypes.STRING, comment: "Receiver Name" },
       updatedBy: { type: DataTypes.STRING, comment: "last Editor" },
     },
     {
@@ -41,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Receiver.belongsTo(models.Age, { foreignKey: "age_id" });
     Receiver.belongsTo(models.Price, { foreignKey: "price_id" });
+    Receiver.belongsTo(models.Gender, { foreignKey: "gender_id" });
     Receiver.belongsTo(models.Feature, { foreignKey: "feature_id" });
   };
 

@@ -47,6 +47,7 @@ const getFilterdProduct = async (req, res) => {
 
 const getProductDetail = async (req, res) => {
   try {
+    console.log("in");
     var product = await Product.findOne({
       include: [{ model: ProductImage }],
       where: { id: req.params.product_id },
@@ -96,10 +97,11 @@ const patchProduct = async (req, res) => {
       })
     );
 
+    console.log(req.body.gender);
     await ProductGender.destroy({ where: { product_id: req.body.id } });
     await ProductGender.bulkCreate(
-      req.body.gender.map((gender) => {
-        return { product_id: req.body.id, gender };
+      req.body.gender.map((gender_id) => {
+        return { product_id: req.body.id, gender_id };
       })
     );
 

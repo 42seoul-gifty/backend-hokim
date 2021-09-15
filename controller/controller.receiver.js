@@ -10,6 +10,7 @@ const {
   Orders,
   Product,
   ProductGender,
+  Gender,
   Price,
   Age,
   Likes,
@@ -98,6 +99,11 @@ const patchReceiver = async (req, res) => {
 };
 
 const patchReceiverAdmin = async (req, res) => {
+  console.log(req.body);
+  delete req.body._csrf;
+
+  await Receiver.update(req.body, { where: { id: req.params.receiver_id } });
+
   try {
     res.status(200).json({ success: true });
   } catch (e) {
@@ -119,7 +125,7 @@ const getReceiversChoice = async (req, res) => {
     receiver = receiver.toJSON();
 
     const include = productIncludeFilter(
-      receiver.gender,
+      receiver.gender_id,
       receiver.price_id,
       receiver.age_id
     );
