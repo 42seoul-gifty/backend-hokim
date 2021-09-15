@@ -12,6 +12,9 @@ const {
 } = require("../models");
 const Sequelize = require("../models").Sequelize;
 const { productIncludeMutipleFilter } = require("../lib/lib.Product");
+const { getKoreaTime } = require("../lib/lib.getKoreaTime");
+const sequelize = require("../models").sequelize;
+
 const { Op } = require("sequelize");
 
 const getAdminFilterdProduct = async (req, res) => {
@@ -77,6 +80,10 @@ const getAdminFilterdProduct = async (req, res) => {
 
 const getAdminFilterdUser = async (req, res) => {
   try {
+    console.log(req.query);
+    const orderValue = [];
+    if (req.query.value && req.query.order)
+      orderValue.push([sequelize.literal(req.query.value), req.query.order]);
     const user = await User.findAll({
       attributes: {
         include: [
@@ -106,6 +113,7 @@ const getAdminFilterdUser = async (req, res) => {
       ],
       group: ["User.id"],
       raw: true,
+      order: orderValue,
     });
     res.status(200).json({ success: true, user });
   } catch (e) {
@@ -116,6 +124,14 @@ const getAdminFilterdUser = async (req, res) => {
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
+    console.log(req.body);
+    const startDate =
+      !req.body.start || req.body.start == ""
+        ? new Date(1995 - 01 - 01)
+        : req.body.start;
+    const endDate =
+      !req.body.end || req.body.end == "" ? getKoreaTime() : req.body.end;
+
     const receiver = await Receiver.findAll({
       include: [
         { model: Price, attributes: ["id", "value"] },
@@ -123,6 +139,12 @@ const getAdminFilterdReceiver = async (req, res) => {
         { model: Product, attributes: ["id", "name"] },
         { model: Feature, attributes: ["id", "value"] },
       ],
+      where: {
+        createdAt: {
+          [Op.lte]: endDate,
+          [Op.gt]: startDate,
+        },
+      },
     });
     res.status(200).json({ success: true, receiver });
   } catch (e) {

@@ -5,10 +5,10 @@
     Array.from(sorts).forEach((elem) => {
       elem.addEventListener("click", (e) => {
         if (elem.getAttribute("desc") == null) {
-          userSort(elem.id + " desc");
+          userSort(elem.id, "desc");
           elem.setAttribute("desc", "");
         } else {
-          userSort(elem.id + " asc");
+          userSort(elem.id, "asc");
           elem.removeAttribute("desc");
         }
       });
@@ -18,13 +18,13 @@
   });
 })(jQuery);
 
-function userSort(value) {
+function userSort(value, order) {
   let container = $("#pagination");
   container.pagination({
     pageSize: 10,
     dataSource: function (done) {
       axios({
-        url: `/admin/user/filter?order=${value}`,
+        url: `/admin/user/filter?value=${value}&order=${order}`,
         method: "post",
         headers: {
           "Content-Type": "application/json",
