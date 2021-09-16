@@ -11,7 +11,8 @@
     "removeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:undo:all",
     "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like",
     "mochaClient": "node_modules/.bin/mocha test/controller.client.spec.js",
-    "mochaServer": "node_modules/.bin/mocha test/controller.server.spec.js"
+    "mochaServer": "node_modules/.bin/mocha test/controller.server.spec.js",
+    "createDatabase": "cd database && docker-compose up"
   },
   "repository": {
     "type": "git",

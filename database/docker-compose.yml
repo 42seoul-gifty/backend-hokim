@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10.4
+    ports:
+      - 3306:3306
+    environment:
+      TZ: Asia/Seoul
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
