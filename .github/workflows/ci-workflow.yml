@@ -38,7 +38,8 @@ jobs:
       - name: npm install and test
         run: |
           npm install
-          npm run test
+          npm makeSeed
+          npm run mochaClient
           
   deploy:
     runs-on: ubuntu-latest
