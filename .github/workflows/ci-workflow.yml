@@ -24,6 +24,7 @@ jobs:
       IMP_CODE: ${{ secrets.IMP_CODE }}
       IMP_KEY: ${{ secrets.IMP_KEY }}
       IMP_SECRET: ${{ secrets.IMP_SECRET }}
+      ENV: 'test' 
       
     strategy:
       matrix:
