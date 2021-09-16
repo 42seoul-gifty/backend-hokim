@@ -1,13 +1,11 @@
-const { Gender } = require("../config/constant");
 const {
   getAges,
   getPrices,
   getFeatures,
   getCategories,
   getGenders,
-} = require("../lib/lib.Preference");
-
-const { Age, Price, Feature, Category } = require("../models");
+} = require("../../lib/lib.Preference");
+const { Age, Price, Feature, Category } = require("../../models");
 
 const getAgeCategory = async (req, res) => {
   try {
@@ -100,10 +98,18 @@ const patchAllCategory = async (req, res) => {
   }
 };
 
+const getAppPage = async (req, res) => {
+  res.render("admin/appManage", {
+    layout: "layout/layout",
+    csrfToken: req.csrfToken(),
+  });
+};
+
 module.exports = {
   getGenderCategory,
   getAgeCategory,
   getPriceCategory,
   getAllCategory,
   patchAllCategory,
+  getAppPage,
 };

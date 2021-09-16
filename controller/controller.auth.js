@@ -1,14 +1,11 @@
 const axios = require("axios");
 var querystring = require("querystring");
 const { kakao_config, naver_config } = require("../config/config");
-
 const { findOrCreate } = require("../lib/lib.User");
-
-const { generateToken } = require("../middleware/jwt-auth");
+const { generateToken } = require("../middleware/jwtAuth");
 
 const getKakaoToken = async (req, res) => {
   try {
-    console.log("kakao code : " + req.header("Authorization-Code"));
     //코드로 토큰 받아오기
     const result = await axios({
       method: "post",
@@ -60,22 +57,16 @@ const getKakaoToken = async (req, res) => {
 
 const getNaverToken = async (req, res) => {
   try {
-    console.log("result");
     code = req.header("Authorization-Code");
-
-    api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${naver_config.redirect}&code=${code}`;
 
     const result = await axios({
       method: "get",
-      url: api_url,
+      url: `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naver_config.client_id}&client_secret=${naver_config.secret}&redirect_uri==${naver_config.redirect}&code=${code}`,
       headers: {
         "X-Naver-Client-Id": naver_config.client_id,
         "X-Naver-Client-Secret": naver_config.secret,
       },
     });
-
-    console.log("??");
-    console.log("result");
     //엑세스 토큰으로 사용자 정보 불러오기
     const naverUser = await axios({
       method: "get",
@@ -97,6 +88,7 @@ const getNaverToken = async (req, res) => {
       success: true,
       access_token: req.cookies.access_token,
       refresh_token: req.cookies.refresh_token,
+      user,
     });
   } catch (e) {
     console.log(e);

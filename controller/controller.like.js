@@ -24,22 +24,7 @@ const getAllDislike = async (req, res) => {
   }
 };
 
-const postLike = async (req, res, like) => {
-  try {
-    await Likes.create({
-      likes: like,
-      receiver_id: req.body.receiver_id,
-      product_id: req.params.product_id,
-    });
-    res.status(200).json({ success: true });
-  } catch (e) {
-    console.log(e);
-    res.status(400).json({ success: false, error: e.message });
-  }
-};
-
 module.exports = {
   getAllLike,
   getAllDislike,
-  postLike,
 };

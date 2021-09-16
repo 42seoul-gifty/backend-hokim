@@ -1,18 +1,18 @@
 const { getKoreaTime } = require("../lib/lib.getKoreaTime");
 const { convertImageUrl } = require("../lib/lib.Product");
-
 const {
   Orders,
   Receiver,
   Product,
   Price,
-  Age,
-  Feature,
+  User,
   ProductImage,
 } = require("../models");
+const { dataNotExist } = require("../lib/lib.checkError");
 
 const getOrders = async (req, res) => {
   try {
+    await dataNotExist("User", User, { id: req.params.user_id });
     var orders = await Orders.findAll({
       include: [
         {
@@ -36,6 +36,8 @@ const getOrders = async (req, res) => {
         "status",
       ],
     });
+
+    if (!orders) throw new Error(`Order not Exist`);
 
     orders = orders.map((order) => {
       order = order.toJSON();
@@ -101,6 +103,9 @@ const getOrderDetail = async (req, res) => {
       ],
       where: { id: req.params.order_id, user_id: req.params.user_id },
     });
+
+    if (!order) throw new Error(`Order not Exist`);
+
     order = order.toJSON();
     order["receiver"] = order.Receivers[0];
     delete order.Receivers;
@@ -125,8 +130,10 @@ const postOrder = async (req, res) => {
       where: { id: req.body.price },
     });
 
+    if (!price) throw new Error(`Price not Exist`);
     const merchant_uid =
       req.params.user_id + "-" + getKoreaTime().toISOString();
+    console.log(req.params.user_id);
 
     const order = await Orders.create({
       user_id: req.params.user_id,
@@ -155,27 +162,8 @@ const postOrder = async (req, res) => {
   }
 };
 
-const deleteOrder = async (req, res) => {
-  try {
-    await Orders.update(
-      { deleted: true },
-      {
-        where: { id: req.params.order_id, user_id: req.params.user_id },
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-    });
-  } catch (e) {
-    console.log(e);
-    res.status(400).json({ success: false, error: e.message });
-  }
-};
-
 module.exports = {
   postOrder,
   getOrders,
   getOrderDetail,
-  deleteOrder,
 };
