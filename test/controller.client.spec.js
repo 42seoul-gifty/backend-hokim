@@ -4,7 +4,6 @@ const { Orders } = require("../models");
 require("dotenv").config();
 
 describe("App test!", function () {
-  this.timeout(5000); 
   it("GET users/1 : 유저 디테일 조회", function (done) {
     axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
       .then((res) => {
@@ -13,7 +12,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -30,7 +28,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -47,7 +44,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -64,7 +60,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -81,7 +76,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -98,7 +92,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -122,7 +115,6 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
-        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
