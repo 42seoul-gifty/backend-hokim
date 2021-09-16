@@ -18,8 +18,8 @@ jobs:
       DB_PASSWORD: 'root'
       DB_HOST: localhost
       DB_DIALECT: 'mysql'
-      PORT: '4000'
-      SITE_DOMAIN: 'http://localhost:4000'
+      PORT: '3000'
+      SITE_DOMAIN: 'http://localhost:3000'
       
     strategy:
       matrix:
@@ -41,7 +41,7 @@ jobs:
         run: |
           npm install
           npm run test
-          npm makeSeed
+          npm run makeSeed
           npm run mochaClient
           
   deploy:
