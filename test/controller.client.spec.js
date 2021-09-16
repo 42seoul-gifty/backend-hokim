@@ -5,7 +5,6 @@ require("dotenv").config();
 
 describe("App test!", function () {
   it("GET users/1 : 유저 디테일 조회", function (done) {
-    this.timeout(10000); 
     axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
       .then((res) => {
         console.log(res.status, res.data.data);
@@ -98,6 +97,7 @@ describe("App test!", function () {
       });
   });
 
+  if(process.env.ENV != "test")
   it("POST /payment/validation : 결제 검증", function (done) {
     axios({
       url: process.env.SITE_DOMAIN + "/payment/validation",
