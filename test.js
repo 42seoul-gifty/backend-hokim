@@ -6,5 +6,5 @@ const server = app.listen(process.env.PORT, function () {
   console.log("Express listening on port", process.env.PORT);
   setTimeout(() => {
     process.exit(0);
-  }, 10000);
+  }, 50000);
 });
