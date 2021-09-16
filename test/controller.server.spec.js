@@ -2,12 +2,13 @@ const assert = require("assert");
 const axios = require("axios");
 const { expect } = require("chai");
 const { Product, User, Receiver } = require("../models");
+require("dotenv").config();
 
 //remove csrf for test
 describe("App test!", function () {
   it("POST /product/filter : 주문 필터링", function (done) {
     axios({
-      url: "http://localhost:4000/admin/product/filter",
+      url: process.env.SITE_DOMAIN + "/admin/product/filter",
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +33,7 @@ describe("App test!", function () {
 
   it("POST /shipping/filter : 배송 필터링", function (done) {
     axios({
-      url: "http://localhost:4000/admin/shipping/filter",
+      url: process.env.SITE_DOMAIN + "/admin/shipping/filter",
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +55,9 @@ describe("App test!", function () {
 
   it("POST /user/filter : 유저 필터링", function (done) {
     axios({
-      url: "http://localhost:4000/admin/user/filter?value=order_count&order=desc",
+      url:
+        process.env.SITE_DOMAIN +
+        "/admin/user/filter?value=order_count&order=desc",
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +76,7 @@ describe("App test!", function () {
 
   it("POST /product/register : 새 제품 등록", function (done) {
     axios({
-      url: "http://localhost:4000/admin/product/register",
+      url: process.env.SITE_DOMAIN + "/admin/product/register",
       method: "post",
       headers: {
         "Content-Type": "application/json",

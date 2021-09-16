@@ -1,4 +1,5 @@
-const { Shipment } = require("../config/constant");
+const { getGenders } = require("../../lib/lib.Preference");
+const Sequelize = require("../../models").Sequelize;
 const {
   Product,
   Gender,
@@ -9,20 +10,7 @@ const {
   Category,
   Brand,
   Likes,
-  User,
-  Orders,
-  Receiver,
-} = require("../models");
-const Sequelize = require("../models").Sequelize;
-
-const { getAges, getPrices, getGenders } = require("../lib/lib.Preference");
-
-const getAppPage = async (req, res) => {
-  res.render("admin/appManage", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-  });
-};
+} = require("../../models");
 
 const getProductPage = async (req, res) => {
   const age = await Age.findAll({});
@@ -125,45 +113,6 @@ const getProductEditPage = async (req, res) => {
   });
 };
 
-const getUserDetailPage = async (req, res) => {
-  const user = await User.findOne({ where: { id: req.params.user_id } });
-  const orders = await Orders.findAll({
-    attributes: {
-      include: [
-        [
-          Sequelize.fn(
-            "date_format",
-            Sequelize.col("Orders.createdAt"),
-            "%Y-%m-%d %H:%i"
-          ),
-          "createdAt",
-        ],
-      ],
-    },
-    where: { user_id: req.params.user_id },
-  });
-  res.render("admin/userDetail", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-    user,
-    orders,
-  });
-};
-
-const getUserPage = async (req, res) => {
-  res.render("admin/userManage", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-  });
-};
-
-const getReceiverPage = async (req, res) => {
-  res.render("admin/shippingManage", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-  });
-};
-
 const getProductRegisterPage = async (req, res) => {
   const age = await Age.findAll({});
   const price = await Price.findAll({});
@@ -182,84 +131,9 @@ const getProductRegisterPage = async (req, res) => {
   });
 };
 
-const getOrderDetailPage = async (req, res) => {
-  const order = await Orders.findOne({
-    attributes: {
-      include: [
-        [
-          Sequelize.fn(
-            "date_format",
-            Sequelize.col("Orders.createdAt"),
-            "%Y-%m-%d %H:%i"
-          ),
-          "createdAt",
-        ],
-      ],
-    },
-    where: { id: req.params.order_id },
-  });
-
-  const receivers = await Receiver.findAll({
-    include: [
-      {
-        model: Price,
-        attributes: ["value"],
-      },
-      {
-        model: Age,
-        attributes: ["value"],
-      },
-    ],
-    where: { order_id: req.params.order_id },
-    row: true,
-  });
-  res.render("admin/orderDetail", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-    order,
-    receivers,
-  });
-};
-
-const getReceiverDetailPage = async (req, res) => {
-  const ages = await getAges();
-  const prices = await getPrices();
-
-  const genders = await getGenders();
-  const receiver = await Receiver.findOne({
-    include: [
-      {
-        model: Price,
-        attributes: ["value"],
-      },
-      {
-        model: Age,
-        attributes: ["value"],
-      },
-    ],
-    where: { id: req.params.receiver_id },
-    row: true,
-  });
-  res.render("admin/receiverDetail", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-    genders,
-    ages,
-    prices,
-    receiver,
-    shipments: Shipment,
-  });
-};
-
 module.exports = {
-  getProductDetailPage,
-  getAppPage,
-  getUserPage,
-  getUserDetailPage,
   getProductPage,
-  getReceiverPage,
+  getProductDetailPage,
   getProductEditPage,
   getProductRegisterPage,
-  getOrderDetailPage,
-  getReceiverDetailPage,
 };
