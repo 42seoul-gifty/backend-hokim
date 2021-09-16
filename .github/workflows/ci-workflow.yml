@@ -18,6 +18,11 @@ jobs:
       DB_PASSWORD: 'root'
       DB_HOST: localhost
       DB_DIALECT: 'mysql'
+      IMP_CODE: ${{ github.IMP_CODE }}
+      IMP_KEY: ${{ github.IMP_KEY }}
+      IMP_SECRET: ${{ github.IMP_KEY }}
+
+
       
     strategy:
       matrix:
