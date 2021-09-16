@@ -98,6 +98,7 @@ describe("App test!", function () {
       });
   });
 
+  if (process.env.env != "test")
   it("POST /payment/validation : 결제 검증", function (done) {
     axios({
       url: process.env.SITE_DOMAIN + "/payment/validation",
