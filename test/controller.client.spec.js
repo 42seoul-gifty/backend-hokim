@@ -124,7 +124,7 @@ describe("App test!", function () {
   //값이 랜덤 생성되므로 다를 수 있음
   it("GET /users/:id/orders/:id : 주문 디테일 조회", function (done) {
     axios({
-      url: process.env.SITE_DOMAIN + "/users/4/orders/1",
+      url: process.env.SITE_DOMAIN + "/users/1/orders/1",
       method: "get",
     })
       .then((res) => {
