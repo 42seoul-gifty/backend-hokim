@@ -18,11 +18,12 @@ jobs:
       DB_PASSWORD: 'root'
       DB_HOST: localhost
       DB_DIALECT: 'mysql'
-      IMP_CODE: ${{ github.IMP_CODE }}
-      IMP_KEY: ${{ github.IMP_KEY }}
-      IMP_SECRET: ${{ github.IMP_KEY }}
-
-
+      PORT: '3000'
+      SITE_DOMAIN: 'http://localhost:3000'
+      IMP_CODE: ${{ secrets.IMP_CODE }}
+      IMP_KEY: ${{ secrets.IMP_KEY }}
+      IMP_SECRET: ${{ secrets.IMP_SECRET }}
+      ENV: 'test' 
       
     strategy:
       matrix:
@@ -43,7 +44,9 @@ jobs:
       - name: npm install and test
         run: |
           npm install
-          npm run test
+          npm run test &
+          npm run makeSeed
+          npm run mochaClient
           
   deploy:
     runs-on: ubuntu-latest

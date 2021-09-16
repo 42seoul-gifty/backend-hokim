@@ -5,6 +5,7 @@ require("dotenv").config();
 
 describe("App test!", function () {
   it("GET users/1 : 유저 디테일 조회", function (done) {
+    this.timeout(5000); 
     axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
       .then((res) => {
         console.log(res.status, res.data.data);
