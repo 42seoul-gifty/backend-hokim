@@ -59,6 +59,24 @@ module.exports = {
       });
     }
 
+    await queryInterface.bulkInsert(
+      "Orders",
+      [
+        {
+          giver_name: name[makeRandom(0, 4)],
+          giver_phone: "010-0000-0000",
+          paid_amount: 100,
+          merchant_uid: "1-2021-09-15T08:19:55.414Z",
+          imp_uid: "imp_114995595270",
+          user_id: 1,
+          status: "결제완료",
+          createdAt: new Date(Date.now()),
+          updatedAt: new Date(Date.now()),
+        },
+      ],
+      {}
+    );
+
     await queryInterface.bulkInsert("Orders", detail, {});
   },
 

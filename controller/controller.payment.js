@@ -62,6 +62,8 @@ const checkPaymentValidation = async (req, res) => {
       where: { merchant_uid },
     });
 
+    if (!order) throw new Error(`Order not Exist`);
+
     if (amount == order.toJSON().paid_amount) {
       await Orders.update(
         { status: "결제완료", imp_uid },
