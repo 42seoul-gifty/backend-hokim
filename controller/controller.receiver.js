@@ -1,21 +1,6 @@
-const {
-  findReceiverLikeProduct,
-  findFilteredProduct,
-  convertImageUrl,
-  productIncludeFilter,
-} = require("../lib/lib.Product");
-const {
-  Receiver,
-  ProductImage,
-  Orders,
-  Product,
-  ProductGender,
-  Gender,
-  Price,
-  Age,
-  Likes,
-} = require("../models");
-const { getFilterdProduct } = require("./controller.product");
+const { convertImageUrl, productIncludeFilter } = require("../lib/lib.Product");
+const { Receiver, ProductImage, Orders, Product, Likes } = require("../models");
+const { dataNotExist } = require("../lib/lib.checkError");
 
 const getReceiver = async (req, res) => {
   try {
@@ -53,19 +38,22 @@ const getReceiver = async (req, res) => {
       where: { id: req.params.receiver_id },
     });
 
+    if (!receiver) throw new Error(`Receiver not Exist`);
+
     receiver = receiver.toJSON();
     convertImageUrl(receiver.Product);
     receiver["product"] = receiver.Product;
     delete receiver.Product;
     res.status(200).json({ success: true, data: receiver });
   } catch (e) {
-    res.status(400).json({ success: true, error: e.message });
+    res.status(400).json({ success: false, error: e.message });
   }
 };
 
 const patchReceiver = async (req, res) => {
   try {
-    var receiver = await Receiver.update(
+    await dataNotExist("Receiver", Receiver, { id: req.params.receiver_id });
+    await Receiver.update(
       {
         product_id: req.body.product_id,
         postcode: req.body.postcode,
@@ -94,20 +82,7 @@ const patchReceiver = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (e) {
-    res.status(400).json({ success: true, error: e.message });
-  }
-};
-
-const patchReceiverAdmin = async (req, res) => {
-  console.log(req.body);
-  delete req.body._csrf;
-
-  await Receiver.update(req.body, { where: { id: req.params.receiver_id } });
-
-  try {
-    res.status(200).json({ success: true });
-  } catch (e) {
-    res.status(400).json({ success: true, error: e.message });
+    res.status(400).json({ success: false, error: e.message });
   }
 };
 
@@ -122,6 +97,7 @@ const getReceiversChoice = async (req, res) => {
       ],
       where: { id: req.params.receiver_id },
     });
+    if (!receiver) throw new Error(`Receiver not Exist`);
     receiver = receiver.toJSON();
 
     const include = productIncludeFilter(
@@ -154,29 +130,8 @@ const getReceiversChoice = async (req, res) => {
   }
 };
 
-const updateReceiverShipment = async (req, res) => {
-  try {
-    //TODO:수정이 필요할 수도 있음
-    const receiver = [];
-    await req.body.changed.forEach(async (element) => {
-      receiver.push(
-        await Receiver.update(
-          { shipment_status: element.value },
-          { where: { id: element.id } }
-        )
-      );
-    });
-
-    res.status(200).json({ success: true, receiver });
-  } catch (e) {
-    res.status(400).json({ success: false, error: e.message });
-  }
-};
-
 module.exports = {
   getReceiver,
   patchReceiver,
   getReceiversChoice,
-  updateReceiverShipment,
-  patchReceiverAdmin,
 };

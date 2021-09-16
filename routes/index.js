@@ -8,7 +8,7 @@ const user = require("./route.user");
 const receiver = require("./route.receiver");
 const csrfProtection = require("../middleware/csrfProtection");
 
-const getCategories = require("../controller/controller.adminCategory");
+const getCategories = require("../controller/admin/controller.admin.category");
 
 router.get("/", (req, res) => {
   res.render("index", {});

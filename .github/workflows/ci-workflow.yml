@@ -21,6 +21,9 @@ jobs:
       DB_DIALECT: 'mysql'
       PORT: '3000'
       SITE_DOMAIN: 'http://localhost:3000'
+      IMP_CODE: ${{ github.IMP_CODE }}
+      IMP_KEY: ${{ github.IMP_KEY }}
+      IMP_SECRET: ${{ github.IMP_KEY }}
       
     strategy:
       matrix:

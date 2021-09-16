@@ -1,67 +1,66 @@
 const axios = require("axios");
-const { imp_config, domain } = require("../config/config");
-
+const { imp_config } = require("../config/config");
 const { Orders } = require("../models");
 
 const getIMPAccessToken = async () => {
+  // 인증 토큰 발급
   const getToken = await axios({
     url: "https://api.iamport.kr/users/getToken",
-    method: "post", // POST method
-    headers: { "Content-Type": "application/json" }, // "Content-Type": "application/json"
+    method: "post",
+    headers: { "Content-Type": "application/json" },
     data: {
-      imp_key: imp_config.key, // REST API 키
-      imp_secret: imp_config.secret, // REST API Secret
+      imp_key: imp_config.key,
+      imp_secret: imp_config.secret,
     },
   });
-  return getToken.data.response.access_token; // 인증 토큰
+  return getToken.data.response.access_token;
 };
 
 const getIMPData = async (access_token, imp_uid) => {
+  // 결제 정보 조회
   const getPaymentData = await axios({
-    url: `https://api.iamport.kr/payments/${imp_uid}`, // imp_uid 전달
-    method: "get", // GET method
-    headers: { Authorization: access_token }, // 인증 토큰 Authorization header에 추가
+    url: `https://api.iamport.kr/payments/${imp_uid}`,
+    method: "get",
+    headers: { Authorization: access_token },
   });
-  return getPaymentData.data.response; // 조회한 결제 정보
+  return getPaymentData.data.response;
 };
 
 const refund = async (access_token, paymentData) => {
-  const { imp_uid, amount, cancel_amount } = paymentData; // 조회한 결제정보로부터 imp_uid, amount(결제금액), cancel_amount(환불된 총 금액) 추출
-  const cancelableAmount = amount - cancel_amount; // 환불 가능 금액(= 결제금액 - 환불 된 총 금액) 계산
+  // 환불
+  const { imp_uid, amount, cancel_amount } = paymentData;
+  const cancelableAmount = amount - cancel_amount;
   if (cancelableAmount <= 0) {
-    // 이미 전액 환불된 경우
     return res.status(400).json({ message: "이미 전액환불된 주문입니다." });
   }
 
   const getCancelData = await axios({
-    url: "https://api.iamport.kr/payments/cancel", // 예: http://www.myservice.com/payments/cancel
+    url: "https://api.iamport.kr/payments/cancel",
     method: "post",
     headers: {
       "Content-Type": "application/json",
-      Authorization: access_token, // 아임포트 서버로부터 발급받은 엑세스 토큰
+      Authorization: access_token,
     },
     data: {
-      reason: "위조된 결제", // 가맹점 클라이언트로부터 받은 환불사유
-      imp_uid, // imp_uid를 환불 `unique key`로 입력
-      amount: amount, // 가맹점 클라이언트로부터 받은 환불금액
-      checksum: cancelableAmount, // [권장] 환불 가능 금액 입력
+      reason: "위조된 결제",
+      imp_uid,
+      amount: amount,
+      checksum: cancelableAmount,
     },
   });
-  return getCancelData.data; // 환불 결과
+  return getCancelData.data;
 };
 
 const checkPaymentValidation = async (req, res) => {
-  var { merchant_uid, imp_uid } = req.body; // req의 body에서 imp_uid, merchant_uid 추출
+  var { merchant_uid, imp_uid } = req.body;
   try {
-    //액세스 토큰(access token) 발급 받기
     const access_token = await getIMPAccessToken();
-    // imp_uid로 아임포트 서버에서 결제 정보 조회
     const paymentData = await getIMPData(access_token, imp_uid);
     const { amount, status } = paymentData;
 
     const order = await Orders.findOne({
       where: { merchant_uid },
-    }); // DB에 결제 정보 저장
+    });
 
     if (amount == order.toJSON().paid_amount) {
       await Orders.update(
@@ -72,7 +71,6 @@ const checkPaymentValidation = async (req, res) => {
 
       switch (status) {
         case "ready": // 가상계좌 발급
-          // 가상계좌 발급 안내 문자메시지 발송
           res.status(200).json({
             status: "vbankIssued",
             message: "가상계좌 서비스 안함",
