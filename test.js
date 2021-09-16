@@ -4,7 +4,4 @@ dotenv.config();
 
 const server = app.listen(process.env.PORT, function () {
   console.log("Express listening on port", process.env.PORT);
-  setTimeout(() => {
-    process.exit(0);
-  }, 50000);
 });
