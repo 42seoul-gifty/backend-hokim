@@ -1,7 +1,10 @@
 const app = require("./App.js");
-const port = 3000;
+const dotenv = require("dotenv");
+dotenv.config();
 
-const server = app.listen(port, function () {
-  console.log("Express listening on port", port);
-  process.exit(0)
+const server = app.listen(process.env.PORT, function () {
+  console.log("Express listening on port", process.env.PORT);
+  setTimeout(() => {
+    process.exit(0);
+  }, 10000);
 });
