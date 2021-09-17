@@ -2,6 +2,8 @@
 const makeRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
+require("dotenv").config();
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     const name = ["choi", "park", "lee", "kim"];
@@ -10,7 +12,7 @@ module.exports = {
 
     for (var i = 0; i < 25; i++) {
       detail.push({
-        phone: "010-0000-0001",
+        phone: `010`,
         name: "receiver" + name[makeRandom(0, 4)],
         postcode: "00001",
         address: "101동 101아파트",
