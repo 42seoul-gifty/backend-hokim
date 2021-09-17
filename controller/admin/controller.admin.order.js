@@ -39,7 +39,7 @@ const getOrderDetailPage = async (req, res) => {
     receivers,
   });
 };
-const deleteOrder = async (req, res) => {
+const deleteAdminOrder = async (req, res) => {
   try {
     await Orders.update(
       { deleted: true },
@@ -58,5 +58,5 @@ const deleteOrder = async (req, res) => {
 };
 module.exports = {
   getOrderDetailPage,
-  deleteOrder,
+  deleteAdminOrder,
 };

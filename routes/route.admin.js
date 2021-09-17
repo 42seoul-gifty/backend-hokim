@@ -31,10 +31,12 @@ router.get("/user", user.getUserPage);
 router.post("/user/filter", user.getAdminFilterdUser);
 router.get("/user/detail/:user_id", user.getUserDetailPage);
 router.delete("/user/:user_id", user.deleteUser);
+router.delete("/user/:user_id/orders/:order_id", order.deleteAdminOrder);
 
 router.get("/order/detail/:order_id", order.getOrderDetailPage);
 
 router.get("/receiver/detail/:receiver_id", receiver.getReceiverDetailPage);
 router.patch("/receiver/:receiver_id", receiver.patchReceiverAdmin);
+
 
 module.exports = router;

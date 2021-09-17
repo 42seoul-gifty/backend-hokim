@@ -162,8 +162,34 @@ const postOrder = async (req, res) => {
   }
 };
 
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Orders.findOne(
+      {
+        where: { id: req.params.order_id, user_id: req.params.user_id },
+      }
+    );
+    if (!order) throw new Error(`Order not Exist`);
+    if (order.imp_uid) throw new Error(`Client can't delete paid order`);
+
+    await Orders.destroy(
+      {
+        where: { id: req.params.order_id, user_id: req.params.user_id },
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   postOrder,
   getOrders,
   getOrderDetail,
+  deleteOrder
 };
