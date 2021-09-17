@@ -1,6 +1,9 @@
 const { convertImageUrl, productIncludeFilter } = require("../lib/lib.Product");
 const { Receiver, ProductImage, Orders, Product, Likes } = require("../models");
 const { dataNotExist } = require("../lib/lib.checkError");
+const { default: axios } = require("axios");
+const { makeSignature } = require("../lib/lib.makeSigniture");
+require("dotenv").config();
 
 const getReceiver = async (req, res) => {
   try {
@@ -130,8 +133,51 @@ const getReceiversChoice = async (req, res) => {
   }
 };
 
+const sendSMS = async (req, res) => {
+  try {
+    const time = Date.now().toString();
+    var receiver = await Receiver.findOne({
+      include: [{ model: Orders, attributes: ["giver_name"] }],
+      where: { id: req.params.receiver_id },
+    });
+    if (!receiver) throw new Error("Receiver not Exist");
+    if (!receiver.phone || receiver.phone.length < 11)
+      throw new Error("Invalid receiver phone number");
+    receiver = receiver.toJSON();
+    const message = {
+      type: "SMS",
+      countryCode: "82",
+      from: `${process.env.SMS_NUMBER}`,
+      content: `[gifty] ${receiver.Order.giver_name}님께서 보내신 선물이 도착했습니다.`,
+      messages: [
+        {
+          to: receiver.phone,
+        },
+      ],
+    };
+
+    await axios({
+      url: `https://sens.apigw.ntruss.com/sms/v2/services/${process.env.SMS_ID}/messages`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-ncp-apigw-timestamp": time,
+        "x-ncp-iam-access-key": `${process.env.SMS_ACCESS_KEY_ID}`,
+        "x-ncp-apigw-signature-v2": makeSignature(time),
+      },
+      data: message,
+    });
+
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   getReceiver,
   patchReceiver,
   getReceiversChoice,
+  sendSMS,
 };
