@@ -9,7 +9,7 @@ const generateRefreshToken = async (req, res, user) => {
     });
     await User.update({ token: newRefreshToken }, { where: { id: user.id } });
 
-    req.cookies.refresh_token = newRefreshToken;
+    return newRefreshToken;
   } catch (e) {
     console.log(e);
     return null;
@@ -24,7 +24,7 @@ const generateAccessToken = (req, res, user) => {
       { expiresIn: "1m", issuer: "gifty" }
     );
 
-    req.cookies.access_token = newAccessToken;
+    return newAccessToken;
   } catch (e) {
     console.log(e);
     return null;
@@ -33,10 +33,10 @@ const generateAccessToken = (req, res, user) => {
 
 const checkRefreshToken = async (req, verifyRefresh) => {
   const user = await User.findOne({
-    where: { token: req.cookies.refresh_token },
+    where: { token: req.body.refresh_token },
   });
   if (user && verifyRefresh) return user;
-  return false;
+  return null;
 };
 
 const checkVerify = (token) => {
@@ -50,19 +50,13 @@ const checkVerify = (token) => {
 
 const decodeToken = async (req, res, next) => {
   try {
-    if (!req.cookies.access_token) throw Error("token does not exist.");
-    const verifyAccess = checkVerify(req.cookies.access_token);
-    const verifyRefresh = checkVerify(req.cookies.refresh_token);
+    var access_token = req.header("Authorization");
+    if (!access_token) throw Error("token does not exist.");
+    const verifyAccess = checkVerify(access_token);
 
-    if (!verifyAccess) {
-      const user = await checkRefreshToken(req, verifyRefresh);
-      if (user) {
-        generateAccessToken(req, res, user);
-      }
-    } else if (!verifyRefresh) {
-      await generateRefreshToken(req, res, verifyAccess);
-    }
-    req.user = jwt.verify(req.cookies.access_token, process.env.JWT_SECRET);
+    if (!verifyAccess) throw new Error("Access token expired");
+
+    req.user = jwt.verify(access_token, process.env.JWT_SECRET);
 
     next();
   } catch (err) {
@@ -72,14 +66,17 @@ const decodeToken = async (req, res, next) => {
 };
 
 const generateToken = async (req, res, user) => {
-  try {
-    generateAccessToken(req, res, user);
-    await generateRefreshToken(req, res, user);
-    return true;
-  } catch (err) {
-    console.log(err);
-    return false;
-  }
+  const access_token = generateAccessToken(req, res, user);
+  const refresh_token = await generateRefreshToken(req, res, user);
+  return { access_token, refresh_token };
 };
 
-module.exports = { generateToken, decodeToken };
+const generateTokenFromRefresh = async (req, res) => {
+  const verifyRefresh = checkVerify(req.body.refresh_token);
+  const user = checkRefreshToken(req, verifyRefresh);
+  const access_token = generateAccessToken(req, res, user);
+
+  return access_token;
+};
+
+module.exports = { generateToken, decodeToken, generateTokenFromRefresh };

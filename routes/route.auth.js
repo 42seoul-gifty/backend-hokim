@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const auth = require("../controller/controller.auth");
 
-const { kakao_config, domain, naver_config } = require("../config/config");
+const { kakao_config, naver_config } = require("../config/config");
 router.get("/kakao/test", (req, res) => {
   res.redirect(
     `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_config.rest_key}&redirect_uri=${process.env.KAKAO_CALLBACK_URL}&response_type=code`
@@ -18,6 +18,8 @@ router.get("/naver/test", (req, res) => {
 router.get("/kakao", auth.getKakaoToken);
 
 router.get("/naver", auth.getNaverToken);
+
+router.post("/token/refresh", auth.getRefreshToken);
 
 router.get("/logout", auth.logout);
 
