@@ -2,7 +2,10 @@ const axios = require("axios");
 var querystring = require("querystring");
 const { kakao_config, naver_config } = require("../config/config");
 const { findOrCreate } = require("../lib/lib.User");
-const { generateToken } = require("../middleware/jwtAuth");
+const {
+  generateToken,
+  generateTokenFromRefresh,
+} = require("../middleware/jwtAuth");
 
 const getKakaoToken = async (req, res) => {
   try {
@@ -40,12 +43,12 @@ const getKakaoToken = async (req, res) => {
     );
 
     //토큰 생성
-    await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(req, res, user);
     console.log(req.cookies.refresh_token);
     res.status(200).json({
       success: true,
-      access_token: req.cookies.access_token,
-      refresh_token: req.cookies.refresh_token,
+      access_token,
+      refresh_token,
       user,
     });
   } catch (e) {
@@ -83,16 +86,28 @@ const getNaverToken = async (req, res) => {
     );
 
     //토큰 생성
-    await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(req, res, user);
     res.status(200).json({
       success: true,
-      access_token: req.cookies.access_token,
-      refresh_token: req.cookies.refresh_token,
+      access_token,
+      refresh_token,
       user,
     });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
+    return;
+  }
+};
+
+const getRefreshToken = async (req, res) => {
+  try {
+    const access_token = await generateTokenFromRefresh(req, res);
+
+    res.json({ success: true, access_token });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false });
     return;
   }
 };
@@ -111,6 +126,7 @@ const logout = async (req, res) => {
 
 module.exports = {
   getKakaoToken,
-  logout,
   getNaverToken,
+  getRefreshToken,
+  logout,
 };
