@@ -37,4 +37,6 @@ router.get("/order/detail/:order_id", order.getOrderDetailPage);
 router.get("/receiver/detail/:receiver_id", receiver.getReceiverDetailPage);
 router.patch("/receiver/:receiver_id", receiver.patchReceiverAdmin);
 
+router.delete("/:user_id/orders/:order_id", order.deleteAdminOrder);
+
 module.exports = router;
