@@ -1,187 +1,195 @@
-<div class="container">
-  <div class="row">
-    <div class="col-3"><%- include ('./nav.ejs') %></div>
-    <div class="col-9" style="margin-top: 30px">
-      <div style="margin: 3% auto; font-size: 20px; text-align: center">
-        <h3>상품 등록</h3>
-      </div>
-      <table class="table table-hover">
-        <tr>
-          <th>상품코드</th>
-          <td>
-            <input
-              id="product_id"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>카테고리</th>
-          <td>
-            <select
-              id="category"
-              class="form-select"
-              aria-label="Default select example"
-            >
-              <% category.forEach((el)=>{ %>
-              <option value="<%=el.id%>"><%=el.value%></option>
-              <% }) %>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <th>브랜드</th>
-          <td>
-            <input
-              id="brand"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>썸네일</th>
-          <td>
-            <input
-              id="thumbnail"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>제품링크</th>
-          <td>
-            <input
-              id="link"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>이미지</th>
-          <td>
-            <div id="image-list"></div>
-            <div style="float: right; margin-top: 10px">
-              <button class="btn btn-primary" onclick="addImageInput()">
-                추가
-              </button>
-              <button class="btn btn-danger" onclick="deleteImageInput()">
-                삭제
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>상품명</th>
-          <td>
-            <input
-              id="name"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>상품소개</th>
-          <td>
-            <input
-              id="description"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>상품정보제공고시</th>
-          <td>
-            <textarea id="detail" class="form-control" rows="16"></textarea>
-          </td>
-        </tr>
-        <tr>
-          <th>소비자가격</th>
-          <td>
-            <input
-              id="retail_price"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>마진율</th>
-          <td>
-            <input
-              id="fee_rate"
-              type="text"
-              class="form-control"
-              aria-describedby="basic-addon1"
-            />
-          </td>
-        </tr>
-        <tr>
-          <th>성별</th>
-          <td>
-            <div class="input-group mb-3 register">
-              <select
-                id="gender"
-                class="form-select multiple"
-                multiple="multiple"
-              >
-                <% gender.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>연령대</th>
-          <td>
-            <div class="input-group mb-3 register">
-              <select id="age" class="form-select multiple" multiple="multiple">
-                <% age.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <th>금액대</th>
-          <td>
-            <select
-              id="price"
-              class="form-select"
-              aria-label="Default select example"
-            >
-              <% price.forEach((el)=>{ %>
-              <option value="<%=el.id%>"><%=el.value%></option>
-              <% }) %>
-            </select>
-          </td>
-        </tr>
-      </table>
-      <button
-        style="margin: 5% 40%"
-        type="button"
-        class="btn btn-primary"
-        onclick="save()"
-      >
-        저장하기
-      </button>
-    </div>
+<%- include ('./nav.ejs') %>
+<section class="main-section">
+  <div>
+    <p class="main-nav-title">
+      <a href="/admin/product/manage">상품 관리</a> > 상품 등록
+    </p>
+    <p class="main-title-deep">상품 등록</p>
   </div>
-</div>
+  <div class="blue-h-line"></div>
+  <div class="button-group">
+    <table class="table table-hover">
+      <tr>
+        <th>상품코드</th>
+        <td>
+          <input
+            id="product_id"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>카테고리</th>
+        <td>
+          <select
+            id="category"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <% category.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>브랜드</th>
+        <td>
+          <input
+            id="brand"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>썸네일</th>
+        <td>
+          <input
+            id="thumbnail"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>제품링크</th>
+        <td>
+          <input
+            id="link"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>이미지</th>
+        <td>
+          <div id="image-list"></div>
+          <div style="float: right; margin-top: 10px">
+            <button class="btn blue-button" onclick="addImageInput()">
+              추가하기
+            </button>
+            <button class="btn red-button" onclick="deleteImageInput()">
+              삭제하기
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>상품명</th>
+        <td>
+          <input
+            id="name"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>상품소개</th>
+        <td>
+          <input
+            id="description"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>상품정보제공고시</th>
+        <td>
+          <textarea id="detail" class="form-control" rows="16"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <th>소비자가격</th>
+        <td>
+          <input
+            id="retail_price"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>마진율</th>
+        <td>
+          <input
+            id="fee_rate"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>성별</th>
+        <td>
+          <div class="input-group mb-3 register">
+            <select
+              id="gender"
+              class="form-select multiple"
+              multiple="multiple"
+            >
+              <% gender.forEach((el)=>{ %>
+              <option value="<%=el.id%>"><%=el.value%></option>
+              <% }) %>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>연령대</th>
+        <td>
+          <div class="input-group mb-3 register">
+            <select id="age" class="form-select multiple" multiple="multiple">
+              <% age.forEach((el)=>{ %>
+              <option value="<%=el.id%>"><%=el.value%></option>
+              <% }) %>
+            </select>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>금액대</th>
+        <td>
+          <select
+            id="price"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <% price.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="button-group">
+    <button
+      style="float: right"
+      type="button"
+      class="btn green-button"
+      onclick="save()"
+    >
+      저장하기
+    </button>
+    <br />
+    <br />
+    <br />
+    <br />
+  </div>
+</section>
 
 <script>
   function addImageInput() {
