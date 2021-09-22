@@ -18,8 +18,8 @@ const getProductPage = async (req, res) => {
   const feature = await Feature.findAll({});
   const category = await Category.findAll({});
   const gender = await getGenders();
-    
-    const page = req.query.page ?  req.query.page: 0
+
+  const page = req.query.page ? req.query.page : 0;
 
   res.render("admin/productManage", {
     layout: "layout/layout",
@@ -27,9 +27,10 @@ const getProductPage = async (req, res) => {
     price,
     feature,
     category,
+    user: req.user,
     csrfToken: req.csrfToken(),
     gender,
-      page
+    page,
   });
 };
 
@@ -74,6 +75,7 @@ const getProductDetailPage = async (req, res) => {
     res.render("admin/productDetail", {
       layout: "layout/layout",
       product: product,
+      user: req.user,
       count: count.toJSON(),
       csrfToken: req.csrfToken(),
     });
@@ -111,6 +113,7 @@ const getProductEditPage = async (req, res) => {
     feature,
     category,
     gender,
+    user: req.user,
 
     csrfToken: req.csrfToken(),
   });
@@ -128,6 +131,7 @@ const getProductRegisterPage = async (req, res) => {
     age,
     price,
     feature,
+    user: req.user,
     csrfToken: req.csrfToken(),
     gender,
     category,

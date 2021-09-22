@@ -100,7 +100,7 @@
       })
       .catch((e) => {
         alert("변경하지 못했습니다.");
-        console.log(e);
+        console.log(e.response.data.error);
       });
   }
 </script>

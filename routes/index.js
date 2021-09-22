@@ -9,6 +9,8 @@ const receiver = require("./route.receiver");
 const csrfProtection = require("../middleware/csrfProtection");
 
 const getCategories = require("../controller/admin/controller.admin.category");
+const checkLogin = require("../middleware/checkLogin");
+const adminAuth = require("./route.admin.auth");
 
 router.get("/", (req, res) => {
   res.render("index", {});
@@ -24,7 +26,9 @@ router.get("/all", getCategories.getAllCategory);
 router.use("/users", user);
 router.use("/login", auth);
 router.use("/payment", payment);
-router.use("/admin", csrfProtection, admin);
+
+router.use("/admin", csrfProtection, adminAuth);
+router.use("/admin", checkLogin, csrfProtection, admin);
 router.use("/products", product);
 router.use("/receiver", receiver);
 

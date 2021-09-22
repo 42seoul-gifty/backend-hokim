@@ -124,9 +124,10 @@ function deleteUser(elem) {
       alert("탈퇴 되었습니다");
       window.location.reload();
     })
-    .catch((err) => {
+    .catch((e) => {
       alert("탈퇴 시키지 못했습니다");
-      console.log(err.error);
+
+      console.log(e.response.data.error);
     });
 }
 
@@ -146,8 +147,8 @@ function restoreUser(elem) {
       alert("복구 되었습니다");
       window.location.reload();
     })
-    .catch((err) => {
+    .catch((e) => {
       alert("복구 하지 못했습니다");
-      console.log(err.error);
+      console.log(e.response.data.error);
     });
 }

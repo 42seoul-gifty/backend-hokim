@@ -292,9 +292,9 @@
           alert("제품이 등록되었습니다.");
           location.href = `/admin/product/manage`;
         })
-        .catch((err) => {
+        .catch((e) => {
           alert("제품을 등록하지 못했습니다.");
-          console.log(err.error);
+          console.log(e.response.data.error);
         });
     }
   }

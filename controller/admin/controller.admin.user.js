@@ -21,6 +21,7 @@ const getUserDetailPage = async (req, res) => {
   });
   res.render("admin/userDetail", {
     layout: "layout/layout",
+    user: req.user,
     csrfToken: req.csrfToken(),
     user,
     orders,
@@ -31,6 +32,7 @@ const getUserPage = async (req, res) => {
   res.render("admin/userManage", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),
+    user: req.user,
     page: req.query.page ? req.query.page : 0,
   });
 };
@@ -38,7 +40,7 @@ const getUserPage = async (req, res) => {
 const getAdminFilterdUser = async (req, res) => {
   try {
     const page = req.query.page ? req.query.page : 0;
-    const limit = 2;
+    const limit = 15;
 
     const orderValue = [];
     if (req.query.value && req.query.order)

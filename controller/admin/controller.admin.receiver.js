@@ -14,9 +14,11 @@ const {
 } = require("../../models");
 
 const getReceiverPage = async (req, res) => {
-const page = req.query.page ?  req.query.page: 0
+  const page = req.query.page ? req.query.page : 0;
   res.render("admin/shippingManage", {
-    layout: "layout/layout",page,
+    layout: "layout/layout",
+    page,
+    user: req.user,
     csrfToken: req.csrfToken(),
   });
 };
@@ -58,7 +60,6 @@ const getReceiverDetailPage = async (req, res) => {
       where: { id: req.params.receiver_id },
       row: true,
     });
-    
 
     res.render("admin/receiverDetail", {
       layout: "layout/layout",
@@ -67,6 +68,7 @@ const getReceiverDetailPage = async (req, res) => {
       ages,
       prices,
       receiver,
+      user: req.user,
       shipments: Shipment,
     });
   } catch (e) {
@@ -79,11 +81,8 @@ const getReceiverDetailPage = async (req, res) => {
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
-
-    
-    const page = req.query.page ?  req.query.page: 0
-    const limit = 15
-
+    const page = req.query.page ? req.query.page : 0;
+    const limit = 15;
 
     const startDate =
       !req.body.start || req.body.start == ""
@@ -106,24 +105,25 @@ const getAdminFilterdReceiver = async (req, res) => {
         },
       },
 
-    offset: page * limit,
-    limit: limit,
-    subQuery:false
-  });
+      offset: page * limit,
+      limit: limit,
+      subQuery: false,
+    });
 
-  var totalPage = await Receiver.count({
-  
-    where: {
-      createdAt: {
-        [Op.lte]: endDate,
-        [Op.gt]: startDate,
+    var totalPage = await Receiver.count({
+      where: {
+        createdAt: {
+          [Op.lte]: endDate,
+          [Op.gt]: startDate,
+        },
       },
-    },
+    });
+    totalPage =
+      totalPage % limit == 0
+        ? Math.floor(totalPage / limit) - 1
+        : Math.floor(totalPage / limit);
 
-  });
-  totalPage = totalPage%limit == 0 ? Math.floor(totalPage/limit) - 1:Math.floor(totalPage/limit)
-
-    res.status(200).json({ success: true, receiver , totalPage, page});
+    res.status(200).json({ success: true, receiver, totalPage, page });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });

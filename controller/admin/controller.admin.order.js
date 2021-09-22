@@ -73,6 +73,7 @@ const getOrderDetailPage = async (req, res) => {
       layout: "layout/layout",
       csrfToken: req.csrfToken(),
       order,
+      user: req.user,
       receivers,
       paidData,
     });

@@ -23,6 +23,10 @@ table {
   color: #484848;
 }
 
+a {
+  color: #484848;
+}
+
 .white-text {
   color: #ffffff;
 }
@@ -37,6 +41,11 @@ table {
 
 .blue-button {
   background: #66a2c2;
+  color: #ffffff;
+}
+
+.deep-blue-button {
+  background: #406194;
   color: #ffffff;
 }
 
@@ -65,6 +74,16 @@ table {
   position: relative;
   width: 75%;
   float: right;
+  height: 100vh;
+}
+
+.main-middle-section {
+  background: #75afcf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  margin: 0 auto;
   height: 100vh;
 }
 
@@ -136,4 +155,9 @@ table {
 .button-group {
   margin: 15px auto;
   width: 90%;
+}
+
+.login-li {
+  width: 100%;
+  margin: 5px 0;
 }
