@@ -14,6 +14,9 @@ const {
 
 const getAdminFilterdProduct = async (req, res) => {
   try {
+    const page = req.query.page ? req.query.page : 0;
+    const limit = 10;
+
     const include = productIncludeMutipleFilter(
       req.body.gender,
       req.body.price,
@@ -58,9 +61,22 @@ const getAdminFilterdProduct = async (req, res) => {
       include,
       group: ["Product.id"],
       where: condition.length == 0 ? {} : { [Op.or]: condition },
+      offset: page * limit,
+      limit: limit,
+      subQuery: false,
     });
 
-    res.status(200).json({ success: true, products });
+    var totalPage = await Product.count({
+      include,
+      where: condition.length == 0 ? {} : { [Op.or]: condition },
+    });
+
+    totalPage =
+      totalPage % limit == 0
+        ? Math.floor(totalPage / limit) - 1
+        : Math.floor(totalPage / limit);
+
+    res.status(200).json({ success: true, products, page, totalPage });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -189,9 +205,23 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const restoreProduct = async (req, res) => {
+  try {
+    await Product.update(
+      { deleted: false },
+      { where: { id: req.params.product_id } }
+    );
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   getAdminFilterdProduct,
   postProduct,
   patchProduct,
+  restoreProduct,
   deleteProduct,
 };

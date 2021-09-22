@@ -1,47 +1,44 @@
-<div class="wrapper">
+<aside class="sidebar">
   <nav class="navbar navbar-default" role="navigation">
     <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken%>" />
+    <div class="sidebar-margin">
+      <p class="title">Your Wish</p>
 
-    <ul class="nav flex-column">
+      <h4 class="sub-title">admin</h4>
+    </div>
+    <div class="white-h-line"></div>
+
+    <ul class="nav flex-column sidebar-margin">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/admin/app"
-          >앱관리</a
+        <a
+          class="nav-link active sidebar-text"
+          aria-current="page"
+          href="/admin/app"
+          >&#183; 카테고리 관리</a
         >
       </li>
       <li class="nav-item">
         <a
-          class="nav-link active"
+          class="nav-link active sidebar-text"
           aria-current="page"
           href="/admin/product/manage"
-          >상품관리</a
+          >&#183; 상품 관리</a
         >
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/admin/product/register">상품추가</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/admin/shipping">배송관리</a>
+        <a class="nav-link sidebar-text" href="/admin/shipping"
+          >&#183; 배송 관리</a
+        >
       </li>
       <li class="nav-item">
         <a
-          class="nav-link"
+          class="nav-link sidebar-text"
           href="/admin/user"
           tabindex="-1"
           aria-disabled="true"
-          >회원관리</a
+          >&#183; 회원 관리</a
         >
       </li>
     </ul>
-
-    <!-- <ul class="nav navbar-nav">
-                        <li><a href="/admin/product/manage">상품관리</a></li>
-                        <li><a href="/admin/product/register">상품추가</a></li>
-                        <li><a href="/admin/shipping">배송관리</a></li>
-                        <li><a href="/admin/user">회원관리</a></li>
-                    </ul> -->
   </nav>
-</div>
-
-<!-- views/footer.ejs -->
-
-<!-- <p class="text-center text-muted">© Copyright 2014 The Awesome People</p> -->
+</aside>

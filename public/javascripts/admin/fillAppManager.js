@@ -1,80 +1,71 @@
-function createUneditableOptionTable(title, name, data) {
-  var innerText = `<table id="select" class="table" style="margin-top: 10px;">
-	  <tr><th>${title}</th></tr>
-	  <tr><td>
-	  
-		<ul class="list-group" >
-		`;
+function createOptionTable(name, data) {
+  var selectText = "";
+  var deleteText = "";
   data.forEach((elem) => {
-    innerText += `	 
-		   <li class="list-group-item" >
-			<div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
-			  <div class="col-auto my-1">
-				<div class="form-check">
-					<label class="form-check-label" for="${name}-${elem.id}" > ${elem.value} </label>
-				  </div> 
-			  </div>
-		
-			  
-			</div>
-		  </li>`;
+    if (elem.deleted != 1)
+      selectText += `	 
+        <tr>
+          <td>
+            <div class="col-auto my-1">
+              <p class="form-check-label ${name}"  origin="${elem.id}"
+                for="${name}-${elem.id}" >${elem.value} </p>
+            </div>
+          </td>
+
+          <td>
+            <div class="col-auto my-1">
+              <input class="form-control" name=${name} 
+              type=${name == "price" ? "number" : "text"} value="" hidden>
+            </div> 
+          </td>
+
+          <td>
+            <div class="col-auto my-1 selected-btns"  style="float:right;">
+              <button  class="btn blue-button btn-edit">수정</button>
+              <button  class="btn red-button btn-delete">삭제</button>
+            </div>
+            <div class="deleted-btns"  style="float:right;" hidden>
+              <button  class="btn blue-button btn-restore">복구</button>
+            </div>
+          </td>
+        </tr>
+        `;
+    else
+      deleteText += `	 
+    <tr>
+      <td>
+        <div class="col-auto my-1">
+          <p class="form-check-label ${name}"  origin="${elem.id}"
+            for="${name}-${elem.id}" >${elem.value} </p>
+        </div>
+      </td>
+
+      <td>
+        <div class="col-auto my-1">
+          <input class="form-control" name=${name} 
+          type=${name == "price" ? "number" : "text"} value="" hidden>
+        </div> 
+      </td>
+
+      <td>
+      <div class="col-auto my-1 selected-btns"  style="float:right;" hidden>
+        <button  class="btn blue-button btn-edit">수정</button>
+        <button  class="btn red-button btn-delete">삭제</button>
+      </div>
+      <div class="deleted-btns"  style="float:right;">
+        <button  class="btn blue-button btn-restore">복구</button>
+      </div>
+      </td>
+    </tr>
+    `;
   });
 
-  innerText += ` 
-	
-  </ul></td></tr>
-  </table>  `;
-
   document
-    .getElementById("button-group")
-    .insertAdjacentHTML("beforebegin", innerText);
-}
-
-function createOptionTable(title, name, data) {
-  var innerText = `<table id="select" class="table" style="margin-top: 10px;">
-	<tr><th>${title}</th></tr>
-	<tr><td>
-	
-	  <ul class="list-group" type=${name}>
-	  `;
-  data.forEach((elem) => {
-    innerText += `	 
-		 <li class="list-group-item" >
-		  <div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
-			<div class="col-auto my-1">
-			  <div class="form-check">
-				  <input class="form-check-input" name=${title} type="checkbox" value="" 
-          id="${name}-${elem.id}" >
-				  <label class="form-check-label ${name}"  origin="${elem.id}"
-          for="${name}-${elem.id}" >${elem.value} </label>
-				</div> 
-			</div>
-			<div class="col-auto my-1">
-			  <input class="form-control" name=${title} 
-        type=${name == "price" ? "number" : "text"} value="" hidden
-     
-        >
-			</div> 
-			
-			 <div class="col-auto my-1">
-				<button  class="btn btn-success  btn-edit">수정</button>
-			</div>
-		  </div>
-		</li>`;
-  });
-
-  innerText += ` 
-	  <li class="list-group-item" >
-		<input class="form-control" name=${title} type="text" value="" placeholder="${title}을(를) 입력하세요." >
-		<button  class="btn btn-success form-control btn-add" >추가</button>
-		
-	  </li>
-</ul></td></tr>
-</table>  `;
-
+    .getElementById("selected")
+    .insertAdjacentHTML("beforeend", selectText);
   document
-    .getElementById("button-group")
-    .insertAdjacentHTML("beforebegin", innerText);
+    .getElementById("deleted")
+    .insertAdjacentHTML("beforeend", deleteText);
 }
 
 function checkPriceInput(value) {
@@ -91,7 +82,7 @@ function checkPriceInput(value) {
 }
 
 function editButtonClick(e) {
-  const input = $(e.target).closest("li").find(".form-control")[0];
+  const input = $(e.target).closest("tr").find(".form-control")[0];
   var value = input.value;
 
   if (input.hasAttribute("hidden")) {
@@ -99,7 +90,7 @@ function editButtonClick(e) {
     e.target.innerHTML = "확인";
   } else {
     if (value != "") {
-      const label = $(e.target).closest("li").find("label")[0];
+      const label = $(e.target).closest("tr").find("p")[0];
       label.innerHTML = value;
       $(label).addClass(" edited");
     }
@@ -107,39 +98,87 @@ function editButtonClick(e) {
     e.target.innerHTML = "수정";
   }
 }
+
+function deleteButtonClick(e) {
+  const input = $(e.target).closest("tr")[0];
+  const label = $(e.target).closest("tr").find("p")[0];
+
+  if ($(label).hasClass("new")) $(input).remove();
+  else {
+    $(label).addClass(" restored");
+    $(input).find(".selected-btns")[0].setAttribute("hidden", "");
+    $(input).find(".deleted-btns")[0].removeAttribute("hidden");
+    var element = $(input).detach();
+    $("#deleted").append(element);
+    $(label).addClass(" removed");
+  }
+}
+
+function restoreButtonClick(e) {
+  const input = $(e.target).closest("tr")[0];
+  const label = $(e.target).closest("tr").find("p")[0];
+
+  $(input).find(".deleted-btns")[0].setAttribute("hidden", "");
+  $(input).find(".selected-btns")[0].removeAttribute("hidden");
+  $(label).addClass(" restored");
+  var element = $(input).detach();
+  $("#selected").append(element);
+}
+
 function addOption(e) {
-  const ul = $(e.target).closest("ul");
-  var input = $(e.target).closest("li").find("input")[0].value;
-  const name = $(ul).attr("type");
+  var input = $(e.target).closest("div").find("input")[0].value;
+  if (input == "") {
+    alert("값이 비었습니다.");
+    return;
+  }
+  var name = "gender";
+  $("#selected").append(`
+    <tr>
 
-  $(ul).find("li").last().before(`
-    <li class="list-group-item" >
-     <div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
-  	 <div class="col-auto my-1">
-  	   <div class="form-check">
-  		   <input class="form-check-input" name=${name} type="checkbox" value="" id="${name}" >
-  		   <label class="form-check-label ${name} new" for="${name}" > ${input} </label>
-  		 </div>
-  	 </div>
-  	 <div class="col-auto my-1">
-  	   <input class="form-control" name=${name} type="text" value=""
-       type=${name == "price" ? "number" : "text"} hidden
-       >
-  	 </div>
+    <td>
+      <div class="form-row align-items-center" style="display:flex; justify-content: space-between;">
+      <div class="col-auto my-1">
+        <p class="form-check-label ${name} new" for="${name}" > ${input} </p>
+      </div>
+     </td>
 
-  	  <div class="col-auto my-1">
-  		 <button  class="btn btn-success  btn-edit new">수정</button>
-  	 </div>
-     </div>
-   </li>`);
-  const Button = $(ul).find("li").last().prev().find(".btn-edit")[0];
-  $(Button).on("click", (e) => {
+     <td>
+      <div class="col-auto my-1">
+        <input class="form-control" name=${name} type="text" value=""
+        type=${name == "price" ? "number" : "text"} hidden
+        >
+      </div>
+     </td>
+
+     <td>
+  	  <div class="col-auto my-1" style="float:right;">
+      <button  class="btn blue-button btn-edit">수정</button>
+      <button  class="btn red-button btn-delete">삭제</button>
+  	  </div>
+     </td>
+
+     </tr>
+   `);
+  const editButton = $("#selected").find("tr").last().find(".btn-edit")[0];
+  const deleteButton = $("selected").find("tr").last().find(".btn-delete")[0];
+  $(editButton).on("click", (e) => {
     editButtonClick(e);
   });
-  $(e.target).closest("li").find("input")[0].value = "";
+  $(deleteButton).on("click", (e) => {
+    deleteButtonClick(e);
+  });
+  $(e.target).closest("div").find("input")[0].value = "";
 }
 
 function addEditButtonEvent() {
+  $(".btn-delete").on("click", (e) => {
+    deleteButtonClick(e);
+  });
+
+  $(".btn-restore").on("click", (e) => {
+    restoreButtonClick(e);
+  });
+
   $(".btn-edit").on("click", (e) => {
     editButtonClick(e);
   });
@@ -149,17 +188,32 @@ function addEditButtonEvent() {
   });
 }
 
-axios({ url: "/all", method: "get" })
+function showDeleted() {
+  if ($("#show-deleted").text().includes("않은")) {
+    $("#selected")[0].removeAttribute("hidden");
+    $("#deleted")[0].setAttribute("hidden", "");
+    $("#show-deleted").text("삭제된 항목 보기");
+  } else {
+    $("#deleted")[0].removeAttribute("hidden");
+    $("#selected")[0].setAttribute("hidden", "");
+    $("#show-deleted").text("삭제되지 않은 항목 보기");
+  }
+}
+
+axios({
+  url: `/${document.getElementById("type").textContent}s`,
+  method: "get",
+})
   .then((res) => {
     const data = res.data.data;
-    createUneditableOptionTable("성별", "gender", data.gender);
-    createOptionTable("나이", "age", data.age);
 
-    createOptionTable("카테고리", "category", data.category);
-    createOptionTable("금액대", "price", data.price);
-    createOptionTable("그룹", "feature", data.feature);
+    createOptionTable(document.getElementById("type").textContent, data);
     addEditButtonEvent();
   })
   .catch((e) => {
     console.log(e);
   });
+
+document.getElementById("show-deleted").addEventListener("click", () => {
+  showDeleted();
+});

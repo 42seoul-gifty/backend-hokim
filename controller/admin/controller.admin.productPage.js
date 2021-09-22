@@ -18,6 +18,8 @@ const getProductPage = async (req, res) => {
   const feature = await Feature.findAll({});
   const category = await Category.findAll({});
   const gender = await getGenders();
+    
+    const page = req.query.page ?  req.query.page: 0
 
   res.render("admin/productManage", {
     layout: "layout/layout",
@@ -27,6 +29,7 @@ const getProductPage = async (req, res) => {
     category,
     csrfToken: req.csrfToken(),
     gender,
+      page
   });
 };
 

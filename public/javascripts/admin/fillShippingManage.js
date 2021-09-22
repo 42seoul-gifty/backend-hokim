@@ -1,3 +1,5 @@
+import { pagenation } from "./pagenation.js";
+
 (function ($) {
   $(function () {
     const start = document.getElementById("start");
@@ -6,6 +8,14 @@
       receiverSort(start.value, end.value);
     });
     receiverSort("");
+
+    const data = location.href.split("&");
+    data.forEach((elem) => {
+      const value = elem.split("=");
+      if (value.length == 1 || value[0].includes("page") || value[1] == "")
+        return 1;
+      $(document.getElementById(value[0]))[0].setAttribute("value", value[1]);
+    });
   });
 })(jQuery);
 
@@ -15,7 +25,9 @@ function receiverSort(start, end) {
     pageSize: 10,
     dataSource: function (done) {
       axios({
-        url: `/admin/shipping/filter`,
+        url: `/admin/shipping/filter?page=${
+          document.getElementById("page").textContent
+        }`,
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -29,20 +41,18 @@ function receiverSort(start, end) {
         .then((res) => {
           const data = res.data.receiver;
 
-          console.log(data);
           $("#order_list").empty();
           var dataHtml = "";
           $.each(data, function (index, user) {
             dataHtml += `<tr>
             <td scope="col">
             ${user.id}</td>
-            <td scope="col"><p onclick="location.href='/admin/receiver/detail/${
-              user.id
-            }'">${user.name}
+            <td scope="col">
+            <p onclick="location.href='/admin/receiver/detail/${user.id}'"
+            class="btn btn-light">${user.name}
             </p></td>
             <td scope="col">${user.phone}</td>
-            <td scope="col">${user.address}</td>
-            <td scope="col">${user.detail_address}</td>
+            <td scope="col">${user.address}, ${user.detail_address}</td>
             <td scope="col">${
               user?.Product?.name ? user.Product.name : "-"
             }</td>
@@ -73,6 +83,17 @@ function receiverSort(start, end) {
               selectChange(elem);
             });
           });
+
+          pagenation(
+            "/admin/shipping",
+            res.data.page,
+            res.data.totalPage,
+            () => {
+              return `start=${document.getElementById("start").value}&end=${
+                document.getElementById("end").value
+              }`;
+            }
+          );
         })
         .catch((err) => {
           console.log(err);

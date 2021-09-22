@@ -1,11 +1,13 @@
-<div class="container">
-  <div class="row">
-    <div class="col-3"><%- include ('./nav.ejs') %></div>
-    <div class="col-9" style="margin-top: 30px">
-      <div id="content">
-        <div style="margin: 3% auto; font-size: 20px; text-align: center">
-          <h2>받는 분 정보</h2>
-        </div>
+<%- include ('./nav.ejs') %>
+<section class="main-section">
+  <div>    <p class="main-nav-title">
+    <a href="/admin/user">회원 관리</a> >
+    <a href="/admin/user/detail/<%= receiver.Order.user_id%>">회원 정보</a> > 
+    <a href="/admin/order/detail/<%= receiver.order_id%>"> 주문 정보</a> > 받는 분 정보
+  </p>
+  <p class="main-title-deep">받는 분 정보</p></div>
+  <div class="blue-h-line"></div>
+  <div class="button-group">
         <div id="id" hidden> <%= receiver.id%> </div>
         <table class="table table-hover">
           <tr>
@@ -18,6 +20,13 @@
                 aria-describedby="basic-addon1"
                 value="<%= receiver.name%>"
               />
+            </td>
+          </tr>
+          <tr style="height: 55px;">
+            <th>주문일</th>
+            <td>
+              <p ><%= receiver.createdAt%>
+            </p>
             </td>
           </tr>
           <tr>
@@ -178,13 +187,13 @@
             </td>
           </tr>
         </table>
-        <button style="margin: 5% 40%" type="button" class="btn btn-primary" onclick="save()">
+        <div class="button-group">
+        <button style="float: right;" type="button" class="btn green-button" onclick="save()">
           저장하기
         </button>
-      </div>
-    </div>
+        </div>
   </div>
-</div>
+</section>
 
 <script>
 

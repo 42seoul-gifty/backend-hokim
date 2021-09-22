@@ -17,13 +17,14 @@ router.get("/", (req, res) => {
 router.get("/genders", getCategories.getGenderCategory);
 router.get("/ages", getCategories.getAgeCategory);
 router.get("/prices", getCategories.getPriceCategory);
-router.get("/groups", getCategories.getPriceCategory);
+router.get("/features", getCategories.getFeatureCategory);
+router.get("/categorys", getCategories.getCategory);
 router.get("/all", getCategories.getAllCategory);
 
 router.use("/users", user);
 router.use("/login", auth);
 router.use("/payment", payment);
-router.use("/admin", csrfProtection, admin);
+router.use("/admin", admin);
 router.use("/products", product);
 router.use("/receiver", receiver);
 

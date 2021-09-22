@@ -167,6 +167,26 @@ describe("App test!", function () {
     }, 200);
   });
 
+  it("PATCH /product/:product_id : 제품 복구", function (done) {
+    setTimeout(async () => {
+      var product = await Product.findOne({ order: [["createdAt", "desc"]] });
+      product = product.toJSON();
+      axios({
+        url: `http://localhost:4000/admin/product/${product.id}`,
+        method: "patch",
+      })
+        .then((res) => {
+          console.log(res.status, res.data.order);
+          expect(res.status).to.equal(200);
+          done();
+        })
+        .catch((e) => {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    }, 200);
+  });
+
   it("DELETE /user/:user_id : 유저 탈퇴", function (done) {
     setTimeout(async () => {
       var user = await User.findOne({ order: [["createdAt", "desc"]] });
@@ -174,6 +194,26 @@ describe("App test!", function () {
       axios({
         url: `http://localhost:4000/admin/user/${user.id}`,
         method: "delete",
+      })
+        .then((res) => {
+          console.log(res.status, res.data.order);
+          expect(res.status).to.equal(200);
+          done();
+        })
+        .catch((e) => {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    }, 200);
+  });
+
+  it("PATCH /user/:user_id : 유저 복구", function (done) {
+    setTimeout(async () => {
+      var user = await User.findOne({ order: [["createdAt", "desc"]] });
+      user = user.toJSON();
+      axios({
+        url: `http://localhost:4000/admin/user/${user.id}`,
+        method: "patch",
       })
         .then((res) => {
           console.log(res.status, res.data.order);

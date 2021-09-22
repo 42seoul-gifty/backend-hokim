@@ -1,8 +1,139 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
-a {
-  color: #00B7FF;
+body {
+  margin: 0;
+  padding: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+p {
+  word-break: keep-all;
+  margin: 0;
+}
+td,
+th {
+  vertical-align: middle;
+}
+
+table {
+  font-family: "Noto Sans KR", sans-serif;
+  color: #484848;
+}
+
+.white-text {
+  color: #ffffff;
+}
+
+.sidebar {
+  position: fixed;
+  width: 25%;
+  height: 100vh;
+  background: #75afcf;
+  font-size: 0.65em;
+}
+
+.blue-button {
+  background: #66a2c2;
+  color: #ffffff;
+}
+
+.green-button {
+  background: #7fbf4d;
+  color: #ffffff;
+}
+
+.red-button {
+  background: #d46a6a;
+  color: #ffffff;
+}
+
+.blue-border-button {
+  border: solid #66a2c2 1px;
+  color: #66a2c2;
+}
+
+.sidebar-text {
+  font-family: "Noto Sans KR", sans-serif;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.main-section {
+  position: relative;
+  width: 75%;
+  float: right;
+  height: 100vh;
+}
+
+.main-title {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 45px;
+  color: #484848;
+  margin: 35px 5%;
+}
+
+.main-title-deep {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 45px;
+  color: #484848;
+  margin: 20px 5%;
+  margin-top: 0px;
+}
+
+.main-nav-title {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 15px;
+  color: #484848;
+  margin: 15px 5%;
+}
+
+.blue-h-line {
+  margin: 0 auto;
+  width: 90%;
+  height: 0;
+  border-top: solid #75afcf 1px;
+}
+
+.sidebar-margin {
+  width: 100%;
+  margin: 20px;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.sub-title {
+  width: 100%;
+  text-align: center;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 18px;
+  color: #ffffff;
+}
+.white-h-line {
+  margin: 0 auto;
+  width: 90%;
+  height: 0;
+  border-top: solid #ffffff 1px;
+}
+
+.nav-item {
+  height: 50px;
+}
+
+.table-group {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.button-group {
+  margin: 15px auto;
+  width: 90%;
 }

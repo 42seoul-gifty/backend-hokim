@@ -1,5 +1,19 @@
+import { pagenation } from "./pagenation.js";
+
 (function ($) {
   $(function () {
+    const queries = location.href.split("&");
+    queries.forEach((elem) => {
+      const data = elem.split("=");
+      if (data.length == 1 || data[0].includes("page") || data[1] == "")
+        return 1;
+      const values = data[1].split(",");
+
+      values.forEach((val) => {
+        $(`#${data[0]} option[value='${val}']`).prop("selected", true);
+      });
+    });
+
     window.fs_test = $("#gender").fSelect({
       placeholder: "성별",
       numDisplayed: 2,
@@ -32,8 +46,10 @@
       searchText: "Search",
       showSearch: false,
     });
+
     filter();
     document.getElementById("btn-filter").addEventListener("click", () => {
+      document.getElementById("page").textContent = 0;
       filter();
     });
   });
@@ -69,7 +85,9 @@ function filter() {
         .get();
 
       axios({
-        url: "/admin/product/filter",
+        url: `/admin/product/filter?page=${
+          document.getElementById("page").textContent
+        }`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,19 +104,18 @@ function filter() {
           $("#product_list").empty();
           var dataHtml = "";
           const products = res.data.products;
-          console.log(products);
           $.each(products, function (index, product) {
-            dataHtml += `<tr> <td scope="col"><p>${product.id}</p></td>
-            <td scope="col" style="width:200px"><p onclick="window.open('/admin/product/detail/${
-              product.id
-            }','상품수정','width=900,height=1000,left=500,top=50')">${
-              product.name
-            }</p></td>
-            <td scope="col"><p>${product.Category?.value}</p></td>
+            dataHtml += `
+            <tr> <td scope="col"><p>${product.id}</p></td>
             <td scope="col"><p><img src="${
               product.thumbnail
             }" alt="" style="width:100px; height: 100px;"/></p></td>
-            <td scope="col"><p>${product.description}</p></td>
+
+            <td scope="col" style="width:200px"><p class="btn btn-light"
+            onclick="location.href='/admin/product/detail/${product.id}'">${
+              product.name
+            }</p></td>
+            <td scope="col"><p>${product.Category?.value}</p></td>
             <td scope="col"><p>${product.Brand?.value}</p></td>
             <td scope="col"><p>${product.view_count}</p></td>
             <td scope="col"><p>${product.like_count}</p></td>
@@ -106,8 +123,8 @@ function filter() {
             <td scope="col">
             ${
               product.deleted == 1
-                ? "판매 중단됨"
-                : '<button type="button" class="btn btn-light" id="${product.id}">판매중단</button>'
+                ? `<button type="button" class="btn blue-button restore-btn" id="${product.id}">판매재개</button>`
+                : `<button type="button" class="btn red-button delete-btn" id="${product.id}">판매중단</button>`
             }
             
             
@@ -115,11 +132,40 @@ function filter() {
           });
           $("#product_list").append(dataHtml);
 
-          const buttons = document.getElementsByClassName("btn-light");
-          Array.from(buttons).forEach((elem) => {
+          pagenation(
+            "/admin/product/manage",
+            res.data.page,
+            res.data.totalPage,
+            () => {
+              var result = "";
+              const categories = ["gender", "age", "price", "category"];
+              categories.forEach((elem) => {
+                let values = $(`#${elem} option:selected`)
+                  .map(function () {
+                    return this.value;
+                  })
+                  .get();
+                if (values.length > 0) result += `${elem}=${values.join(",")}&`;
+              });
+              return result;
+            }
+          );
+
+          const deleteButtons = document.getElementsByClassName("delete-btn");
+          Array.from(deleteButtons).forEach((elem) => {
             elem.addEventListener("click", (e) => {
               if (confirm("정말 삭제하시겠습니까?")) {
                 deleteProduct(e.target.id);
+                $(e.target).closest("tr").remove();
+              }
+            });
+          });
+
+          const restoreButtons = document.getElementsByClassName("restore-btn");
+          Array.from(restoreButtons).forEach((elem) => {
+            elem.addEventListener("click", (e) => {
+              if (confirm("정말 복구하시겠습니까?")) {
+                restoreProduct(e.target.id);
                 $(e.target).closest("tr").remove();
               }
             });
@@ -150,6 +196,28 @@ function deleteProduct(id) {
     })
     .catch((err) => {
       alert("제품을 삭제하지 못했습니다.");
+      console.log(err.error);
+    });
+}
+
+function restoreProduct(id) {
+  axios({
+    url: `/admin/product/${id}`,
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      product_id: id,
+      _csrf: $("#_csrf").val(),
+    }),
+  })
+    .then((res) => {
+      alert("제품이 복구되었습니다");
+      window.location.reload();
+    })
+    .catch((err) => {
+      alert("제품을 복구하지 못했습니다.");
       console.log(err.error);
     });
 }

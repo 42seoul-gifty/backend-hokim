@@ -22,6 +22,7 @@ router.get("/product/register", productPage.getProductRegisterPage);
 router.post("/product/register", product.postProduct);
 
 router.delete("/product/:product_id", product.deleteProduct);
+router.patch("/product/:product_id", product.restoreProduct);
 
 router.get("/shipping", receiver.getReceiverPage);
 router.post("/shipping/filter", receiver.getAdminFilterdReceiver);
@@ -31,6 +32,7 @@ router.get("/user", user.getUserPage);
 router.post("/user/filter", user.getAdminFilterdUser);
 router.get("/user/detail/:user_id", user.getUserDetailPage);
 router.delete("/user/:user_id", user.deleteUser);
+router.patch("/user/:user_id", user.restoreUser);
 router.delete("/user/:user_id/orders/:order_id", order.deleteAdminOrder);
 
 router.get("/order/detail/:order_id", order.getOrderDetailPage);

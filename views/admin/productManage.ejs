@@ -1,92 +1,100 @@
-<div class="container">
-  <div class="row">
-    <div class="col-3"><%- include ('./nav.ejs') %></div>
-    <div class="col-9" style="margin-top: 30px">
-      <div>
-        <h2>상품 관리</h2>
-      </div>
-      <div id="content">
-        <table id="select">
-          <tr>
-            <td class="manage">
-              <select
-                id="gender"
-                class="manage form-select multiple"
-                multiple="multiple"
-              >
-                <% gender.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </td>
-            <td class="manage">
-              <select
-                id="age"
-                class="manage form-select multiple"
-                multiple="multiple"
-              >
-                <% age.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </td>
-            <td class="manage">
-              <select
-                id="price"
-                class="manage form-select multiple"
-                multiple="multiple"
-              >
-                <% price.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </td>
-            <td class="manage">
-              <select
-                id="category"
-                class="manage form-select multiple"
-                multiple="multiple"
-              >
-                <% category.forEach((el)=>{ %>
-                <option value="<%=el.id%>"><%=el.value%></option>
-                <% }) %>
-              </select>
-            </td>
-            <td>
-              <button
-                id="btn-filter"
-                type="button"
-                class="btn btn-primary"
-                style="margin-left: 5px; height: 40px"
-              >
-                filter
-              </button>
-            </td>
-            <td>
-              <div style="margin-left: 30px" id="pagination"></div>
-            </td>
-          </tr>
-        </table>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">코드</th>
-              <th scope="col">상품명</th>
-              <th scope="col">상품유형</th>
-              <th scope="col">썸네일</th>
-              <th scope="col">상품소개</th>
-              <th scope="col">판매처</th>
-              <th scope="col">노출수</th>
-              <th scope="col">좋아요수</th>
-              <th scope="col">주문수</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody id="product_list"></tbody>
-        </table>
-      </div>
+<%- include ('./nav.ejs') %>
+
+<div id="page" hidden><%=page%></div>
+
+<section class="main-section">
+  <div><p class="main-title">상품 관리</p></div>
+  <div class="blue-h-line"></div>
+  <div class="button-group">
+    <table id="select">
+      <tr>
+        <td class="manage">
+          <select
+            id="gender"
+            class="manage form-select multiple"
+            multiple="multiple"
+          >
+            <% gender.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+        <td class="manage">
+          <select
+            id="age"
+            class="manage form-select multiple"
+            multiple="multiple"
+          >
+            <% age.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+        <td class="manage">
+          <select
+            id="price"
+            class="manage form-select multiple"
+            multiple="multiple"
+          >
+            <% price.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+        <td class="manage">
+          <select
+            id="category"
+            class="manage form-select multiple"
+            multiple="multiple"
+          >
+            <% category.forEach((el)=>{ %>
+            <option value="<%=el.id%>"><%=el.value%></option>
+            <% }) %>
+          </select>
+        </td>
+        <td>
+          <button
+            id="btn-filter"
+            type="button"
+            class="btn blue-button"
+            style="margin-left: 5px; height: 40px"
+          >
+            검색
+          </button>
+        </td>
+        <td>
+          <div style="margin-left: 30px" id="pagination"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="table-group" class="table-group">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">코드</th>
+          <th scope="col">썸네일</th>
+          <th scope="col">상품명</th>
+          <th scope="col">판매처</th>
+          <th scope="col">상품유형</th>
+          <th scope="col">노출수</th>
+          <th scope="col">좋아요수</th>
+          <th scope="col">주문수</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="product_list"></tbody>
+    </table>
+    <div style="text-align: right">
+      <button class="btn green-button">추가하기</button>
     </div>
   </div>
-</div>
+
+  <div id="page-container" style="text-align: center"></div>
+  <br />
+  <br />
+  <br />
+</section>
 
 <script type="module" src="/javascripts/admin/fillProductManage.js"></script>

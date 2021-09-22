@@ -1,67 +1,78 @@
-<div class="container">
-  <div class="row">
-    <div class="col-3"><%- include ('./nav.ejs') %></div>
-    <div class="col-9" style="margin-top: 30px">
-      <div>
-        <h2>배송 관리</h2>
-      </div>
-      <div id="content">
-        <table id="select">
-          <tr></tr>
-          <tr>
-            <td>
-              <p style="margin: 0 5px">주문일로 검색 :</p>
-            </td>
-            <td class="manage">
-              <input id="start" type="date" name="start" class="form-control" />
-            </td>
-            <td>
-              <p style="margin: 0 5px">~</p>
-            </td>
-            <td class="manage">
-              <input id="end" type="date" name="end" class="form-control" />
-            </td>
+<%- include ('./nav.ejs') %>
 
-            <td>
-              <button
-                type="button"
-                class="btn btn-primary"
-                style="margin-left: 5px; height: 40px"
-                id="filter"
-              >
-                검색
-              </button>
-            </td>
-            <td>
-              <div style="margin-left: 30px" id="pagination"></div>
-            </td>
-          </tr>
-        </table>
+<div id="page" hidden><%=page%></div>
 
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">No</th>
-              <th scope="col">이름</th>
-              <th scope="col">연락처</th>
-              <th scope="col">주소1</th>
-              <th scope="col">주소2</th>
-              <th scope="col" style="width: 200px">선택 제품</th>
-              <th scope="col">배송상태</th>
-            </tr>
-          </thead>
-          <tbody id="order_list"></tbody>
-        </table>
+<section class="main-section">
+  <div><p class="main-title">배송 관리</p></div>
+  <div class="blue-h-line"></div>
+  <div class="button-group">
+    <table id="select">
+      <tr></tr>
+      <tr>
+        <td>
+          <p style="margin: 0 5px">주문일로 검색 :</p>
+        </td>
+        <td class="manage">
+          <input id="start" type="date" name="start" class="form-control" />
+        </td>
+        <td>
+          <p style="margin: 0 5px">~</p>
+        </td>
+        <td class="manage">
+          <input id="end" type="date" name="end" class="form-control" />
+        </td>
 
-        <div id="button-group" style="text-align: center">
-          <button class="btn btn-primary" onclick="saveOption()">
-            변경사항 저장
+        <td>
+          <button
+            type="button"
+            class="btn blue-button"
+            style="margin-left: 5px; height: 40px"
+            id="filter"
+          >
+            검색
           </button>
-        </div>
-      </div>
+        </td>
+        <td>
+          <div style="margin-left: 30px" id="pagination"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="table-group">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">이름</th>
+          <th scope="col">연락처</th>
+          <th scope="col">주소</th>
+          <th scope="col" style="width: 200px">선택 제품</th>
+          <th scope="col">배송상태</th>
+        </tr>
+      </thead>
+      <tbody id="order_list"></tbody>
+    </table>
+
+    <div id="button-group" style="margin-bottom: 10px">
+      <button
+        class="btn green-button"
+        onclick="saveOption()"
+        style="float: right; margin: 10px"
+      >
+        저장하기
+      </button>
+
+      <div id="page-container" style="text-align: center"></div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   </div>
-</div>
+</section>
 
 <script>
   function saveOption() {
@@ -74,8 +85,6 @@
           value: item.value?.trim(),
         });
     });
-
-    console.log(changed);
 
     axios({
       url: "/admin/shipping",

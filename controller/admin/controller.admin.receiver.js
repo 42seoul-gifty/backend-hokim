@@ -2,47 +2,89 @@ const { getKoreaTime } = require("../../lib/lib.getKoreaTime");
 const { getAges, getPrices, getGenders } = require("../../lib/lib.Preference");
 const { Shipment } = require("../../config/constant");
 const { Op } = require("sequelize");
-const { Age, Price, Feature, Receiver, Product } = require("../../models");
+
+const Sequelize = require("../../models").Sequelize;
+const {
+  Age,
+  Price,
+  Feature,
+  Receiver,
+  Product,
+  Orders,
+} = require("../../models");
 
 const getReceiverPage = async (req, res) => {
+const page = req.query.page ?  req.query.page: 0
   res.render("admin/shippingManage", {
-    layout: "layout/layout",
+    layout: "layout/layout",page,
     csrfToken: req.csrfToken(),
   });
 };
 
 const getReceiverDetailPage = async (req, res) => {
-  const ages = await getAges();
-  const prices = await getPrices();
+  try {
+    const ages = await getAges();
+    const prices = await getPrices();
 
-  const genders = await getGenders();
-  const receiver = await Receiver.findOne({
-    include: [
-      {
-        model: Price,
-        attributes: ["value"],
+    const genders = await getGenders();
+    const receiver = await Receiver.findOne({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn(
+              "date_format",
+              Sequelize.col("Receiver.createdAt"),
+              "%Y-%m-%d %H:%i"
+            ),
+            "createdAt",
+          ],
+        ],
       },
-      {
-        model: Age,
-        attributes: ["value"],
-      },
-    ],
-    where: { id: req.params.receiver_id },
-    row: true,
-  });
-  res.render("admin/receiverDetail", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-    genders,
-    ages,
-    prices,
-    receiver,
-    shipments: Shipment,
-  });
+      include: [
+        {
+          model: Price,
+          attributes: ["value"],
+        },
+        {
+          model: Age,
+          attributes: ["value"],
+        },
+
+        {
+          model: Orders,
+          attributes: ["user_id"],
+        },
+      ],
+      where: { id: req.params.receiver_id },
+      row: true,
+    });
+    
+
+    res.render("admin/receiverDetail", {
+      layout: "layout/layout",
+      csrfToken: req.csrfToken(),
+      genders,
+      ages,
+      prices,
+      receiver,
+      shipments: Shipment,
+    });
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      error: e.message,
+    });
+  }
 };
 
 const getAdminFilterdReceiver = async (req, res) => {
   try {
+
+    
+    const page = req.query.page ?  req.query.page: 0
+    const limit = 15
+
+
     const startDate =
       !req.body.start || req.body.start == ""
         ? new Date("1995-01-01")
@@ -63,8 +105,25 @@ const getAdminFilterdReceiver = async (req, res) => {
           [Op.gt]: startDate,
         },
       },
-    });
-    res.status(200).json({ success: true, receiver });
+
+    offset: page * limit,
+    limit: limit,
+    subQuery:false
+  });
+
+  var totalPage = await Receiver.count({
+  
+    where: {
+      createdAt: {
+        [Op.lte]: endDate,
+        [Op.gt]: startDate,
+      },
+    },
+
+  });
+  totalPage = totalPage%limit == 0 ? Math.floor(totalPage/limit) - 1:Math.floor(totalPage/limit)
+
+    res.status(200).json({ success: true, receiver , totalPage, page});
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -91,12 +150,12 @@ const updateReceiverShipment = async (req, res) => {
 };
 
 const patchReceiverAdmin = async (req, res) => {
-  console.log(req.body);
-  delete req.body._csrf;
-
-  await Receiver.update(req.body, { where: { id: req.params.receiver_id } });
-
   try {
+    delete req.body._csrf;
+    console.log(req.body);
+
+    await Receiver.update(req.body, { where: { id: req.params.receiver_id } });
+
     res.status(200).json({ success: true });
   } catch (e) {
     res.status(400).json({ success: true, error: e.message });
