@@ -1,0 +1,97 @@
+<div style="width: 100%; height: 100%; background: #e2e2e2">
+  <section class="main-middle-section">
+    <table>
+      <tr>
+        <td>
+          <div style="margin: 25px 0">
+            <p class="title">Your Wish</p>
+
+            <h4 class="sub-title">admin</h4>
+
+            <div class="white-h-line"></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <form id="join-form" action="/admin/join" method="post">
+            <input
+              type="hidden"
+              name="_csrf"
+              id="_csrf"
+              value="<%= csrfToken%>"
+            />
+            <div style="margin: 25px 0">
+              <input
+                name="id"
+                id="id"
+                type="text"
+                placeholder="id"
+                class="form-control login-li"
+              />
+              <input
+                name="password"
+                id="password"
+                type="password"
+                placeholder="password"
+                class="form-control login-li"
+              />
+              <input
+                name="nickname"
+                id="nickname"
+                type="text"
+                placeholder="nickname"
+                class="form-control login-li"
+              />
+            </div>
+          </form>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div style="margin: 25px 0">
+            <button id="join-btn" class="btn deep-blue-button login-li">
+              가입하기
+            </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </section>
+</div>
+
+<script>
+  document.getElementById("join-btn").addEventListener("click", () => {
+    if (
+      document.getElementById("id").value == "" ||
+      document.getElementById("password").value == "" ||
+      document.getElementById("nickname").value == ""
+    ) {
+      alert("값이 비었습니다.");
+      return;
+    }
+    axios({
+      url: "/admin/join",
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        id: document.getElementById("id").value,
+        password: document.getElementById("password").value,
+        nickname: document.getElementById("nickname").value,
+        _csrf: document.getElementById("_csrf").value,
+      },
+    })
+      .then((res) => {
+        alert("가입되었습니다.");
+        location.href = "/admin/login";
+      })
+      .catch((e) => {
+        alert("가입에 실패했습니다.");
+        console.log(e.response.data.error);
+      });
+  });
+</script>

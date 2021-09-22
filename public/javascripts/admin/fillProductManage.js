@@ -194,9 +194,10 @@ function deleteProduct(id) {
       alert("제품이 삭제되었습니다");
       window.location.reload();
     })
-    .catch((err) => {
+    .catch((e) => {
       alert("제품을 삭제하지 못했습니다.");
-      console.log(err.error);
+
+      console.log(e.response.data.error);
     });
 }
 
@@ -216,8 +217,9 @@ function restoreProduct(id) {
       alert("제품이 복구되었습니다");
       window.location.reload();
     })
-    .catch((err) => {
+    .catch((e) => {
       alert("제품을 복구하지 못했습니다.");
-      console.log(err.error);
+
+      console.log(e.response.data.error);
     });
 }

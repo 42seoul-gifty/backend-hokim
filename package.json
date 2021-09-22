@@ -26,6 +26,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "chai": "^4.3.4",
+    "connect-flash": "^0.1.1",
+    "connect-session-sequelize": "^7.1.2",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -34,10 +36,13 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0"

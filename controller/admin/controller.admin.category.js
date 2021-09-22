@@ -148,6 +148,8 @@ const getAppPage = async (req, res) => {
     type,
     name,
     types,
+    user: req.user,
+
     csrfToken: req.csrfToken(),
   });
 };

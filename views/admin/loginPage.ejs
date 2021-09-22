@@ -1,0 +1,75 @@
+<div style="width: 100%; height: 100%; background: #e2e2e2">
+  <section class="main-middle-section">
+    <table>
+      <tr>
+        <td>
+          <div style="margin: 25px 0">
+            <p class="title">Your Wish</p>
+
+            <h4 class="sub-title">admin</h4>
+
+            <div class="white-h-line"></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <form id="login-form" action="/admin/login" method="post">
+            <input
+              type="hidden"
+              name="_csrf"
+              id="_csrf"
+              value="<%= csrfToken%>"
+            />
+            <div style="margin: 25px 0">
+              <input
+                name="id"
+                id="id"
+                type="text"
+                placeholder="id"
+                class="form-control login-li"
+              />
+              <input
+                name="password"
+                id="password"
+                type="password"
+                placeholder="password"
+                class="form-control login-li"
+              />
+            </div>
+          </form>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div style="margin: 25px 0">
+            <button id="login" class="btn deep-blue-button login-li">
+              로그인
+            </button>
+            <button
+              id="join"
+              class="btn deep-blue-button login-li"
+              onclick="location.href='/admin/join'"
+            >
+              가입하기
+            </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </section>
+</div>
+<script>
+  document.getElementById("login").addEventListener("click", () => {
+    if (
+      document.getElementById("id").value == "" ||
+      document.getElementById("password").value == ""
+    ) {
+      alert("값이 비었습니다.");
+      return;
+    }
+    document.getElementById("login-form").submit();
+  });
+</script>

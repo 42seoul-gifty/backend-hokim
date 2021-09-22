@@ -100,6 +100,8 @@
               })
               .catch((e) => {
                 alert("실패");
+
+                console.log(e.response.data.error);
               });
           } else {
             alert("실패");

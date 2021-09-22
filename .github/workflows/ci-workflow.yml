@@ -24,6 +24,7 @@ jobs:
       IMP_KEY: ${{ secrets.IMP_KEY }}
       IMP_SECRET: ${{ secrets.IMP_SECRET }}
       ENV: 'test' 
+      JWT_SECRET: 'secret'
       
     strategy:
       matrix:
