@@ -17,7 +17,8 @@ router.get("/", (req, res) => {
 router.get("/genders", getCategories.getGenderCategory);
 router.get("/ages", getCategories.getAgeCategory);
 router.get("/prices", getCategories.getPriceCategory);
-router.get("/groups", getCategories.getPriceCategory);
+router.get("/features", getCategories.getFeatureCategory);
+router.get("/categorys", getCategories.getCategory);
 router.get("/all", getCategories.getAllCategory);
 
 router.use("/users", user);

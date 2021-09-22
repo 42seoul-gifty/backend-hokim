@@ -1,25 +1,68 @@
 
-
-  <div class="row">
-    
-      <div class="col-3">
-            <%- include ('./nav.ejs') %>
-      </div>
-      <div class="col-9" style="margin-top: 30px;" id="top-col">
-        <div><h2>옵션 설정</h2></div>
-        
-
-              <div id="button-group"  style="text-align: center;" >
-                <button class="btn btn-success" onclick="deleteOption()">선택항목 삭제</button>
-                <button class="btn btn-success" onclick="saveOption()">저장</button>
-              </div>    
+<%- include ('./nav.ejs') %>
  
-        </div>
-      </div>
-      
+<div id="type" hidden><%=type%></div>
+
+<section class="main-section">
+  <div><p class="main-title">카테고리 관리</p></div>
+  <div class="blue-h-line"></div>
+  <div class="button-group" >
+
+    <% types.forEach((el)=>{ %>
+      <button class="btn 
+      <% if ( el[0] == type) {  %>
+      blue-button
+      <%}  else { %>
+        blue-border-button
+      <%} %>
+      " onclick="location.href='/admin/app?type=<%= el[0]%>'"> <%= el[1]%></button>
+      <% }) %>
+
+  </div>    
+
+  <div id="table-group" class="table-group">
+
+    <table class="table table-hover" style="margin-top: 10px;">
+      <thead>
+        <tr>
+          <th>이름</th>
+          <th></th>
+          <th>
+            <button id="show-deleted" style="float: right;" class="btn blue-button ">삭제된 항목 보기</button>
+
+          </th>
+        </tr>
+      </thead>
+      <tbody id="selected" >
+
+      </tbody>
+
+      <tbody id="deleted" hidden>
+
+      </tbody>
+    </table> 
+    
+    <div>
+         <input class="form-control" name="<%=type%>" type="text" value="" placeholder="<%=name%> 입력하세요." >
+         <button  class="btn blue-button btn-add " style="width: 100%;" >추가</button>
+         
     </div>
+  </div>
+
+    <div class="button-group" style="margin: 15px auto;">
+      <button class="btn green-button" onclick="saveOption()" style="float: right;">저장하기</button>
+    </div>    
+
+  </div>
+</section>
+      
+
 
 <script>
+
+
+
+
   function deleteOption() {
     $('input[type="checkbox"]').each(function (index, item) {
       if ($(item).prop("checked") == true) 
@@ -37,13 +80,10 @@
   }
   
   function saveOption() { 
-    const age = [];
-    const price = [];
-    const feature = [];
-    const category = [];
+    const data = [];
 
     
-    $('label').each(function (index, item) {
+    $('tbody p').each(function (index, item) {
       var label 
       if(item.className.includes('new'))
         label = 'new'
@@ -51,33 +91,27 @@
         label = 'edited'
       else if(item.className.includes('removed'))
         label = 'removed'
+        else if(item.className.includes('restored'))
+          label = 'restored'
       else
-        return 1;
+        return;
 
-
-      if(item.className.includes('age'))
-      age.push({value: item.textContent?.trim() ,label, origin: item.getAttribute('origin')?.trim() })
-       else  if(item.className.includes('feature'))
-       feature.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
-       else  if(item.className.includes('category'))
-       category.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
-      else if(item.className.includes('price'))
-      price.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
+        data.push({value: item.textContent?.trim() ,label, origin:item.getAttribute('origin')?.trim()})
        
     });
-    console.log(price)
- axios({ url: "/admin/cateories", method: "patch", data:{
-    age,price,feature,category,
-    _csrf:$('#_csrf').val()
-  } })
-  .then((res) => {
-   alert("변경되었습니다.");
-   window.location = "/admin/app"
-  })
-  .catch((e) => {
-    alert("실패했습니다.");
-    console.log(e.message);
-  });
+    axios({ url: `/admin/cateories`, method: "patch", data:{
+      data,
+      type:document.getElementById("type").textContent,
+        _csrf:$('#_csrf').val()
+      } })
+      .then((res) => {
+      alert("변경되었습니다.");
+      window.location = `/admin/app?type=${document.getElementById("type").textContent}`
+      })
+      .catch((e) => {
+        alert("실패했습니다.");
+        console.log(e.message);
+      });
 
   }
 

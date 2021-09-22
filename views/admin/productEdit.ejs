@@ -1,14 +1,32 @@
-<div class="container">
-  <div id="content">
-    <div id="product" style="display: none"><%= JSON.stringify(product) %></div>
-    <input type="hidden" name="_csrf" id="_csrf" value="<%= csrfToken%>" />
-    <div style="margin: 3% auto; font-size: 20px; text-align: center">
-      상품수정
-    </div>
+<%- include ('./nav.ejs') %>
+<section class="main-section">
+  <div id="product" style="display: none"><%= JSON.stringify(product) %></div>
+  <div>
+    <p class="main-nav-title">
+      <a href="/admin/product/manage">상품 관리</a> >
+      <a href="/admin/product/detail/<%= product.id%>"> 상품 정보</a> > 상품
+      수정
+    </p>
+    <p class="main-title-deep">상품 수정</p>
+  </div>
+  <div class="blue-h-line"></div>
+  <div class="button-group">
     <table class="table table-hover">
       <tr>
         <th>상품코드</th>
         <td><p id="id"><%= product.id %></p></td>
+      </tr>
+      <tr>
+        <th>상품명</th>
+        <td>
+          <input
+            id="name"
+            type="text"
+            class="form-control"
+            aria-describedby="basic-addon1"
+            value="<%= product.name %>"
+          />
+        </td>
       </tr>
       <tr>
         <th>카테고리</th>
@@ -76,27 +94,16 @@
             <% }) %>
           </div>
           <div style="float: right; margin-top: 10px">
-            <button class="btn btn-primary" onclick="addImageInput()">
-              추가
+            <button class="btn blue-button" onclick="addImageInput()">
+              추가하기
             </button>
-            <button class="btn btn-danger" onclick="deleteImageInput()">
-              삭제
+            <button class="btn red-button" onclick="deleteImageInput()">
+              삭제하기
             </button>
           </div>
         </td>
       </tr>
-      <tr>
-        <th>상품명</th>
-        <td>
-          <input
-            id="name"
-            type="text"
-            class="form-control"
-            aria-describedby="basic-addon1"
-            value="<%= product.name %>"
-          />
-        </td>
-      </tr>
+
       <tr>
         <th>상품소개</th>
         <td>
@@ -182,16 +189,22 @@
         </td>
       </tr>
     </table>
+  </div>
+  <div class="button-group">
     <button
-      style="margin: 5% 40%"
+      style="float: right"
       type="button"
-      class="btn btn-primary"
+      class="btn green-button"
       onclick="save()"
     >
       저장하기
     </button>
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
-</div>
+</section>
 
 <script>
   function addImageInput() {

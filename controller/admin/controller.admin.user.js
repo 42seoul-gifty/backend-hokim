@@ -31,11 +31,15 @@ const getUserPage = async (req, res) => {
   res.render("admin/userManage", {
     layout: "layout/layout",
     csrfToken: req.csrfToken(),
+    page: req.query.page ? req.query.page : 0,
   });
 };
 
 const getAdminFilterdUser = async (req, res) => {
   try {
+    const page = req.query.page ? req.query.page : 0;
+    const limit = 2;
+
     const orderValue = [];
     if (req.query.value && req.query.order)
       orderValue.push([sequelize.literal(req.query.value), req.query.order]);
@@ -69,8 +73,18 @@ const getAdminFilterdUser = async (req, res) => {
       group: ["User.id"],
       raw: true,
       order: orderValue,
+      offset: page * limit,
+      limit: limit,
+      subQuery: false,
     });
-    res.status(200).json({ success: true, user });
+
+    var totalPage = await User.count({});
+
+    totalPage =
+      totalPage % limit == 0
+        ? Math.floor(totalPage / limit) - 1
+        : Math.floor(totalPage / limit);
+    res.status(200).json({ success: true, user, page, totalPage });
   } catch (e) {
     console.log(e);
     res.status(400).json({ success: false, error: e.message });
@@ -91,8 +105,23 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const restoreUser = async (req, res) => {
+  try {
+    user = await User.update(
+      { deleted: false },
+      { where: { id: req.params.user_id } }
+    );
+    console.log(user);
+    res.status(200).json({ success: true });
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
+};
+
 module.exports = {
   deleteUser,
+  restoreUser,
   getUserPage,
   getUserDetailPage,
   getAdminFilterdUser,
