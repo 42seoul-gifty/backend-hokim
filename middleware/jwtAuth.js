@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const { logger } = require("../config/winston");
 
 const generateRefreshToken = async (req, res, user) => {
   try {
@@ -11,7 +12,7 @@ const generateRefreshToken = async (req, res, user) => {
 
     return newRefreshToken;
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     return null;
   }
 };
@@ -26,7 +27,7 @@ const generateAccessToken = (req, res, user) => {
 
     return newAccessToken;
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     return null;
   }
 };
@@ -44,6 +45,7 @@ const checkVerify = (token) => {
     const verify = jwt.verify(token, process.env.JWT_SECRET);
     return verify;
   } catch (e) {
+    logger.error(e);
     return null;
   }
 };
@@ -60,7 +62,7 @@ const decodeToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
+    logger.error(e);
     res.status(400).json({ success: false, error: err.message });
   }
 };

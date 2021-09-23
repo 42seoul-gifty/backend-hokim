@@ -1,5 +1,6 @@
 const { getIMPAccessToken, getIMPData } = require("../lib/lib.payment");
 const { Orders } = require("../models");
+const { logger } = require("../config/winston");
 
 const checkPaymentValidation = async (req, res) => {
   var { merchant_uid, imp_uid } = req.body;
@@ -41,11 +42,10 @@ const checkPaymentValidation = async (req, res) => {
         { status: "위조결제", imp_uid },
         { where: { merchant_uid } }
       );
-      console.log(order);
       throw { status: "forgery", message: "위조된 결제시도" };
     }
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json(e);
   }
 };

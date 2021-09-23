@@ -1,6 +1,7 @@
 const Sequelize = require("../../models").Sequelize;
 const { Price, Age, Orders, Receiver, Product } = require("../../models");
 const { getIMPAccessToken, getIMPData } = require("../../lib/lib.payment");
+const { logger } = require("../../config/winston");
 
 function Unix_timestamp(time) {
   var date = new Date(time * 1000);
@@ -78,10 +79,8 @@ const getOrderDetailPage = async (req, res) => {
       paidData,
     });
   } catch (e) {
-    res.json({
-      success: false,
-      error: e.message,
-    });
+    logger.error(e);
+    res.status(400).json({ success: false, error: e.message });
   }
 };
 const deleteAdminOrder = async (req, res) => {
@@ -97,7 +96,7 @@ const deleteAdminOrder = async (req, res) => {
       success: true,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

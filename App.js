@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const { stream, logger } = require("./config/winston");
 
 require("dotenv").config();
 
@@ -27,6 +29,7 @@ class App {
     this.app.use(cors(corsOptions));
     this.dbConnection();
     this.setPassport();
+    this.app.use(morgan("combined", { stream }));
     this.app.use(require("./routes"));
   }
 
@@ -67,14 +70,14 @@ class App {
     db.sequelize
       .authenticate()
       .then(() => {
-        console.log("Connection has been established successfully.");
+        logger.info("Connection has been established successfully.");
         return db.sequelize.sync();
       })
       .then(() => {
-        console.log("DB Sync complete.");
+        logger.info("DB Sync complete.");
       })
       .catch((err) => {
-        console.error("Unable to connect to the database:", err);
+        logger.error("Unable to connect to the database:", err);
       });
   }
 }

@@ -1,5 +1,6 @@
 const { convertImageUrl, productIncludeFilter } = require("../lib/lib.Product");
 const { Product, ProductImage } = require("../models");
+const { logger } = require("../config/winston");
 
 const getFilterdProducts = async (req, res) => {
   const include = productIncludeFilter(
@@ -30,7 +31,7 @@ const getFilterdProducts = async (req, res) => {
 
     res.status(200).json({ success: true, data: products });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -56,7 +57,7 @@ const getProductDetail = async (req, res) => {
     convertImageUrl(product);
     res.status(200).json({ success: true, data: product });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

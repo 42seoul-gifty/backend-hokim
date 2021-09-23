@@ -39,13 +39,16 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
     "mocha": "^9.1.1"

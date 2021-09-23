@@ -1,40 +1,51 @@
 const { User, Orders } = require("../../models");
 const Sequelize = require("../../models").Sequelize;
 const sequelize = require("../../models").sequelize;
+const { logger } = require("../../config/winston");
 
 const getUserDetailPage = async (req, res) => {
-  const user = await User.findOne({ where: { id: req.params.user_id } });
-  const orders = await Orders.findAll({
-    attributes: {
-      include: [
-        [
-          Sequelize.fn(
-            "date_format",
-            Sequelize.col("Orders.createdAt"),
-            "%Y-%m-%d %H:%i"
-          ),
-          "createdAt",
+  try {
+    const user = await User.findOne({ where: { id: req.params.user_id } });
+    const orders = await Orders.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn(
+              "date_format",
+              Sequelize.col("Orders.createdAt"),
+              "%Y-%m-%d %H:%i"
+            ),
+            "createdAt",
+          ],
         ],
-      ],
-    },
-    where: { user_id: req.params.user_id },
-  });
-  res.render("admin/userDetail", {
-    layout: "layout/layout",
-    user: req.user,
-    csrfToken: req.csrfToken(),
-    user,
-    orders,
-  });
+      },
+      where: { user_id: req.params.user_id },
+    });
+    res.render("admin/userDetail", {
+      layout: "layout/layout",
+      user: req.user,
+      csrfToken: req.csrfToken(),
+      user,
+      orders,
+    });
+  } catch (e) {
+    logger.error(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
 };
 
 const getUserPage = async (req, res) => {
-  res.render("admin/userManage", {
-    layout: "layout/layout",
-    csrfToken: req.csrfToken(),
-    user: req.user,
-    page: req.query.page ? req.query.page : 0,
-  });
+  try {
+    res.render("admin/userManage", {
+      layout: "layout/layout",
+      csrfToken: req.csrfToken(),
+      user: req.user,
+      page: req.query.page ? req.query.page : 0,
+    });
+  } catch (e) {
+    logger.error(e);
+    res.status(400).json({ success: false, error: e.message });
+  }
 };
 
 const getAdminFilterdUser = async (req, res) => {
@@ -88,7 +99,7 @@ const getAdminFilterdUser = async (req, res) => {
         : Math.floor(totalPage / limit);
     res.status(200).json({ success: true, user, page, totalPage });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -99,10 +110,9 @@ const deleteUser = async (req, res) => {
       { deleted: true },
       { where: { id: req.params.user_id } }
     );
-    console.log(user);
     res.status(200).json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -113,10 +123,9 @@ const restoreUser = async (req, res) => {
       { deleted: false },
       { where: { id: req.params.user_id } }
     );
-    console.log(user);
     res.status(200).json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

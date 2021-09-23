@@ -6,6 +6,7 @@ const {
   generateToken,
   generateTokenFromRefresh,
 } = require("../middleware/jwtAuth");
+const { logger } = require("../config/winston");
 
 const getKakaoToken = async (req, res) => {
   try {
@@ -44,7 +45,6 @@ const getKakaoToken = async (req, res) => {
 
     //토큰 생성
     const { access_token, refresh_token } = await generateToken(req, res, user);
-    console.log(req.cookies.refresh_token);
     res.status(200).json({
       success: true,
       access_token,
@@ -52,7 +52,7 @@ const getKakaoToken = async (req, res) => {
       user,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
     return;
   }
@@ -94,7 +94,7 @@ const getNaverToken = async (req, res) => {
       user,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
     return;
   }
@@ -106,7 +106,7 @@ const getRefreshToken = async (req, res) => {
 
     res.json({ success: true, access_token });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false });
     return;
   }
@@ -118,7 +118,7 @@ const logout = async (req, res) => {
     res.cookie("refreshToken", "");
     res.json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false });
     return;
   }

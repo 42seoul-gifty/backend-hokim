@@ -9,6 +9,7 @@ const {
   ProductImage,
 } = require("../models");
 const { dataNotExist } = require("../lib/lib.checkError");
+const { logger } = require("../config/winston");
 
 const getOrders = async (req, res) => {
   try {
@@ -51,7 +52,7 @@ const getOrders = async (req, res) => {
       order: orders,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -119,7 +120,7 @@ const getOrderDetail = async (req, res) => {
       data: order,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -133,7 +134,6 @@ const postOrder = async (req, res) => {
     if (!price) throw new Error(`Price not Exist`);
     const merchant_uid =
       req.params.user_id + "-" + getKoreaTime().toISOString();
-    console.log(req.params.user_id);
 
     const order = await Orders.create({
       user_id: req.params.user_id,
@@ -157,7 +157,7 @@ const postOrder = async (req, res) => {
       merchant_uid,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -178,7 +178,7 @@ const deleteOrder = async (req, res) => {
       success: true,
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
