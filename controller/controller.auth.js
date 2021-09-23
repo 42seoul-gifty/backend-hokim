@@ -47,9 +47,11 @@ const getKakaoToken = async (req, res) => {
     const { access_token, refresh_token } = await generateToken(req, res, user);
     res.status(200).json({
       success: true,
-      access_token,
-      refresh_token,
-      user,
+      data: {
+        access_token,
+        refresh_token,
+        user,
+      },
     });
   } catch (e) {
     logger.error(e);
@@ -89,9 +91,11 @@ const getNaverToken = async (req, res) => {
     const { access_token, refresh_token } = await generateToken(req, res, user);
     res.status(200).json({
       success: true,
-      access_token,
-      refresh_token,
-      user,
+      data: {
+        access_token,
+        refresh_token,
+        user,
+      },
     });
   } catch (e) {
     logger.error(e);
@@ -104,7 +108,14 @@ const getRefreshToken = async (req, res) => {
   try {
     const access_token = await generateTokenFromRefresh(req, res);
 
-    res.json({ success: true, access_token });
+    res.json({
+      success: true,
+      data: {
+        access_token,
+        refresh_token: req.body.refresh_token,
+        user,
+      },
+    });
   } catch (e) {
     logger.error(e);
     res.status(400).json({ success: false });
