@@ -4,6 +4,7 @@ const { dataNotExist } = require("../lib/lib.checkError");
 const { default: axios } = require("axios");
 const { makeSignature } = require("../lib/lib.makeSigniture");
 require("dotenv").config();
+const { logger } = require("../config/winston");
 
 const getReceiver = async (req, res) => {
   try {
@@ -49,6 +50,7 @@ const getReceiver = async (req, res) => {
     delete receiver.Product;
     res.status(200).json({ success: true, data: receiver });
   } catch (e) {
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -85,6 +87,7 @@ const patchReceiver = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (e) {
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -129,6 +132,7 @@ const getReceiversChoice = async (req, res) => {
     data["products"] = products;
     res.status(200).json({ success: true, data });
   } catch (e) {
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -170,7 +174,7 @@ const sendSMS = async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

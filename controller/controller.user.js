@@ -1,4 +1,5 @@
 const { User } = require("../models");
+const { logger } = require("../config/winston");
 
 const getUser = async (req, res) => {
   try {
@@ -15,7 +16,7 @@ const getUser = async (req, res) => {
       },
     });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

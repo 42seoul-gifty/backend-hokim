@@ -1,7 +1,8 @@
 const app = require("./App.js");
 const dotenv = require("dotenv");
 dotenv.config();
+const { logger } = require("./config/winston");
 
 const server = app.listen(process.env.PORT, function () {
-  console.log("Express listening on port", process.env.PORT);
+  logger.info("Express listening on port", process.env.PORT);
 });

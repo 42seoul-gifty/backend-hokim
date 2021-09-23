@@ -1,6 +1,7 @@
 const Sequelize = require("../../models").Sequelize;
 const { productIncludeMutipleFilter } = require("../../lib/lib.Product");
 const { Op } = require("sequelize");
+const { logger } = require("../../config/winston");
 const {
   Product,
   ProductImage,
@@ -78,7 +79,7 @@ const getAdminFilterdProduct = async (req, res) => {
 
     res.status(200).json({ success: true, products, page, totalPage });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -138,7 +139,7 @@ const patchProduct = async (req, res) => {
     //TODO: 다시 작성
     res.status(200).json({ success: true, product });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -187,7 +188,7 @@ const postProduct = async (req, res) => {
 
     res.status(200).json({ success: true, product });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -200,7 +201,7 @@ const deleteProduct = async (req, res) => {
     );
     res.status(200).json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -213,7 +214,7 @@ const restoreProduct = async (req, res) => {
     );
     res.status(200).json({ success: true });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };

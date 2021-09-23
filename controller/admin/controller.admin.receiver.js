@@ -2,6 +2,7 @@ const { getKoreaTime } = require("../../lib/lib.getKoreaTime");
 const { getAges, getPrices, getGenders } = require("../../lib/lib.Preference");
 const { Shipment } = require("../../config/constant");
 const { Op } = require("sequelize");
+const { logger } = require("../../config/winston");
 
 const Sequelize = require("../../models").Sequelize;
 const {
@@ -72,6 +73,7 @@ const getReceiverDetailPage = async (req, res) => {
       shipments: Shipment,
     });
   } catch (e) {
+    logger.error(e);
     res.status(400).json({
       success: false,
       error: e.message,
@@ -125,7 +127,7 @@ const getAdminFilterdReceiver = async (req, res) => {
 
     res.status(200).json({ success: true, receiver, totalPage, page });
   } catch (e) {
-    console.log(e);
+    logger.error(e);
     res.status(400).json({ success: false, error: e.message });
   }
 };
@@ -152,12 +154,12 @@ const updateReceiverShipment = async (req, res) => {
 const patchReceiverAdmin = async (req, res) => {
   try {
     delete req.body._csrf;
-    console.log(req.body);
 
     await Receiver.update(req.body, { where: { id: req.params.receiver_id } });
 
     res.status(200).json({ success: true });
   } catch (e) {
+    logger.error(e);
     res.status(400).json({ success: true, error: e.message });
   }
 };
@@ -166,7 +168,6 @@ module.exports = {
   getReceiverPage,
   getReceiverDetailPage,
   getAdminFilterdReceiver,
-
   updateReceiverShipment,
   patchReceiverAdmin,
 };
