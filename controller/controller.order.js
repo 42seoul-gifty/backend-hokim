@@ -110,9 +110,9 @@ const getOrderDetail = async (req, res) => {
     order = order.toJSON();
     order["receiver"] = order.Receivers[0];
     delete order.Receivers;
+
     if (order.receiver.Product) convertImageUrl(order.receiver.Product);
     order.receiver["product"] = order.receiver.Product;
-
     delete order.receiver.Product;
 
     res.status(200).json({
@@ -168,11 +168,15 @@ const deleteOrder = async (req, res) => {
       where: { id: req.params.order_id, user_id: req.params.user_id },
     });
     if (!order) throw new Error(`Order not Exist`);
-    if (order.imp_uid) throw new Error(`Client can't delete paid order`);
+    if (order.status == "주문취소") throw new Error(`Order already Deleted`);
+    //if (req.isAdmin) throw new Error(`Client can't delete paid order`);
 
-    await Orders.destroy({
-      where: { id: req.params.order_id, user_id: req.params.user_id },
-    });
+    await Orders.update(
+      { status: "주문취소" },
+      {
+        where: { id: req.params.order_id, user_id: req.params.user_id },
+      }
+    );
 
     res.status(200).json({
       success: true,

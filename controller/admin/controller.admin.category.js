@@ -11,7 +11,7 @@ const { logger } = require("../../config/winston");
 
 const getAgeCategory = async (req, res) => {
   try {
-    const data = await getAges(1);
+    const data = await getAges(req.isAdmin);
     res.status(200).json({ success: true, data });
   } catch (e) {
     logger.error(e);
@@ -21,7 +21,7 @@ const getAgeCategory = async (req, res) => {
 
 const getGenderCategory = async (req, res) => {
   try {
-    const data = await getGenders(1);
+    const data = await getGenders(req.isAdmin);
     res.status(200).json({ success: true, data });
   } catch (e) {
     logger.error(e);
@@ -31,7 +31,7 @@ const getGenderCategory = async (req, res) => {
 
 const getPriceCategory = async (req, res) => {
   try {
-    const data = await getPrices(1);
+    const data = await getPrices(req.isAdmin);
     res.status(200).json({ success: true, data });
   } catch (e) {
     logger.error(e);
@@ -41,7 +41,7 @@ const getPriceCategory = async (req, res) => {
 
 const getFeatureCategory = async (req, res) => {
   try {
-    const data = await getFeatures(1);
+    const data = await getFeatures(req.isAdmin);
     res.status(200).json({ success: true, data });
   } catch (e) {
     logger.error(e);
@@ -51,7 +51,7 @@ const getFeatureCategory = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
-    const data = await getCategories(1);
+    const data = await getCategories(req.isAdmin);
 
     res.status(200).json({ success: true, data });
   } catch (e) {

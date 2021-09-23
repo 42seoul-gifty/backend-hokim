@@ -11,17 +11,18 @@ const csrfProtection = require("../middleware/csrfProtection");
 const getCategories = require("../controller/admin/controller.admin.category");
 const checkLogin = require("../middleware/checkLogin");
 const adminAuth = require("./route.admin.auth");
+const { checkAdminMode } = require("../lib/lib.adminMode");
 
 router.get("/", (req, res) => {
   res.render("index", {});
 });
 
-router.get("/genders", getCategories.getGenderCategory);
-router.get("/ages", getCategories.getAgeCategory);
-router.get("/prices", getCategories.getPriceCategory);
-router.get("/features", getCategories.getFeatureCategory);
-router.get("/categorys", getCategories.getCategory);
-router.get("/all", getCategories.getAllCategory);
+router.get("/genders", checkAdminMode, getCategories.getGenderCategory);
+router.get("/ages", checkAdminMode, getCategories.getAgeCategory);
+router.get("/prices", checkAdminMode, getCategories.getPriceCategory);
+router.get("/features", checkAdminMode, getCategories.getFeatureCategory);
+router.get("/categorys", checkAdminMode, getCategories.getCategory);
+router.get("/all", checkAdminMode, getCategories.getAllCategory);
 
 router.use("/users", user);
 router.use("/login", auth);
