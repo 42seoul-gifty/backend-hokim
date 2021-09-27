@@ -2,7 +2,6 @@ const swaggereJsdoc = require("swagger-jsdoc");
 require("dotenv").config();
 const path = require("path");
 
-console.log(process.env.HOST);
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -12,7 +11,10 @@ const options = {
       description:
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
-    servers: [{ url: process.env.SITE_DOMAIN }],
+    servers: [
+      { url: `http://${process.env.HOST}` },
+      { url: `https://${process.env.HOST}` },
+    ],
   },
   apis: [
     path.join(__dirname, "./schema/*.js"),

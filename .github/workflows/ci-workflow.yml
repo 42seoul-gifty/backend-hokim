@@ -20,6 +20,7 @@ jobs:
       DB_DIALECT: 'mysql'
       PORT: '3000'
       SITE_DOMAIN: 'http://localhost:3000'
+      HOST: 'localhost:3000'
       IMP_CODE: ${{ secrets.IMP_CODE }}
       IMP_KEY: ${{ secrets.IMP_KEY }}
       IMP_SECRET: ${{ secrets.IMP_SECRET }}
