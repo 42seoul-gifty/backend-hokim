@@ -1,4 +1,4 @@
-const cryptoHash = require("../middleware/cryptoHash");
+const cryptoHash = require("../module/cryptoHash");
 module.exports = (sequelize, DataTypes) => {
   const Admin = sequelize.define(
     "Admin",

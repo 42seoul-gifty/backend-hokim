@@ -9,6 +9,8 @@
     "makeSeedOne": "node_modules/.bin/sequelize db:migrate && sequelize db:seed --seed  20210829145559-imageUrl.js",
     "makeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:all",
     "removeSeed": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:undo:all",
+    "do": "node_modules/.bin/sequelize db:migrate",
+    "undo": "node_modules/.bin/sequelize db:migrate:undo:all",
     "createSeederFile": "node_modules/.bin/sequelize seed:generate --name user & sequelize seed:generate --name preference & sequelize seed:generate --name order & sequelize seed:generate --name product & sequelize seed:generate --name receiver & sequelize seed:generate --name like",
     "mochaClient": "node_modules/.bin/mocha test/controller.client.spec.js",
     "mochaServer": "node_modules/.bin/mocha test/controller.server.spec.js"
@@ -47,6 +49,8 @@
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },

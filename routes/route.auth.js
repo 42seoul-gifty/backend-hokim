@@ -19,8 +19,4 @@ router.get("/kakao", auth.getKakaoToken);
 
 router.get("/naver", auth.getNaverToken);
 
-router.post("/token/refresh", auth.getRefreshToken);
-
-router.get("/logout", auth.logout);
-
 module.exports = router;

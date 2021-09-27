@@ -10,6 +10,7 @@ const {
 } = require("../models");
 const { dataNotExist } = require("../lib/lib.checkError");
 const { logger } = require("../config/winston");
+const { convertReceiverResponse } = require("../lib/lib.receiver");
 
 const getOrders = async (req, res) => {
   try {
@@ -25,6 +26,28 @@ const getOrders = async (req, res) => {
             "postcode",
             "address",
             "detail_address",
+          ],
+          include: [
+            {
+              model: Product,
+              attributes: [
+                "id",
+                "name",
+                "description",
+                "detail",
+                "thumbnail",
+                ["retail_price", "price"],
+              ],
+              include: [{ model: ProductImage, attributes: ["image_url"] }],
+              attributes: [
+                "id",
+                "name",
+                "description",
+                "detail",
+                "thumbnail",
+                ["retail_price", "price"],
+              ],
+            },
           ],
         },
       ],
@@ -42,7 +65,9 @@ const getOrders = async (req, res) => {
 
     orders = orders.map((order) => {
       order = order.toJSON();
-      order["receiver"] = order.Receivers[0];
+      order["receiver"] = order.Receivers[0]
+        ? convertReceiverResponse(order.Receivers[0])
+        : null;
       delete order.Receivers;
       return order;
     });
@@ -108,12 +133,8 @@ const getOrderDetail = async (req, res) => {
     if (!order) throw new Error(`Order not Exist`);
 
     order = order.toJSON();
-    order["receiver"] = order.Receivers[0];
+    order["receiver"] = convertReceiverResponse(order.Receivers[0]);
     delete order.Receivers;
-
-    if (order.receiver.Product) convertImageUrl(order.receiver.Product);
-    order.receiver["product"] = order.receiver.Product;
-    delete order.receiver.Product;
 
     res.status(200).json({
       success: true,

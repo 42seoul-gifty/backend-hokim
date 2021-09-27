@@ -4,6 +4,12 @@ const { Orders } = require("../models");
 require("dotenv").config();
 
 describe("App test!", function () {
+  it("딜레이", function (done) {
+    setTimeout(function () {
+      done();
+    }, 1500);
+  });
+
   it("GET users/1 : 유저 디테일 조회", function (done) {
     axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
       .then((res) => {
@@ -12,6 +18,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -28,6 +35,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -44,6 +52,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -60,6 +69,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -76,6 +86,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -92,34 +103,36 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
   });
 
-  if(process.env.ENV != "test")
-  it("POST /payment/validation : 결제 검증", function (done) {
-    axios({
-      url: process.env.SITE_DOMAIN + "/payment/validation",
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        imp_uid: "imp_114995595270",
-        merchant_uid: "1-2021-09-15T08:19:55.414Z",
-      },
-    })
-      .then((res) => {
-        console.log(res.status, res.data);
-        expect(res.status).to.equal(200);
-        done();
+  if (process.env.ENV != "test")
+    it("POST /payment/validation : 결제 검증", function (done) {
+      axios({
+        url: process.env.SITE_DOMAIN + "/payment/validation",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          imp_uid: "imp_114995595270",
+          merchant_uid: "1-2021-09-15T08:19:55.414Z",
+        },
       })
-      .catch((e) => {
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+        .then((res) => {
+          console.log(res.status, res.data);
+          expect(res.status).to.equal(200);
+          done();
+        })
+        .catch((e) => {
+          console.log(e);
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
 
   it("GET /users/:id/orders/:id : 주문 디테일 조회", function (done) {
     axios({
@@ -132,6 +145,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -148,6 +162,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -176,6 +191,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -196,6 +212,7 @@ describe("App test!", function () {
           done();
         })
         .catch((e) => {
+          console.log(e);
           expect(res.status).to.equal(200);
           done();
         });
@@ -213,6 +230,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -240,6 +258,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -256,6 +275,7 @@ describe("App test!", function () {
         done();
       })
       .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });

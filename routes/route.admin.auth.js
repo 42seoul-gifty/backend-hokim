@@ -2,7 +2,7 @@ const { Router } = require("express");
 const auth = require("../controller/admin/controller.admin.auth");
 const router = Router();
 
-const passport = require("../middleware/passport-local");
+const passport = require("../module/passport-local");
 
 router.get("/login", auth.getLoginPage);
 router.get("/join", auth.getJoinPage);
