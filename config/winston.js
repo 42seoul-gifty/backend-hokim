@@ -50,7 +50,7 @@ const stream = {
 };
 
 // Production 환경이(배포 단계) 아닌 경우 (개발 단계 일때는 콘솔에 출력이 되도록)
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV == "development") {
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(
