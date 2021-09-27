@@ -4,9 +4,10 @@ const { Orders } = require("../models");
 require("dotenv").config();
 
 describe("App test!", function () {
-  it("타임 딜레이", function () {
-    var i = 2000;
-    while (i-- > 0);
+  it("딜레이", function (done) {
+    setTimeout(function () {
+      done();
+    }, 1500);
   });
 
   it("GET users/1 : 유저 디테일 조회", function (done) {
