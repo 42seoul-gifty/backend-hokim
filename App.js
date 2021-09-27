@@ -15,7 +15,8 @@ const passport = require("passport");
 
 class App {
   constructor() {
-    const morganFormat = process.env.NODE_ENV == "dev" ? "dev" : "combined";
+    const morganFormat =
+      process.env.NODE_ENV == "development" ? "dev" : "combined";
 
     this.app = express();
     this.setVieEngine();

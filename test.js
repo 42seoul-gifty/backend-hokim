@@ -1,6 +1,6 @@
 const app = require("./App.js");
-const port = 3000;
+require("dotenv").config();
 
-const server = app.listen(port, function () {
-  console.log("Express listening on port", port);
+const server = app.listen(process.env.PORT, function () {
+  console.log("Express listening on port", process.env.PORT);
 });

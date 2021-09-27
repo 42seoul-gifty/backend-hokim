@@ -1,6 +1,5 @@
 const app = require("./App.js");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 const { logger } = require("./config/winston");
 
 const server = app.listen(process.env.PORT, function () {
