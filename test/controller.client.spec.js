@@ -4,6 +4,11 @@ const { Orders } = require("../models");
 require("dotenv").config();
 
 describe("App test!", function () {
+  it("타임 딜레이", function () {
+    var i = 2000;
+    while (i-- > 0);
+  });
+
   it("GET users/1 : 유저 디테일 조회", function (done) {
     axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
       .then((res) => {
@@ -11,8 +16,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -28,8 +33,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -45,8 +50,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -62,8 +67,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -79,8 +84,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -96,8 +101,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -121,8 +126,8 @@ describe("App test!", function () {
           expect(res.status).to.equal(200);
           done();
         })
-         .catch((e) => {
-        console.log(e)
+        .catch((e) => {
+          console.log(e);
           expect(res.status).to.equal(200);
           done();
         });
@@ -138,8 +143,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -155,8 +160,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -184,8 +189,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -205,8 +210,8 @@ describe("App test!", function () {
           expect(res.status).to.equal(200);
           done();
         })
-         .catch((e) => {
-        console.log(e)
+        .catch((e) => {
+          console.log(e);
           expect(res.status).to.equal(200);
           done();
         });
@@ -223,8 +228,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -251,8 +256,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
@@ -268,8 +273,8 @@ describe("App test!", function () {
         expect(res.status).to.equal(200);
         done();
       })
-       .catch((e) => {
-        console.log(e)
+      .catch((e) => {
+        console.log(e);
         expect(res.status).to.equal(200);
         done();
       });
