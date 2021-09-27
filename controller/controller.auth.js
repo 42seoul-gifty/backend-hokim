@@ -7,6 +7,7 @@ const {
   generateTokenFromRefresh,
 } = require("../middleware/jwtAuth");
 const { logger } = require("../config/winston");
+const { User } = require("../models");
 
 const getKakaoToken = async (req, res) => {
   try {
@@ -113,11 +114,11 @@ const getRefreshToken = async (req, res) => {
       data: {
         access_token,
         refresh_token: req.body.refresh_token,
-        user,
       },
     });
   } catch (e) {
     logger.error(e);
+    console.log(e);
     res.status(400).json({ success: false });
     return;
   }
@@ -125,12 +126,16 @@ const getRefreshToken = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    res.cookie("accessToken", "");
-    res.cookie("refreshToken", "");
+    const user = await User.update(
+      { token: null },
+      { where: { token: req.body.refresh_token } }
+    );
+    if (user[0] == 0) throw new Error("invalid refresh token");
+    console.log(user);
     res.json({ success: true });
   } catch (e) {
     logger.error(e);
-    res.status(400).json({ success: false });
+    res.status(400).json({ success: false, message: e.message });
     return;
   }
 };

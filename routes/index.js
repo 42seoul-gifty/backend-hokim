@@ -12,10 +12,18 @@ const getCategories = require("../controller/admin/controller.admin.category");
 const checkLogin = require("../middleware/checkLogin");
 const adminAuth = require("./route.admin.auth");
 const { checkAdminMode } = require("../lib/lib.adminMode");
+const swaggerUI = require("swagger-ui-express");
+const { specs } = require("../swagger/swagger");
+const { getRefreshToken, logout } = require("../controller/controller.auth");
+
+router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 router.get("/", (req, res) => {
   res.render("index", {});
 });
+
+router.post("/logout", logout);
+router.post("/token/refresh", getRefreshToken);
 
 router.get("/genders", checkAdminMode, getCategories.getGenderCategory);
 router.get("/ages", checkAdminMode, getCategories.getAgeCategory);

@@ -5,6 +5,7 @@ const { default: axios } = require("axios");
 const { makeSignature } = require("../lib/lib.makeSigniture");
 require("dotenv").config();
 const { logger } = require("../config/winston");
+const { convertReceiverResponse } = require("../lib/lib.receiver");
 
 const getReceiver = async (req, res) => {
   try {
@@ -44,10 +45,7 @@ const getReceiver = async (req, res) => {
 
     if (!receiver) throw new Error(`Receiver not Exist`);
 
-    receiver = receiver.toJSON();
-    convertImageUrl(receiver.Product);
-    receiver["product"] = receiver.Product;
-    delete receiver.Product;
+    receiver = convertReceiverResponse(receiver);
     res.status(200).json({ success: true, data: receiver });
   } catch (e) {
     logger.error(e);

@@ -47,6 +47,8 @@
     "path": "^0.12.7",
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
