@@ -49,4 +49,16 @@ const stream = {
   },
 };
 
+// Production 환경이(배포 단계) 아닌 경우 (개발 단계 일때는 콘솔에 출력이 되도록)
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(), // 색깔 넣어서 출력
+        winston.format.simple() // `${info.level}: ${info.message} JSON.stringify({ ...rest })` 포맷으로 출력
+      ),
+    })
+  );
+}
+
 module.exports = { logger, stream };

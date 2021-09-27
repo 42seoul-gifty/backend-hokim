@@ -65,7 +65,9 @@ const getOrders = async (req, res) => {
 
     orders = orders.map((order) => {
       order = order.toJSON();
-      order["receiver"] = convertReceiverResponse(order.Receivers[0]);
+      order["receiver"] = order.Receivers[0]
+        ? convertReceiverResponse(order.Receivers[0])
+        : null;
       delete order.Receivers;
       return order;
     });

@@ -118,7 +118,6 @@ const getRefreshToken = async (req, res) => {
     });
   } catch (e) {
     logger.error(e);
-    console.log(e);
     res.status(400).json({ success: false });
     return;
   }
@@ -131,7 +130,6 @@ const logout = async (req, res) => {
       { where: { token: req.body.refresh_token } }
     );
     if (user[0] == 0) throw new Error("invalid refresh token");
-    console.log(user);
     res.json({ success: true });
   } catch (e) {
     logger.error(e);

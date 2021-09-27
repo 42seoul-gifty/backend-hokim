@@ -15,6 +15,8 @@ const passport = require("passport");
 
 class App {
   constructor() {
+    const morganFormat = process.env.NODE_ENV == "dev" ? "dev" : "combined";
+
     this.app = express();
     this.setVieEngine();
     this.app.use(express.json());
@@ -29,7 +31,7 @@ class App {
     this.app.use(cors(corsOptions));
     this.dbConnection();
     this.setPassport();
-    this.app.use(morgan("combined", { stream }));
+    this.app.use(morgan(morganFormat, { stream }));
     this.app.use(require("./routes"));
   }
 

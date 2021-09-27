@@ -97,29 +97,29 @@ describe("App test!", function () {
       });
   });
 
-  if(process.env.ENV != "test")
-  it("POST /payment/validation : 결제 검증", function (done) {
-    axios({
-      url: process.env.SITE_DOMAIN + "/payment/validation",
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: {
-        imp_uid: "imp_114995595270",
-        merchant_uid: "1-2021-09-15T08:19:55.414Z",
-      },
-    })
-      .then((res) => {
-        console.log(res.status, res.data);
-        expect(res.status).to.equal(200);
-        done();
+  if (process.env.ENV != "test")
+    it("POST /payment/validation : 결제 검증", function (done) {
+      axios({
+        url: process.env.SITE_DOMAIN + "/payment/validation",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          imp_uid: "imp_114995595270",
+          merchant_uid: "1-2021-09-15T08:19:55.414Z",
+        },
       })
-      .catch((e) => {
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+        .then((res) => {
+          console.log(res.status, res.data);
+          expect(res.status).to.equal(200);
+          done();
+        })
+        .catch((e) => {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
 
   it("GET /users/:id/orders/:id : 주문 디테일 조회", function (done) {
     axios({
