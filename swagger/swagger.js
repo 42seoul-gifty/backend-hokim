@@ -12,8 +12,7 @@ const options = {
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
     servers: [
-      { url: `http://${process.env.HOST}` },
-      { url: `https://${process.env.HOST}` },
+      { url: '/' },
     ],
   },
   apis: [
