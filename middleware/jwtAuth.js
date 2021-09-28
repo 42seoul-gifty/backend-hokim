@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const { logger } = require("../config/winston");
 
-const generateRefreshToken = async (req, res, user) => {
+const generateRefreshToken = async (user) => {
   try {
     const newRefreshToken = jwt.sign({}, process.env.JWT_SECRET, {
       expiresIn: "14d",
@@ -17,7 +17,7 @@ const generateRefreshToken = async (req, res, user) => {
   }
 };
 
-const generateAccessToken = (req, res, user) => {
+const generateAccessToken = (user) => {
   try {
     const newAccessToken = jwt.sign(
       { id: user.id, auth: user.auth, date: new Date() },
@@ -60,23 +60,26 @@ const decodeToken = async (req, res, next) => {
 
     req.user = jwt.verify(access_token, process.env.JWT_SECRET);
 
+    if (req.params.user_id && req.user.id != req.params.user_id)
+      throw new Error("No permission");
+
     next();
-  } catch (err) {
+  } catch (e) {
     logger.error(e);
-    res.status(400).json({ success: false, error: err.message });
+    res.status(403).json({ success: false, error: e.message });
   }
 };
 
-const generateToken = async (req, res, user) => {
-  const access_token = generateAccessToken(req, res, user);
-  const refresh_token = await generateRefreshToken(req, res, user);
+const generateToken = async (user) => {
+  const access_token = generateAccessToken(user);
+  const refresh_token = await generateRefreshToken(user);
   return { access_token, refresh_token };
 };
 
-const generateTokenFromRefresh = async (req, res) => {
+const generateTokenFromRefresh = async (req) => {
   const verifyRefresh = checkVerify(req.body.refresh_token);
   const user = checkRefreshToken(req, verifyRefresh);
-  const access_token = generateAccessToken(req, res, user);
+  const access_token = generateAccessToken(user);
 
   return access_token;
 };

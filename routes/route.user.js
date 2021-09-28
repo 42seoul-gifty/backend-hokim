@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const user = require("../controller/controller.user");
-
 const order = require("../controller/controller.order");
 
 router.get("/:user_id", user.getUser);

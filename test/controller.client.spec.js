@@ -1,17 +1,31 @@
 const axios = require("axios");
 const { expect } = require("chai");
-const { Orders } = require("../models");
+const { generateToken } = require("../middleware/jwtAuth");
+const { Orders, User } = require("../models");
 require("dotenv").config();
 
 describe("App test!", function () {
+  var access_token;
+  var refresh_token;
+
   it("딜레이", function (done) {
-    setTimeout(function () {
+    setTimeout(async () => {
+      const user = await User.findOne({ where: { id: 1 } });
+      const result = await generateToken(user);
+      access_token = result.access_token;
+      console.log("#");
       done();
     }, 1500);
   });
 
   it("GET users/1 : 유저 디테일 조회", function (done) {
-    axios({ url: process.env.SITE_DOMAIN + "/users/1", method: "get" })
+    axios({
+      url: process.env.SITE_DOMAIN + "/users/1",
+      method: "get",
+      headers: {
+        Authorization: access_token,
+      },
+    })
       .then((res) => {
         console.log(res.status, res.data.data);
         expect(res.status).to.equal(200);
@@ -23,11 +37,13 @@ describe("App test!", function () {
         done();
       });
   });
-
   it("GET products : 카테고리에 맞는 제품 검색", function (done) {
     axios({
       url: process.env.SITE_DOMAIN + "/products?gender=1&price=2&age=2",
       method: "get",
+      headers: {
+        Authorization: access_token,
+      },
     })
       .then((res) => {
         console.log(res.status, res.data.data);
@@ -45,6 +61,9 @@ describe("App test!", function () {
     axios({
       url: process.env.SITE_DOMAIN + "/products/101",
       method: "get",
+      headers: {
+        Authorization: access_token,
+      },
     })
       .then((res) => {
         console.log(res.status, res.data.data);
@@ -116,6 +135,7 @@ describe("App test!", function () {
         method: "post",
         headers: {
           "Content-Type": "application/json",
+          Authorization: access_token,
         },
         data: {
           imp_uid: "imp_114995595270",
@@ -138,6 +158,9 @@ describe("App test!", function () {
     axios({
       url: process.env.SITE_DOMAIN + "/users/1/orders/1",
       method: "get",
+      headers: {
+        Authorization: access_token,
+      },
     })
       .then((res) => {
         console.log(res.status, res.data.data);
@@ -150,11 +173,13 @@ describe("App test!", function () {
         done();
       });
   });
-
   it("GET /users/:id/orders : 주문 리스트 조회", function (done) {
     axios({
-      url: process.env.SITE_DOMAIN + "/users/4/orders",
+      url: process.env.SITE_DOMAIN + "/users/1/orders",
       method: "get",
+      headers: {
+        Authorization: access_token,
+      },
     })
       .then((res) => {
         console.log(res.status, res.data.order);
@@ -170,10 +195,11 @@ describe("App test!", function () {
 
   it("POST /users/:id/orders : 주문 생성", function (done) {
     axios({
-      url: process.env.SITE_DOMAIN + "/users/4/orders",
+      url: process.env.SITE_DOMAIN + "/users/1/orders",
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        Authorization: access_token,
       },
       data: {
         giver_name: "giver_kim",
@@ -205,6 +231,9 @@ describe("App test!", function () {
           process.env.SITE_DOMAIN +
           `/users/${order.user_id}/orders/${order.id}`,
         method: "delete",
+        headers: {
+          Authorization: access_token,
+        },
       })
         .then((res) => {
           console.log(res.status, res.data.order);

@@ -45,7 +45,7 @@ const getKakaoToken = async (req, res) => {
     );
 
     //토큰 생성
-    const { access_token, refresh_token } = await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(user);
     res.status(200).json({
       success: true,
       data: {
@@ -89,7 +89,7 @@ const getNaverToken = async (req, res) => {
     );
 
     //토큰 생성
-    const { access_token, refresh_token } = await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(user);
     res.status(200).json({
       success: true,
       data: {
@@ -107,7 +107,7 @@ const getNaverToken = async (req, res) => {
 
 const getRefreshToken = async (req, res) => {
   try {
-    const access_token = await generateTokenFromRefresh(req, res);
+    const access_token = await generateTokenFromRefresh(req);
 
     res.json({
       success: true,
