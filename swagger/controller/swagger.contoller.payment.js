@@ -5,6 +5,12 @@
  *      tags:
  *        - payment
  *      description: 주문의 유효성을 검사하는 API
+ *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      requestBody:
  *        required: true
  *        description: |

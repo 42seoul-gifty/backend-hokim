@@ -6,6 +6,11 @@
  *        - product
  *      description: 카테고리에 해당하는 상품을 조회하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: query
  *        name: gender
  *        type: string
@@ -59,6 +64,11 @@
  *        - product
  *      description: product_id에 해당하는 상품 정보를 조회하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: product_id
  *        type: string

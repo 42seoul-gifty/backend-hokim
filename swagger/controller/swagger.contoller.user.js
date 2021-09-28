@@ -6,6 +6,11 @@
  *        - user
  *      description: user_id에 해당하는 유저 정보를 조회하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: user_id
  *        type: string

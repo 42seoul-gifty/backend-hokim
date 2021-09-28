@@ -6,6 +6,11 @@
  *        - order
  *      description: user_id, order_id에 해당하는 주문 정보를 조회하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -53,6 +58,11 @@
  *        - order
  *      description: user_id에 해당하는 유저의 모든 주문 정보를 조회하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -97,6 +107,11 @@
  *        - order
  *      description: user_id에 해당하는 유저의 주문을 생성하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -174,6 +189,11 @@
  *        - order
  *      description: user_id, order_id에 해당하는 주문을 삭제하는 API
  *      parameters:
+ *      - in: header
+ *        name: Authorization
+ *        type: string
+ *        description: Bearer 인증 토큰
+ *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
