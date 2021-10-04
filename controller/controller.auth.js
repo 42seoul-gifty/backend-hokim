@@ -138,9 +138,31 @@ const logout = async (req, res) => {
   }
 };
 
+const getTestToken = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.user_id } });
+    if (!user) throw new Error("User not Exist");
+
+    const { access_token, refresh_token } = await generateToken(user);
+    res.status(200).json({
+      success: true,
+      data: {
+        access_token,
+        refresh_token,
+        user,
+      },
+    });
+  } catch (e) {
+    logger.error(e);
+    res.status(400).json({ success: false, error: e.message });
+    return;
+  }
+};
+
 module.exports = {
   getKakaoToken,
   getNaverToken,
   getRefreshToken,
   logout,
+  getTestToken,
 };

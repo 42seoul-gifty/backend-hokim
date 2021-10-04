@@ -6,11 +6,6 @@
  *        - order
  *      description: user_id, order_id에 해당하는 주문 정보를 조회하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -19,6 +14,8 @@
  *        name: order_id
  *        type: string
  *        description: 정보를 조회하고자 하는 주문의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -58,15 +55,12 @@
  *        - order
  *      description: user_id에 해당하는 유저의 모든 주문 정보를 조회하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
  *        description: 정보를 조회하고자 하는 유저의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -107,11 +101,6 @@
  *        - order
  *      description: user_id에 해당하는 유저의 주문을 생성하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -145,6 +134,8 @@
  *                  type: integer
  *                price:
  *                  type: integer
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -189,11 +180,6 @@
  *        - order
  *      description: user_id, order_id에 해당하는 주문을 삭제하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: path
  *        name: user_id
  *        type: string
@@ -202,6 +188,8 @@
  *        name: order_id
  *        type: string
  *        description: 삭제하고 싶은 주문의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |

@@ -3,6 +3,9 @@ const router = Router();
 const auth = require("../controller/controller.auth");
 
 const { kakao_config, naver_config } = require("../config/config");
+
+router.get("/token/user/:user_id/", auth.getTestToken);
+
 router.get("/kakao/test", (req, res) => {
   res.redirect(
     `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_config.rest_key}&redirect_uri=${process.env.KAKAO_CALLBACK_URL}&response_type=code`

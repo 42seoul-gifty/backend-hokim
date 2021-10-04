@@ -12,8 +12,8 @@ describe("App test!", function () {
     setTimeout(async () => {
       const user = await User.findOne({ where: { id: 1 } });
       const result = await generateToken(user);
-      access_token = result.access_token;
-      console.log("#");
+      access_token = "bearer " + result.access_token;
+      console.log(access_token);
       done();
     }, 1500);
   });
@@ -37,6 +37,7 @@ describe("App test!", function () {
         done();
       });
   });
+
   it("GET products : 카테고리에 맞는 제품 검색", function (done) {
     axios({
       url: process.env.SITE_DOMAIN + "/products?gender=1&price=2&age=2",

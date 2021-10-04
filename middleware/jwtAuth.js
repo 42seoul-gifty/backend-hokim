@@ -52,20 +52,29 @@ const checkVerify = (token) => {
 
 const decodeToken = async (req, res, next) => {
   try {
-    var access_token = req.header("Authorization");
-    if (!access_token) throw Error("token does not exist.");
-    const verifyAccess = checkVerify(access_token);
+    if (!req.header("Authorization")) throw Error("token does not exist.");
+    var access_token = req.header("Authorization").split(" ");
+    if (access_token.length != 2 || access_token[0] != "bearer")
+      throw Error("unexpected token type.");
 
-    if (!verifyAccess) throw new Error("Access token expired");
+    req.user = checkVerify(access_token[1]);
+    if (!req.user) throw new Error("Access token expired");
 
-    req.user = jwt.verify(access_token, process.env.JWT_SECRET);
+    next();
+  } catch (e) {
+    logger.error(e);
+    res.status(403).json({ success: false, error: e.message });
+  }
+};
 
+const checkTokenPermission = async (req, res, next) => {
+  try {
     if (req.params.user_id && req.user.id != req.params.user_id)
       throw new Error("No permission");
 
     next();
   } catch (e) {
-    logger.error(e);
+    logger.error(JSON.stringify(e));
     res.status(403).json({ success: false, error: e.message });
   }
 };
@@ -84,4 +93,9 @@ const generateTokenFromRefresh = async (req) => {
   return access_token;
 };
 
-module.exports = { generateToken, decodeToken, generateTokenFromRefresh };
+module.exports = {
+  generateToken,
+  decodeToken,
+  generateTokenFromRefresh,
+  checkTokenPermission,
+};

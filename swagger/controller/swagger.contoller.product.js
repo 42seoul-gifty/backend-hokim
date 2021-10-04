@@ -6,11 +6,6 @@
  *        - product
  *      description: 카테고리에 해당하는 상품을 조회하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: query
  *        name: gender
  *        type: string
@@ -23,6 +18,8 @@
  *        name: price
  *        type: string
  *        description: 선택된 가격
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -64,15 +61,12 @@
  *        - product
  *      description: product_id에 해당하는 상품 정보를 조회하는 API
  *      parameters:
- *      - in: header
- *        name: Authorization
- *        type: string
- *        description: Bearer 인증 토큰
- *        required: true
  *      - in: path
  *        name: product_id
  *        type: string
  *        description: 정보를 조회하고자 하는 상품의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |

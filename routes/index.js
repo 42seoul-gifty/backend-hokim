@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
   res.render("index", {});
 });
 
-router.post("/logout",decodeToken, logout);
+router.post("/logout", decodeToken, logout);
 router.post("/token/refresh", getRefreshToken);
 
 router.get("/genders", checkAdminMode, getCategories.getGenderCategory);
@@ -40,7 +40,7 @@ router.use("/payment", decodeToken, payment);
 
 router.use("/admin", csrfProtection, adminAuth);
 router.use("/admin", checkLogin, csrfProtection, admin);
-router.use("/products",decodeToken,  product);
+router.use("/products", decodeToken, product);
 router.use("/receiver", receiver);
 
 module.exports = router;
