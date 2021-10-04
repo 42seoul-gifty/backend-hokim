@@ -45,7 +45,7 @@ const getKakaoToken = async (req, res) => {
     );
 
     //토큰 생성
-    const { access_token, refresh_token } = await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(user);
     res.status(200).json({
       success: true,
       data: {
@@ -89,7 +89,7 @@ const getNaverToken = async (req, res) => {
     );
 
     //토큰 생성
-    const { access_token, refresh_token } = await generateToken(req, res, user);
+    const { access_token, refresh_token } = await generateToken(user);
     res.status(200).json({
       success: true,
       data: {
@@ -107,7 +107,7 @@ const getNaverToken = async (req, res) => {
 
 const getRefreshToken = async (req, res) => {
   try {
-    const access_token = await generateTokenFromRefresh(req, res);
+    const access_token = await generateTokenFromRefresh(req);
 
     res.json({
       success: true,
@@ -138,9 +138,31 @@ const logout = async (req, res) => {
   }
 };
 
+const getTestToken = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id: req.params.user_id } });
+    if (!user) throw new Error("User not Exist");
+
+    const { access_token, refresh_token } = await generateToken(user);
+    res.status(200).json({
+      success: true,
+      data: {
+        access_token,
+        refresh_token,
+        user,
+      },
+    });
+  } catch (e) {
+    logger.error(e);
+    res.status(400).json({ success: false, error: e.message });
+    return;
+  }
+};
+
 module.exports = {
   getKakaoToken,
   getNaverToken,
   getRefreshToken,
   logout,
+  getTestToken,
 };

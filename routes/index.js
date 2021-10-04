@@ -6,15 +6,17 @@ const admin = require("./route.admin");
 const product = require("./route.product");
 const user = require("./route.user");
 const receiver = require("./route.receiver");
-const csrfProtection = require("../middleware/csrfProtection");
 
 const getCategories = require("../controller/admin/controller.admin.category");
 const checkLogin = require("../middleware/checkLogin");
 const adminAuth = require("./route.admin.auth");
+
+const csrfProtection = require("../middleware/csrfProtection");
+const { getRefreshToken, logout } = require("../controller/controller.auth");
 const { checkAdminMode } = require("../lib/lib.adminMode");
 const swaggerUI = require("swagger-ui-express");
 const { specs } = require("../swagger/swagger");
-const { getRefreshToken, logout } = require("../controller/controller.auth");
+const { decodeToken } = require("../middleware/jwtAuth");
 
 router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
@@ -22,7 +24,7 @@ router.get("/", (req, res) => {
   res.render("index", {});
 });
 
-router.post("/logout", logout);
+router.post("/logout", decodeToken, logout);
 router.post("/token/refresh", getRefreshToken);
 
 router.get("/genders", checkAdminMode, getCategories.getGenderCategory);
@@ -32,13 +34,13 @@ router.get("/features", checkAdminMode, getCategories.getFeatureCategory);
 router.get("/categorys", checkAdminMode, getCategories.getCategory);
 router.get("/all", checkAdminMode, getCategories.getAllCategory);
 
-router.use("/users", user);
+router.use("/users", decodeToken, user);
 router.use("/login", auth);
-router.use("/payment", payment);
+router.use("/payment", decodeToken, payment);
 
 router.use("/admin", csrfProtection, adminAuth);
 router.use("/admin", checkLogin, csrfProtection, admin);
-router.use("/products", product);
+router.use("/products", decodeToken, product);
 router.use("/receiver", receiver);
 
 module.exports = router;

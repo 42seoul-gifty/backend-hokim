@@ -18,6 +18,8 @@
  *        name: price
  *        type: string
  *        description: 선택된 가격
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -63,6 +65,8 @@
  *        name: product_id
  *        type: string
  *        description: 정보를 조회하고자 하는 상품의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |

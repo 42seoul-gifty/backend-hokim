@@ -5,6 +5,7 @@
  *      tags:
  *        - payment
  *      description: 주문의 유효성을 검사하는 API
+ *      parameters:
  *      requestBody:
  *        required: true
  *        description: |
@@ -19,6 +20,8 @@
  *                  type: string
  *                imp_uid:
  *                  type: string
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |

@@ -14,6 +14,8 @@
  *        name: order_id
  *        type: string
  *        description: 정보를 조회하고자 하는 주문의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -57,6 +59,8 @@
  *        name: user_id
  *        type: string
  *        description: 정보를 조회하고자 하는 유저의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -130,6 +134,8 @@
  *                  type: integer
  *                price:
  *                  type: integer
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
@@ -182,6 +188,8 @@
  *        name: order_id
  *        type: string
  *        description: 삭제하고 싶은 주문의 ID
+ *      security:
+ *          - Bearer: []
  *      responses:
  *          200:
  *              description: |
