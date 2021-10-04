@@ -31,6 +31,8 @@ const getProductPage = async (req, res) => {
     csrfToken: req.csrfToken(),
     gender,
     page,
+    value: req.query.value,
+    order: req.query.order,
   });
 };
 

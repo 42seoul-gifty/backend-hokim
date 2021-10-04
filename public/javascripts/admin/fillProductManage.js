@@ -2,10 +2,31 @@ import { pagenation } from "./pagenation.js";
 
 (function ($) {
   $(function () {
+    const sorts = document.getElementsByClassName("fa-sort");
+
+    Array.from(sorts).forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        console.log(elem.id);
+        if (elem.getAttribute("desc") == null) {
+          filter(elem.id, "desc");
+          elem.setAttribute("desc", "");
+        } else {
+          filter(elem.id, "asc");
+          elem.removeAttribute("desc");
+        }
+      });
+    });
     const queries = location.href.split("&");
+
     queries.forEach((elem) => {
       const data = elem.split("=");
-      if (data.length == 1 || data[0].includes("page") || data[1] == "")
+      if (
+        data.length == 1 ||
+        data[0].includes("page") ||
+        data[0].includes("value") ||
+        data[0].includes("order") ||
+        data[1] == ""
+      )
         return 1;
       const values = data[1].split(",");
 
@@ -47,15 +68,21 @@ import { pagenation } from "./pagenation.js";
       showSearch: false,
     });
 
-    filter();
+    filter(
+      $(document.getElementById("page"))[0].getAttribute("value"),
+      $(document.getElementById("page"))[0].getAttribute("order")
+    );
     document.getElementById("btn-filter").addEventListener("click", () => {
       document.getElementById("page").textContent = 0;
-      filter();
+      filter(
+        $(document.getElementById("page"))[0].getAttribute("value"),
+        $(document.getElementById("page"))[0].getAttribute("order")
+      );
     });
   });
 })(jQuery);
 
-function filter() {
+function filter(value, order) {
   let container = $("#pagination");
   container.pagination({
     pageSize: 5,
@@ -87,7 +114,7 @@ function filter() {
       axios({
         url: `/admin/product/filter?page=${
           document.getElementById("page").textContent
-        }`,
+        }&${value ? `value=${value}&order=${order}` : ""}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +128,11 @@ function filter() {
         }),
       })
         .then((res) => {
+          $(document.getElementById("page"))[0].setAttribute("value", value);
+          $(document.getElementById("page"))[0].setAttribute("order", order);
+
           $("#product_list").empty();
+
           var dataHtml = "";
           const products = res.data.products;
           $.each(products, function (index, product) {
@@ -131,7 +162,6 @@ function filter() {
             </td></tr>`;
           });
           $("#product_list").append(dataHtml);
-
           pagenation(
             "/admin/product/manage",
             res.data.page,
@@ -147,6 +177,11 @@ function filter() {
                   .get();
                 if (values.length > 0) result += `${elem}=${values.join(",")}&`;
               });
+              result += `&value=${$(
+                document.getElementById("page")
+              )[0].getAttribute("value")}&order=${$(
+                document.getElementById("page")
+              )[0].getAttribute("order")}`;
               return result;
             }
           );
