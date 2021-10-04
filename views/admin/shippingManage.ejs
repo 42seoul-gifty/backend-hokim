@@ -1,6 +1,6 @@
 <%- include ('./nav.ejs') %>
 
-<div id="page" hidden><%=page%></div>
+<div id="page" value="<%=value%>" order="<%=order%>" hidden><%=page%></div>
 
 <section class="main-section">
   <div><p class="main-title">배송 관리</p></div>
@@ -43,12 +43,16 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">No</th>
-          <th scope="col">이름</th>
-          <th scope="col">연락처</th>
-          <th scope="col">주소</th>
-          <th scope="col" style="width: 200px">선택 제품</th>
-          <th scope="col">배송상태</th>
+          <th scope="col">No <i class="fas fa-sort" id="id"></i></th>
+          <th scope="col">이름 <i class="fas fa-sort" id="name"></i></th>
+          <th scope="col">연락처 <i class="fas fa-sort" id="phone"></i></th>
+          <th scope="col">주소 <i class="fas fa-sort" id="address"></i></th>
+          <th scope="col" style="width: 200px">
+            선택 제품 <i class="fas fa-sort" id="product"></i>
+          </th>
+          <th scope="col">
+            배송상태 <i class="fas fa-sort" id="shipment_status"></i>
+          </th>
         </tr>
       </thead>
       <tbody id="order_list"></tbody>

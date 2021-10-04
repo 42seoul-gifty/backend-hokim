@@ -2,24 +2,50 @@ import { pagenation } from "./pagenation.js";
 
 (function ($) {
   $(function () {
+    const sorts = document.getElementsByClassName("fa-sort");
+
     const start = document.getElementById("start");
     const end = document.getElementById("end");
     document.getElementById("filter").addEventListener("click", () => {
       receiverSort(start.value, end.value);
     });
-    receiverSort("");
+
+    Array.from(sorts).forEach((elem) => {
+      elem.addEventListener("click", (e) => {
+        console.log(elem.id);
+        if (elem.getAttribute("desc") == null) {
+          receiverSort(start.value, end.value, elem.id, "desc");
+          elem.setAttribute("desc", "");
+        } else {
+          receiverSort(start.value, end.value, elem.id, "asc");
+          elem.removeAttribute("desc");
+        }
+      });
+    });
+    receiverSort(
+      "",
+      "",
+      $(document.getElementById("page"))[0].getAttribute("value"),
+      $(document.getElementById("page"))[0].getAttribute("order")
+    );
 
     const data = location.href.split("&");
     data.forEach((elem) => {
       const value = elem.split("=");
-      if (value.length == 1 || value[0].includes("page") || value[1] == "")
+      if (
+        value.length == 1 ||
+        value[0].includes("page") ||
+        value[0].includes("value") ||
+        value[0].includes("order") ||
+        value[1] == ""
+      )
         return 1;
       $(document.getElementById(value[0]))[0].setAttribute("value", value[1]);
     });
   });
 })(jQuery);
 
-function receiverSort(start, end) {
+function receiverSort(start, end, value, order) {
   let container = $("#pagination");
   container.pagination({
     pageSize: 10,
@@ -27,7 +53,7 @@ function receiverSort(start, end) {
       axios({
         url: `/admin/shipping/filter?page=${
           document.getElementById("page").textContent
-        }`,
+        }&${value ? `value=${value}&order=${order}` : ""}`,
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +66,8 @@ function receiverSort(start, end) {
       })
         .then((res) => {
           const data = res.data.receiver;
-
+          $(document.getElementById("page"))[0].setAttribute("value", value);
+          $(document.getElementById("page"))[0].setAttribute("order", order);
           $("#order_list").empty();
           var dataHtml = "";
           $.each(data, function (index, user) {
@@ -91,7 +118,11 @@ function receiverSort(start, end) {
             () => {
               return `start=${document.getElementById("start").value}&end=${
                 document.getElementById("end").value
-              }`;
+              }&value=${$(document.getElementById("page"))[0].getAttribute(
+                "value"
+              )}&order=${$(document.getElementById("page"))[0].getAttribute(
+                "order"
+              )}`;
             }
           );
         })

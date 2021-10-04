@@ -1,4 +1,5 @@
-const Sequelize = require("../../models").Sequelize;
+const { Sequelize, sequelize } = require("../../models");
+const { getTotalPage } = require("../../lib/lib.getTotalPage");
 const { productIncludeMutipleFilter } = require("../../lib/lib.Product");
 const { Op } = require("sequelize");
 const { logger } = require("../../config/winston");
@@ -17,6 +18,15 @@ const getAdminFilterdProduct = async (req, res) => {
   try {
     const page = req.query.page ? req.query.page : 0;
     const limit = 10;
+
+    const orderValue = [];
+    if (req.query.value == "category") req.query.value = "Category.value";
+    if (req.query.value == "brand") req.query.value = "Brand.value";
+    if (req.query.value && req.query.order)
+      orderValue.push([sequelize.literal(req.query.value), req.query.order]);
+
+    if (req.query.value && req.query.value != "id")
+      orderValue.push([sequelize.literal("id"), "asc"]);
 
     const include = productIncludeMutipleFilter(
       req.body.gender,
@@ -65,17 +75,15 @@ const getAdminFilterdProduct = async (req, res) => {
       offset: page * limit,
       limit: limit,
       subQuery: false,
+      order: orderValue,
     });
 
-    var totalPage = await Product.count({
+    var totalPage = await getTotalPage(
+      limit,
+      Product,
       include,
-      where: condition.length == 0 ? {} : { [Op.or]: condition },
-    });
-
-    totalPage =
-      totalPage % limit == 0
-        ? Math.floor(totalPage / limit) - 1
-        : Math.floor(totalPage / limit);
+      condition.length == 0 ? {} : { [Op.or]: condition }
+    );
 
     res.status(200).json({ success: true, products, page, totalPage });
   } catch (e) {

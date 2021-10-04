@@ -2,6 +2,7 @@ const { User, Orders } = require("../../models");
 const Sequelize = require("../../models").Sequelize;
 const sequelize = require("../../models").sequelize;
 const { logger } = require("../../config/winston");
+const { getTotalPage } = require("../../lib/lib.getTotalPage");
 
 const getUserDetailPage = async (req, res) => {
   try {
@@ -91,12 +92,8 @@ const getAdminFilterdUser = async (req, res) => {
       subQuery: false,
     });
 
-    var totalPage = await User.count({});
+    var totalPage = await getTotalPage(limit, User, null, {});
 
-    totalPage =
-      totalPage % limit == 0
-        ? Math.floor(totalPage / limit) - 1
-        : Math.floor(totalPage / limit);
     res.status(200).json({ success: true, user, page, totalPage });
   } catch (e) {
     logger.error(e);

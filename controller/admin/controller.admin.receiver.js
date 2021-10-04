@@ -3,8 +3,10 @@ const { getAges, getPrices, getGenders } = require("../../lib/lib.Preference");
 const { Shipment } = require("../../config/constant");
 const { Op } = require("sequelize");
 const { logger } = require("../../config/winston");
+const { getTotalPage } = require("../../lib/lib.getTotalPage");
 
-const Sequelize = require("../../models").Sequelize;
+const { Sequelize, sequelize } = require("../../models");
+
 const {
   Age,
   Price,
@@ -16,10 +18,13 @@ const {
 
 const getReceiverPage = async (req, res) => {
   const page = req.query.page ? req.query.page : 0;
+
   res.render("admin/shippingManage", {
     layout: "layout/layout",
     page,
     user: req.user,
+    value: req.query.value,
+    order: req.query.order,
     csrfToken: req.csrfToken(),
   });
 };
@@ -84,7 +89,19 @@ const getReceiverDetailPage = async (req, res) => {
 const getAdminFilterdReceiver = async (req, res) => {
   try {
     const page = req.query.page ? req.query.page : 0;
+
     const limit = 15;
+
+    const orderValue = [];
+    if (req.query.value && req.query.order)
+      orderValue.push([
+        sequelize.literal(
+          req.query.value == "product" ? "Product.name" : req.query.value
+        ),
+        req.query.order,
+      ]);
+    if (req.query.value && req.query.value != "id")
+      orderValue.push([sequelize.literal("id"), "asc"]);
 
     const startDate =
       !req.body.start || req.body.start == ""
@@ -107,23 +124,18 @@ const getAdminFilterdReceiver = async (req, res) => {
         },
       },
 
+      order: orderValue,
       offset: page * limit,
       limit: limit,
       subQuery: false,
     });
 
-    var totalPage = await Receiver.count({
-      where: {
-        createdAt: {
-          [Op.lte]: endDate,
-          [Op.gt]: startDate,
-        },
+    var totalPage = await getTotalPage(limit, Receiver, null, {
+      createdAt: {
+        [Op.lte]: endDate,
+        [Op.gt]: startDate,
       },
     });
-    totalPage =
-      totalPage % limit == 0
-        ? Math.floor(totalPage / limit) - 1
-        : Math.floor(totalPage / limit);
 
     res.status(200).json({ success: true, receiver, totalPage, page });
   } catch (e) {
@@ -134,7 +146,6 @@ const getAdminFilterdReceiver = async (req, res) => {
 
 const updateReceiverShipment = async (req, res) => {
   try {
-    //TODO:수정이 필요할 수도 있음
     const receiver = [];
     await req.body.changed.forEach(async (element) => {
       receiver.push(
