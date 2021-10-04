@@ -11,7 +11,6 @@ const options = {
       description:
         "This is a simple CRUD API application made with Express and documented with Swagger",
     },
-    host: process.env.HOST,
     basePath: "/",
     securityDefinitions: {
       Bearer: {
