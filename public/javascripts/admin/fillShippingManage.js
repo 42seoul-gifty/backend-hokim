@@ -101,6 +101,7 @@ function receiverSort(start, end, value, order) {
                 }>주문취소</option>
               </select>
             </td>
+            <td scope="col">${user.updatedAt}</td>
           </tr>`;
           });
           $("#order_list").append(dataHtml);
