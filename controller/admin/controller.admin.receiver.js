@@ -111,6 +111,18 @@ const getAdminFilterdReceiver = async (req, res) => {
       !req.body.end || req.body.end == "" ? getKoreaTime() : req.body.end;
 
     const receiver = await Receiver.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn(
+              "date_format",
+              Sequelize.col("Receiver.updatedAt"),
+              "%Y-%m-%d %H:%i"
+            ),
+            "updatedAt",
+          ],
+        ],
+      },
       include: [
         { model: Price, attributes: ["id", "value"] },
         { model: Age, attributes: ["id", "value"] },
